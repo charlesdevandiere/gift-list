@@ -1,0 +1,59 @@
+<div class="container h-100 position-relative">
+  <div class="row">
+    <div class="col my-2 top-bar d-flex flex-row align-items-center overflow-hidden">
+      <button type="button"
+              class="btn btn-link me-2"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
+      </button>
+      <div class="flex-grow-1 text-truncate">
+        {{ action === 'add' ? translations.user.addTitle : translations.user.updateTitle }}
+      </div>
+      <button type="submit"
+              form="userForm"
+              class="btn btn-primary text-nowrap"
+              [disabled]="!form.valid">
+        <i class="bi-floppy"></i>
+        <span class="ms-2">{{ translations.misc.save }}</span>
+      </button>
+    </div>
+  </div>
+  <div class="row page-height">
+    <form id="userForm"
+          class="col h-100 overflow-auto"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col">
+          <label for="name"
+                 class="form-label">{{ translations.user.name }}</label>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text"
+                 id="name"
+                 class="form-control"
+                 [class.border-danger]="!form.controls.name.valid && form.controls.name.touched"
+                 formControlName="name">
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col">{{ translations.user.picture }}</div>
+      </div>
+      <div class="row g-4 mb-6">
+        @for (picture of pictures; track picture) {
+        <div class="col-4 col-sm-3 col-md-2 col-xxl-1">
+          <button type="button"
+                  class="btn w-100 border text-center fs-1 py-3"
+                  [class.btn-primary]="picture === (selectedPicture$ | async)"
+                  (click)="selectPicture(picture)">
+            <i class="bi-{{picture}}"></i>
+          </button>
+        </div>
+        }
+      </div>
+    </form>
+  </div>
+</div>

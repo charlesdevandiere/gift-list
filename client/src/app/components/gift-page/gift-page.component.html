@@ -1,0 +1,89 @@
+<div class="container h-100 position-relative">
+  <div class="row">
+    <div class="col my-2 top-bar d-flex flex-row align-items-center overflow-hidden">
+      <button type="button"
+              class="btn btn-link me-2"
+              (click)="back()">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
+      </button>
+      <div class="flex-grow-1 text-truncate">
+        {{ action === 'add' ? translations.gift.addTitle : translations.gift.updateTitle }}
+      </div>
+      <button type="submit"
+              form="userForm"
+              class="btn btn-primary text-nowrap"
+              [disabled]="!form.valid">
+        <i class="bi-floppy"></i>
+        <span class="ms-2">{{ translations.misc.save }}</span>
+      </button>
+    </div>
+  </div>
+  <div class="row page-height">
+    <form id="userForm"
+          class="col h-100 overflow-auto"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col">
+          <label for="name"
+                 class="form-label">{{ translations.gift.name }}</label>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text"
+                 class="form-control"
+                 id="name"
+                 formControlName="name"
+                 [class.border-danger]="!form.controls.name.valid && form.controls.name.touched">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="link1"
+                 class="form-label">{{ translations.gift.link }}</label>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="url"
+                 id="link1"
+                 class="form-control"
+                 formControlName="link1"
+                 [class.border-danger]="!form.controls.link1.valid && form.controls.link1.touched">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="link2"
+                 class="form-label">{{ translations.gift.link }}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3">
+          <input type="url"
+                 id="link2"
+                 class="form-control"
+                 formControlName="link2"
+                 [class.border-danger]="!form.controls.link2.valid && form.controls.link2.touched">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="link3"
+                 class="form-label">{{ translations.gift.link }}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-3">
+          <input type="url"
+                 id="link3"
+                 class="form-control"
+                 formControlName="link3"
+                 [class.border-danger]="!form.controls.link3.valid && form.controls.link3.touched">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,163 @@
+@if (state$ | async; as state) {
+<div class="row my-2 top-bar">
+  @if (state.user) {
+  <div class="col d-flex flex-row align-items-center overflow-hidden">
+    <button #back
+            class="btn btn-link me-2"
+            routerLink="/">
+      <i class="bi-arrow-left"
+         aria-label="back"></i>
+    </button>
+    <div class="flex-grow-1 text-truncate">{{ translations.home.giftList.name(state.user.name) }}</div>
+    @if (!state.reordering) {
+    @if (state.user.id === state.connectedUserId && state.gifts.length) {
+    <button class="btn btn-link"
+            (click)="toggleReorder()">
+      <i class="bi-sort-alpha-down"
+         aria-label="reorder"></i>
+    </button>
+    }
+    <button class="btn btn-link"
+            (click)="refresh()">
+      <i class="bi-arrow-repeat"
+         aria-label="refresh"></i>
+    </button>
+    } @else {
+    <button class="btn btn-link text-secondary"
+            (click)="toggleReorder()">
+      <i class="bi-x"
+         aria-label="cancel"></i>
+    </button>
+    <button class="btn btn-link text-success"
+            (click)="saveOrder()">
+      <i class="bi-check"
+         aria-label="save order"></i>
+    </button>
+    }
+  </div>
+  }
+</div>
+
+@if (state.user) {
+<div class="row page-height">
+  <div class="col h-100 overflow-auto">
+    <ul class="list-group mb-6">
+      @if (!state.loading) {
+      @for (gift of state.gifts; track gift.id; let index = $index) {
+      <li class="list-group-item d-flex flex-row align-items-center"
+          [class.list-group-item-primary]="gift.offered_by === state.connectedUserId"
+          [class.list-group-item-secondary]="gift.offered_by && gift.offered_by !== state.connectedUserId">
+        <div class="flex-grow-1 py-2">{{ gift.name }}</div>
+        @if (!state.reordering) {
+        @if (gift.link1) {
+        <a class="btn btn-link"
+           [href]="gift.link1"
+           target="_blank">
+          <i class="bi-box-arrow-up-right"
+             aria-label="link"></i>
+        </a>
+        }
+        @if (gift.link2) {
+        <a class="btn btn-link"
+           [href]="gift.link2"
+           target="_blank">
+          <i class="bi-box-arrow-up-right"
+             aria-label="link"></i>
+        </a>
+        }
+        @if (gift.link3) {
+        <a class="btn btn-link"
+           [href]="gift.link3"
+           target="_blank">
+          <i class="bi-box-arrow-up-right"
+             aria-label="link"></i>
+        </a>
+        }
+        <button type="button"
+                class="btn btn-link"
+                (click)="share(gift)">
+          <i class="bi-share-fill"
+             aria-label="share"></i>
+        </button>
+        @if (state.user.id === state.connectedUserId) {
+        <button type="button"
+                class="btn btn-link"
+                (click)="updateGift(gift)">
+          <i class="bi-pencil"
+             aria-label="update"></i>
+        </button>
+        <button type="button"
+                class="btn btn-link link-danger me-2"
+                (click)="deleteGift(gift)">
+          <i class="bi-trash3"
+             aria-label="delete"></i>
+        </button>
+        } @else if (state.connectedUserId) {
+        <button type="button"
+                class="btn btn-link me-2"
+                (click)="toggleOffer(gift)"
+                [disabled]="gift.offered_by && gift.offered_by !== state.connectedUserId || state.offerings.indexOf(gift.id) >= 0">
+          @if (state.offerings.indexOf(gift.id) >= 0) {
+          <span class="spinner-border spinner-border-sm"
+                aria-hidden="true"></span>
+          <span class="visually-hidden"
+                role="status">Loading...</span>
+          }
+          @else {
+          <i [class]="gift.offered_by === state.connectedUserId ? 'bi-gift-fill' : 'bi-gift'"
+             aria-label="offer"></i>
+          }
+        </button>
+        }
+        } @else {
+        <button type="button"
+                class="btn btn-link me-2"
+                (click)="reorder(gift.id, 'up')"
+                [disabled]="index == 0">
+          <i class="bi-caret-up-fill"
+             aria-label="move up"></i>
+        </button>
+        <button type="button"
+                class="btn btn-link me-2"
+                (click)="reorder(gift.id, 'down')"
+                [disabled]="index == state.gifts.length - 1">
+          <i class="bi-caret-down-fill"
+             aria-label="move down"></i>
+        </button>
+        }
+      </li>
+      }
+      } @else {
+      <li class="list-group-item d-flex py-3 placeholder-glow">
+        <span class="placeholder col-4 my-1"></span>
+      </li>
+      <li class="list-group-item d-flex py-3 placeholder-glow">
+        <span class="placeholder col-3 my-1"></span>
+      </li>
+      <li class="list-group-item d-flex py-3 placeholder-glow">
+        <span class="placeholder col-5 my-1"></span>
+      </li>
+      }
+    </ul>
+  </div>
+</div>
+} @else {
+<div class="text-center my-5">
+  <div>
+    <i class="bi bi-gift big"></i>
+  </div>
+  <div>{{ translations.home.giftList.noUser }}</div>
+</div>
+}
+
+@if (!state.reordering && state.user && state.user.id === state.connectedUserId) {
+<button class="btn btn-primary position-absolute bottom-0 end-0 mb-4 me-4"
+        type="button"
+        (click)="addGift()">
+  <i class="bi-plus-lg"
+     aria-label="back"></i>
+  <span class="ms-2">{{ translations.home.giftList.addGift }}</span>
+</button>
+}
+
+}

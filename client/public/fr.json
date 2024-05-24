@@ -1,0 +1,85 @@
+{
+  "$schema": "../translations.schema.json",
+  "title": "Liste de cadeaux",
+  "menu": {
+    "editProfile": "Modifier son profil",
+    "changeUser": "Changer d'utilisateur",
+    "addUser": "Ajouter un utilisateur",
+    "import": "Importer",
+    "export": "Exporter",
+    "signOut": "Se déconnecter",
+    "cart": "Panier"
+  },
+  "home": {
+    "giftLists": "Listes",
+    "giftList": {
+      "noUser": "Sélectionnez une liste",
+      "name_user": "Liste de {{user}}",
+      "addGift": "Ajouter un cadeau",
+      "getGiftsError": "Une erreur est survenue lors de la récupération des cadeaux.",
+      "deleteGift_gift": "Voulez vous supprimer le cadeau \"{{gift}}\" ?"
+    },
+    "getListsError": "Une erreur est survenue lors de la récupération des listes de cadeaux."
+  },
+  "cart": {
+    "title": "Panier",
+    "noContent": "Votre panier est vide.",
+    "unoffer_gift": "Etes vous sûr de ne plus vouloir offrir le cadeau \"{{gift}}\" ?"
+  },
+  "changeUser": {
+    "currentUser": "Utilisateur actuel :",
+    "users": "Utilisateurs :"
+  },
+  "user": {
+    "addTitle": "Ajouter un utilisateur",
+    "updateTitle": "Modifier un utilisateur",
+    "name": "Nom",
+    "picture": "Image",
+    "userAddedMessage": "L'utilisateur a été ajouté.",
+    "userUpdatedMessage": "L'utilisateur a été mis à jour."
+  },
+  "signIn": {
+    "title": "Se connecter à Liste de cadeaux",
+    "group": "Groupe",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "wrongGroupOrPasswordMessage": "Groupe ou mot de passe incorrect.",
+    "selectUser": "Choisir un profil"
+  },
+  "importExport": {
+    "title": "Importer / exporter des listes de cadeaux",
+    "downloadTemplateFile": "Télécharger le modèle de fichier",
+    "csvFile": "Fichier CSV",
+    "browse": "Parcourir",
+    "import": "Importer",
+    "export": "Exporter",
+    "details": "Détails",
+    "errorMessage": "Une erreur est survenue lors de l'import des listes de cadeaux.",
+    "successMessage": "Les listes de cadeaux ont été importées avec succès."
+  },
+  "share": {
+    "title": "Partager",
+    "copyToClipboard": "Copier dans le presse-papier",
+    "successMessage": "Copié dans le presse-papier."
+  },
+  "gift": {
+    "addTitle": "Ajouter un cadeau",
+    "updateTitle": "Modifier un cadeau",
+    "name": "Nom",
+    "link": "Lien",
+    "giftAddedMessage": "Le cadeau a été ajouté.",
+    "giftUpdatedMessage": "Le cadeau a été mis à jour."
+  },
+  "misc": {
+    "anonymous": "Anonyme",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "error": "Une erreur est survenue.",
+    "loading": "Chargement",
+    "no": "Non",
+    "ok": "OK",
+    "save": "Enregister",
+    "yes": "Oui"
+  }
+}

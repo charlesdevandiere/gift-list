@@ -1,0 +1,43 @@
+@if (state$ | async; as state) {
+<div class="vh-100 overflow-hidden user-select-none">
+  <header class="position-fixed w-100 top-0">
+    <nav class="navbar bg-body border-bottom">
+      <div class="container">
+        <a class="navbar-brand d-flex focus-ring focus-ring-light align-items-center p-2 rounded"
+           routerLink="/">
+          <i class="bi bi-gift-fill text-primary me-2 fs-2"></i>
+          <div>
+            <div class="lh-1">{{ translations.title }}</div>
+            <div class="group text-body-secondary lh-1">{{ state.group }}</div>
+          </div>
+        </a>
+        @if (state.autheticated) {
+        <div class="d-flex align-items-center">
+          @if (state.user) {
+          <button type="button"
+                  class="btn btn-link me-1 text-body"
+                  [routerLink]="['cart']">
+            <i class="bi-cart"
+               aria-label="cart"></i>
+          </button>
+          <div class="border-end separator"></div>
+          }
+          <button type="button"
+                  class="btn btn-link d-flex ms-1 align-items-center text-body text-decoration-none"
+                  (click)="openMenu()">
+            <i class="bi bi-{{state.user?.picture || 'person-fill' }}"></i>
+            @if (state.user?.name) {
+            <span class="d-none d-sm-inline ms-2">{{ state.user?.name }}</span>
+            }
+          </button>
+        </div>
+        }
+      </div>
+    </nav>
+  </header>
+  <main class="bg-body-tertiary">
+    <router-outlet></router-outlet>
+  </main>
+  <app-toasts></app-toasts>
+</div>
+}

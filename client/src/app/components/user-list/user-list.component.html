@@ -1,0 +1,41 @@
+<div class="row my-2 top-bar">
+  <div class="col d-flex flex-row align-items-center overflow-hidden">
+    <div class="flex-grow-1 text-truncate">{{ translations.home.giftLists }}</div>
+    <button type="button"
+            class="btn btn-link"
+            (click)="clickRefresh.emit()">
+      <i class="bi-arrow-repeat"
+         aria-label="refresh"></i>
+    </button>
+  </div>
+</div>
+<div class="row page-height">
+  <div class="col h-100 overflow-auto">
+    <div class="list-group mb-6">
+      @if (loading == false) {
+      @for (user of users; track user.id) {
+      <button class="list-group-item list-group-item-action focus-ring d-flex py-3"
+              (click)="selectUser.emit(user)"
+              [class.active]="user === selectedUser"
+              [class.list-group-item-primary]="user.id === (connectedUserId$ | async)">
+        <i class="d-block bi bi-{{user?.picture || 'person-fill'}} ms-2 me-3"></i>
+        <div>{{ user.name }}</div>
+      </button>
+      }
+      } @else {
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-4 my-1"></span>
+      </div>
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-3 my-1"></span>
+      </div>
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-5 my-1"></span>
+      </div>
+      }
+    </div>
+  </div>
+</div>

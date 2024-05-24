@@ -1,0 +1,101 @@
+<div class="container h-100 position-relative">
+  <div class="row">
+    <div class="col my-2 top-bar d-flex flex-row align-items-center">
+      <button type="button"
+              class="btn btn-link me-2"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
+      </button>
+      <div class="flex-grow-1">{{ translations.cart.title }}</div>
+    </div>
+  </div>
+  @if (!(loading$ | async)) {
+  @if (cart.length > 0) {
+  <div class="row page-height">
+    <div class="col h-100 overflow-auto">
+      @for (group of cart; track group.name) {
+      <div class="row my-2 group">
+        <div class="col offset-lg-3">{{ group.name }}</div>
+      </div>
+      <div class="row my-2">
+        <div class="col-12 col-lg-6 offset-lg-3">
+          <ul class="list-group">
+            @for (gift of group.gifts; track gift.id) {
+            <li class="list-group-item d-flex flex-row align-items-center">
+              <div class="flex-grow-1 py-2">{{ gift.name }}</div>
+              @if (gift.link1) {
+              <a class="btn btn-link"
+                 [href]="gift.link1"
+                 target="_blank">
+                <i class="bi-box-arrow-up-right"
+                   aria-label="link"></i>
+              </a>
+              }
+              @if (gift.link2) {
+              <a class="btn btn-link"
+                 [href]="gift.link2"
+                 target="_blank">
+                <i class="bi-box-arrow-up-right"
+                   aria-label="link"></i>
+              </a>
+              }
+              @if (gift.link3) {
+              <a class="btn btn-link"
+                 [href]="gift.link3"
+                 target="_blank">
+                <i class="bi-box-arrow-up-right"
+                   aria-label="link"></i>
+              </a>
+              }
+              <button type="button"
+                      class="btn btn-link link-danger me-2"
+                      (click)="unoffer(gift)">
+                <i class="bi-trash3"
+                   aria-label="delete"></i>
+              </button>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  } @else {
+  <!-- no content -->
+  <div class="text-center my-5">
+    <div>
+      <i class="bi bi-cart big"></i>
+    </div>
+    <div>{{ translations.cart.noContent }}</div>
+  </div>
+  }
+  } @else {
+  <!-- loader -->
+  <div class="row page-height">
+    <div class="col h-100 overflow-auto">
+      <div class="row my-2 group">
+        <div class="col offset-lg-3 placeholder-glow">
+          <span class="placeholder col-2"></span>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-12 col-lg-6 offset-lg-3">
+          <ul class="list-group">
+            <li class="list-group-item d-flex py-3 placeholder-glow">
+              <span class="placeholder col-4 my-1"></span>
+            </li>
+            <li class="list-group-item d-flex py-3 placeholder-glow">
+              <span class="placeholder col-3 my-1"></span>
+            </li>
+            <li class="list-group-item d-flex py-3 placeholder-glow">
+              <span class="placeholder col-5 my-1"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

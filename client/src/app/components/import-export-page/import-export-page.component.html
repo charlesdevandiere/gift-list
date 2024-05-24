@@ -1,0 +1,106 @@
+<div class="container h-100 position-relative">
+  <div class="row">
+    <div class="col my-2 top-bar d-flex flex-row align-items-center overflow-hidden">
+      <button type="button"
+              class="btn btn-link me-2"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
+      </button>
+      <div class="flex-grow-1 text-truncate">{{ translations.importExport.title }}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="mb-3">
+        <i class="bi-upload me-2"></i>
+        {{ translations.importExport.import }}
+      </div>
+      @if (state$ | async; as state) {
+      @if (state.step == 'select-file') {
+      <div class="row">
+        <div class="col">
+          <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   [placeholder]="translations.importExport.csvFile"
+                   readonly
+                   [value]="file?.name"
+                   [attr.aria-label]="translations.importExport.csvFile"
+                   aria-describedby="browse-btn">
+            <button type="button"
+                    class="btn btn-primary"
+                    id="browse-btn"
+                    (click)="filepicker.click()">{{ translations.importExport.browse }}</button>
+          </div>
+          <input #filepicker
+                 id="filepicker"
+                 type="file"
+                 class="d-none"
+                 (change)="selectFile($any($event))"
+                 aria-label="File"
+                 accept="text/csv">
+        </div>
+        <div class="col-auto">
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="import()"
+                  [disabled]="!file">{{ translations.importExport.import }}</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mt-1">
+          <a href="assets/import-{{ translations.language }}.csv">
+            {{ translations.importExport.downloadTemplateFile }}
+          </a>
+        </div>
+      </div>
+      }
+      @else {
+      <div class="row">
+        <div class="col">
+          <div class="progress mb-3"
+               role="progressbar"
+               aria-label="Progress"
+               [attr.aria-valuenow]="state.progress"
+               aria-valuemin="0"
+               aria-valuemax="100">
+            <div class="progress-bar"
+                 [style.width]="state.progress + '%'"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col mb-2">
+          {{ translations.importExport.details }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="import-logs"
+               class="border overflow-auto d-flex flex-column-reverse">
+            <pre class="m-2 overflow-visible">{{ state.logs }}</pre>
+          </div>
+        </div>
+      </div>
+      }
+      }
+    </div>
+    <div class="col d-lg-none">
+      <hr class="my-3">
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="row mb-3">
+        <div class="col">
+          <i class="bi-download me-2"></i>
+          {{ translations.importExport.export }}
+        </div>
+        <div class="col-auto">
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="export()">{{ translations.importExport.export }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

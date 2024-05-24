@@ -1,0 +1,48 @@
+@if (state$ | async; as state)
+{
+<div class="container h-100 overflow-hidden">
+  <div class="row h-100">
+    <div class="col-12 offset-md-2 col-md-8 offset-lg-3 col-lg-6 offset-xl-4 col-xl-4 mt-3 h-100">
+      <div class="d-flex flex-column h-100">
+        <h4 class="text-center">{{ translations.signIn.title }}</h4>
+        <div class="card overflow-auto mb-5">
+          @if (!state.authenticated) {
+          <form class="card-body"
+                [formGroup]="form"
+                (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="group"
+                     class="form-label">{{ translations.signIn.group }}</label>
+              <input type="text"
+                     class="form-control"
+                     id="group"
+                     formControlName="group">
+            </div>
+            <div class="mb-3">
+              <label for="password"
+                     class="form-label">{{ translations.signIn.password }}</label>
+              <input type="password"
+                     class="form-control"
+                     id="password"
+                     formControlName="password">
+            </div>
+            <div class="text-end">
+              <button type="submit"
+                      class="btn btn-primary"
+                      [disabled]="!form.valid">{{ translations.signIn.signIn }}</button>
+            </div>
+          </form>
+          }
+          @else {
+          <div class="card-body">
+            <div>{{ translations.signIn.selectUser }}</div>
+            <app-change-user [users]="state.users"
+                             (selectedUser)="selectUser($event)"></app-change-user>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

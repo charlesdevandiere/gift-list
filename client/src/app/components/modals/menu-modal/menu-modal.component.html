@@ -1,0 +1,35 @@
+@if (state$ | async; as state) {
+<div class="modal-header">
+  @if (state.page == 'main') {
+  <h5 class="modal-title d-flex align-items-center">
+    <i class="bi bi-{{ state.user?.picture || 'person-fill' }} fs-3 mx-2"></i>
+    <span class="ms-2">{{ state.user?.name || translations.misc.anonymous }}</span>
+  </h5>
+  <button type="button"
+          class="btn-close"
+          (click)="modal.dismiss()"
+          aria-label="Close"></button>
+  }
+  @else if (state.page == 'change-user') {
+  <button type="button"
+          class="btn btn-link me-2"
+          (click)="move('main')">
+    <i class="bi-arrow-left"
+       aria-label="back"></i>
+  </button>
+  <h5 class="modal-title">{{ translations.menu.changeUser }}</h5>
+  }
+</div>
+<div class="modal-body">
+  @if (state.page == 'main') {
+  <app-main-menu [user]="state.user"
+                 (dismiss)="dismiss()"
+                 (move)="move($event)"></app-main-menu>
+  }
+  @else if(state.page == 'change-user') {
+  <app-change-user [connectedUser]="state.user"
+                   [users]="(users$ | async) ?? []"
+                   (selectedUser)="changeUser($event)"></app-change-user>
+  }
+</div>
+}

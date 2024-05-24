@@ -1,0 +1,31 @@
+.container {
+  &.user-selected {
+    .user-list {
+      display: none;
+
+      @media (min-width: 992px) {
+        display: block;
+      }
+    }
+
+    .gift-list {
+      display: block;
+    }
+
+  }
+
+  .gift-list {
+    display: none;
+
+    @media (min-width: 992px) {
+      display: block;
+    }
+  }
+
+  .top-bar {
+    .col {
+      line-height: 38px;
+    }
+  }
+
+}

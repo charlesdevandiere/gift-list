@@ -1,0 +1,64 @@
+<div class="list-group">
+  @if (user) {
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="editProfile()">
+    <i class="bi-person-lines-fill"></i>
+    <span class="ms-3">{{ translations.menu.editProfile }}</span>
+  </button>
+  }
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="changeUser()">
+    <i class="bi-people-fill"></i>
+    <span class="ms-3 flex-grow-1">{{ translations.menu.changeUser }}</span>
+    <i class="bi-chevron-right"></i>
+  </button>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="addUser()">
+    <i class="bi-person-fill-add"></i>
+    <span class="ms-3">{{ translations.menu.addUser }}</span>
+  </button>
+</div>
+<hr class="my-2">
+<div class="list-group">
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="importExport()">
+    <i class="bi-upload"></i>
+    <span class="ms-3">{{ translations.menu.import }}</span>
+    <i class="bi-slash-lg mx-3"></i>
+    <i class="bi-download"></i>
+    <span class="ms-3">{{ translations.menu.export }}</span>
+  </button>
+</div>
+<div class="list-group list-group-horizontal mt-2">
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorModesService.colorMode === 'light'"
+          (click)="colorModesService.colorMode = 'light'">
+    <i class="bi-sun-fill"></i>
+  </button>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorModesService.colorMode === 'dark'"
+          (click)="colorModesService.colorMode = 'dark'">
+    <i class="bi-moon-stars-fill"></i>
+  </button>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorModesService.colorMode === 'auto'"
+          (click)="colorModesService.colorMode = 'auto'">
+    <i class="bi-circle-half"></i>
+  </button>
+</div>
+<hr class="my-2">
+<div class="list-group">
+  <button type="button"
+          class="list-group-item list-group-item-action list-group-item-danger focus-ring border-0 d-flex py-3"
+          (click)="signOut()">
+    <i class="bi-arrow-bar-right"></i>
+    <span class="ms-3">{{ translations.menu.signOut }}</span>
+  </button>
+</div>

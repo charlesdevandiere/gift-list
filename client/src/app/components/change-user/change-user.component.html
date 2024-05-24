@@ -1,0 +1,40 @@
+@if (connectedUser) {
+<div class="row">
+  <div class="col my-2 text-body-secondary">{{ translations.changeUser.currentUser }}</div>
+</div>
+<div class="list-group">
+  <button type="button"
+          class="list-group-item list-group-item-action list-group-item-primary border-0 d-flex py-3"
+          aria-current="true"
+          (click)="selectUser(connectedUser)">
+    <i class="d-block bi bi-{{connectedUser.picture || 'person-fill'}} ms-2 me-3"></i>
+    <div>{{ connectedUser.name }}</div>
+  </button>
+</div>
+<hr class="my-2">
+}
+<div class="row">
+  <div class="col my-2 text-body-secondary">{{ translations.changeUser.users }}</div>
+</div>
+<div class="list-group">
+  @for (user of users; track user.id) {
+  @if (user.id != connectedUser?.id) {
+  <button type="button"
+          class="list-group-item list-group-item-action border-0 d-flex py-3"
+          (click)="selectUser(user)">
+    <i class="d-block bi bi-{{user.picture || 'person-fill'}} ms-2 me-3"></i>
+    <div>{{ user.name }}</div>
+  </button>
+  }
+  }
+</div>
+<hr class="my-2">
+<div class="list-group">
+  <button type="button"
+          class="list-group-item list-group-item-action list-group-item-warning border-0 d-flex py-3"
+          aria-current="true"
+          (click)="selectUser(null)">
+    <i class="d-block bi bi-question ms-2 me-3"></i>
+    <div>{{ translations.misc.anonymous }}</div>
+  </button>
+</div>

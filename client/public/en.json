@@ -1,0 +1,85 @@
+{
+  "$schema": "../translations.schema.json",
+  "title": "Gift list",
+  "menu": {
+    "editProfile": "Edit profile",
+    "changeUser": "Change user",
+    "addUser": "Add user",
+    "import": "Import",
+    "export": "Export",
+    "signOut": "Sign out",
+    "cart": "Cart"
+  },
+  "home": {
+    "giftLists": "Lists",
+    "giftList": {
+      "noUser": "Select a list",
+      "name_user": "{{user}}'s gift list",
+      "addGift": "Add gift",
+      "getGiftsError": "An error occurred while retrieving gifts.",
+      "deleteGift_gift": "Do you want to delete the \"{{gift}}\" gift?"
+    },
+    "getListsError": "An error occurred while retrieving gift lists."
+  },
+  "cart": {
+    "title": "Cart",
+    "noContent": "Your cart is empty.",
+    "unoffer_gift": "Are you sure you no longer want to offer the \"{{gift}}\" gift?"
+  },
+  "changeUser": {
+    "currentUser": "Current user:",
+    "users": "Users:"
+  },
+  "user": {
+    "addTitle": "Add user",
+    "updateTitle": "Edit user",
+    "name": "Name",
+    "picture": "Picture",
+    "userAddedMessage": "User added.",
+    "userUpdatedMessage": "User updated."
+  },
+  "signIn": {
+    "title": "Sign in to Gift list",
+    "group": "Group",
+    "password": "Password",
+    "signIn": "Sign in",
+    "wrongGroupOrPasswordMessage": "Incorrect group or password.",
+    "selectUser": "Choose a profile"
+  },
+  "importExport": {
+    "title": "Import / export gift lists",
+    "downloadTemplateFile": "Download template file",
+    "csvFile": "CSV file",
+    "browse": "Browse",
+    "import": "Import",
+    "export": "Export",
+    "details": "Details",
+    "errorMessage": "An error occurred while importing gift lists.",
+    "successMessage": "Gift lists are successfuly imported."
+  },
+  "share": {
+    "title": "Share",
+    "copyToClipboard": "Copy to clipboard",
+    "successMessage": "Copied to clipboard."
+  },
+  "gift": {
+    "addTitle": "Add gift",
+    "updateTitle": "Update gift",
+    "name": "Name",
+    "link": "Link",
+    "giftAddedMessage": "Gift added.",
+    "giftUpdatedMessage": "Gift updated."
+  },
+  "misc": {
+    "anonymous": "Anonymous",
+    "cancel": "Cancel",
+    "close": "Close",
+    "delete": "Delete",
+    "error": "A error occurred.",
+    "loading": "Loading",
+    "no": "No",
+    "ok": "OK",
+    "save": "Save",
+    "yes": "Yes"
+  }
+}

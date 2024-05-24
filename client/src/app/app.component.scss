@@ -1,0 +1,26 @@
+header {
+  z-index: 1;
+
+  nav {
+    a.navbar-brand {
+      height: 44px;
+
+      .group {
+        font-size: .7em;
+      }
+    }
+
+    .separator {
+      height: 18px;
+    }
+
+    .dropstart .dropdown-toggle::before {
+      display: none;
+    }
+  }
+}
+
+main {
+  margin-top: 60px;
+  height: calc(100% - 60px);
+}
