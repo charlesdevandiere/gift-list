@@ -1,30 +1,35 @@
 import express, { Request, Response, json, urlencoded } from 'express'
-import ExpressOAuthServer from "express-oauth-server"
-import { Model } from './oauth/model'
-import { DB } from './oauth/db'
+import passport from 'passport'
+import { BasicStrategy, BasicVerifyFunction } from 'passport-http'
+import { findByToken } from './auth/db'
+import morgan from 'morgan'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const verify: BasicVerifyFunction = (username: string, password: string, done: (error: any, user?: any) => void) => {
+  findByToken(username, password, (err, user) => {
+    if (err) { return done(err) }
+    if (!user) { return done(null, false) }
+    return done(null, user)
+  })
+}
+
+passport.use(new BasicStrategy(verify))
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 
-const db = new DB()
-const model = new Model(db)
-
-const oauth = new ExpressOAuthServer({
-  model: model
-})
-
+app.use(morgan('combined'))
 app.use(json())
 app.use(urlencoded({ extended: false }))
-app.use(oauth.authorize())
 
-app.use(function(req, res) {
-  res.send('Secret area')
-})
-
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello World!')
-})
+app.get('/',
+  passport.authenticate('basic', { session: false }),
+  (req, res) => {
+    res.json(req.user)
+  })
 
 app.listen(port, () => {
-  console.log(`Server running: http://localhost:${port}`)
+  console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
 })
