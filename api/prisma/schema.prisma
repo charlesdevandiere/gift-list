@@ -13,7 +13,17 @@ datasource db {
 model Group {
   name     String @id
   password String
-  users    User[]
+  users    UsersOnGroups[]
+}
+
+model UsersOnGroups {
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  group     Group  @relation(fields: [groupName], references: [name])
+  groupName String
+  order     Int
+
+  @@id([userId, groupName])
 }
 
 model User {
@@ -21,7 +31,7 @@ model User {
   name    String
   picture String?
   gifts   Gift[]
-  groups  Group[]
+  groups  UsersOnGroups[]
 }
 
 model Gift {

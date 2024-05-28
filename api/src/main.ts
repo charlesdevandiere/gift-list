@@ -4,18 +4,19 @@ import { BasicStrategy, BasicVerifyFunction } from 'passport-http'
 import { findByToken } from './auth/db'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
+import { authenticate } from './auth'
 
 dotenv.config()
 
 const verify: BasicVerifyFunction = (username: string, password: string, done: (error: any, user?: any) => void) => {
-  findByToken(username, password, (err, user) => {
+  authenticate(username, password, (err, user) => {
     if (err) { return done(err) }
     if (!user) { return done(null, false) }
     return done(null, user)
-  })
+  }).then()
 }
 
-passport.use(new BasicStrategy(verify))
+passport.use(new BasicStrategy(authenticate))
 
 const app = express()
 const port = process.env.PORT
