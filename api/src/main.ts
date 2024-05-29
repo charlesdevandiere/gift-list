@@ -5,6 +5,7 @@ import { findByToken } from './auth/db'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { authenticate } from './auth'
+import helmet from 'helmet'
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ passport.use(new BasicStrategy(authenticate))
 const app = express()
 const port = process.env.PORT
 
+app.use(helmet())
 app.use(morgan('combined'))
 app.use(json())
 app.use(urlencoded({ extended: false }))

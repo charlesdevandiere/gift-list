@@ -15,3 +15,6 @@
 
 # Miscellaneous
 **/.angular/cache
+
+# env files
+.env
