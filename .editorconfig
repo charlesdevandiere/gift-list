@@ -4,11 +4,14 @@ root = true
 [*]
 charset = utf-8
 indent_style = space
-indent_size = 2
+indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.ts]
+[*.{js,mjs,ts,json,md,prisma,html,scss}]
+indent_size = 2
+
+[*.{js,ts}]
 quote_type = single
 
 [*.md]

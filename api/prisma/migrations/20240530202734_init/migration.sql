@@ -8,7 +8,7 @@ CREATE TABLE "Group" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" VARCHAR(255) NOT NULL,
     "picture" VARCHAR(255),
 
@@ -26,7 +26,7 @@ CREATE TABLE "UsersOnGroups" (
 
 -- CreateTable
 CREATE TABLE "Gift" (
-    "id" UUID NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "userId" UUID NOT NULL,
     "order" SMALLINT NOT NULL,
     "name" TEXT NOT NULL,
