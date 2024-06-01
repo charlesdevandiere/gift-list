@@ -6,6 +6,10 @@ import passport from 'passport'
 import winston, { createLogger, format } from 'winston'
 import { AdminStrategy, UserStrategy } from './auth'
 import { groupController } from './controllers/group.controller'
+import swaggerJSDoc from 'swagger-jsdoc'
+import { serve, setup } from 'swagger-ui-express'
+
+const port = process.env.PORT
 
 dotenv.config()
 
@@ -20,22 +24,38 @@ const logger = createLogger({
   ]
 })
 
+const specs = swaggerJSDoc({
+  apis: ['./out-tsc/**/*.js'],
+  definition: {
+    openapi: '3.0.0',
+    schema: {},
+    info: {
+      title: 'gift-list',
+      version: '1.0.0'
+    }
+  }
+})
+
 const app = express()
 app.use(helmet())
 app.use(morgan('combined'))
 app.use(json())
 app.use(urlencoded({ extended: false }))
+app.use(
+  "/swagger",
+  serve,
+  setup(specs)
+);
 
 passport.use('admin', AdminStrategy)
 passport.use('user', UserStrategy)
 
-app.use('/group', groupController)
+app.use('/groups', groupController)
 
 app.get('/', passport.authenticate('user', { session: false }), (req, res) => {
   res.json(req.user)
 })
 
-const port = process.env.PORT
 app.listen(port, () => {
-  logger.info(`⚡️[server]: Server is running at http://localhost:${port}`)
+  logger.info(`⚡️[server]: Server is running at http://localhost:${port}/swagger`)
 })

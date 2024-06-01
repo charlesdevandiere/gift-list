@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
-    "start": "npx ts-node ./src/main.ts",
+    "start": "npx tsc && npx ts-node ./src/main.ts",
     "watch": "npx nodemon -w ./src -e 'ts,json'"
   },
   "dependencies": {
@@ -16,6 +16,8 @@
     "morgan": "^1.10.0",
     "passport": "^0.7.0",
     "passport-http": "^0.3.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "tslib": "^2.6.2",
     "winston": "^3.13.0"
   },
@@ -27,6 +29,8 @@
     "@types/node": "^20.12.12",
     "@types/passport": "^1.0.16",
     "@types/passport-http": "^0.3.11",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@types/winston": "^2.4.4",
     "nodemon": "^3.1.1",
     "prisma": "^5.14.0",
