@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsc",
-    "start": "npx tsc && npx ts-node ./src/main.ts",
+    "start": "npx ts-node ./src/main.ts",
     "watch": "npx nodemon -w ./src -e 'ts,json'"
   },
   "dependencies": {
@@ -19,7 +19,8 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "tslib": "^2.6.2",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "yaml": "^2.4.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

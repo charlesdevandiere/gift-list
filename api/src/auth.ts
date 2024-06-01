@@ -2,6 +2,7 @@ import { Group, User } from '@prisma/client'
 import { BasicStrategy } from 'passport-http'
 import { db } from './db'
 import { compare } from 'bcrypt'
+import { logger } from './logger'
 
 async function authenticateUser(username: string, password: string, done: (error: any, user?: any) => void): Promise<void> {
   try {
@@ -21,7 +22,7 @@ async function authenticateUser(username: string, password: string, done: (error
     return done(null, { group: group.name, id: user?.id, anonymous: !user })
   }
   catch (err) {
-    console.error(err)
+    logger.error('authentication failed', err)
     return done(null, null)
   }
 }
@@ -43,7 +44,7 @@ async function authenticateAdmin(username: string, password: string, done: (erro
     return done(null, { name: 'admin' })
   }
   catch (err) {
-    console.error(err)
+    logger.error('authentication failed', err)
     return done(null, null)
   }
 }
