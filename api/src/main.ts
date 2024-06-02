@@ -9,6 +9,7 @@ import * as YAML from 'yaml'
 import { AdminStrategy, UserStrategy } from './auth'
 import { groupController } from './controllers/group.controller'
 import { logger } from './logger'
+import { userController } from './controllers/user.controller'
 
 dotenv.config()
 
@@ -32,6 +33,7 @@ passport.use('user', UserStrategy)
 
 // controllers
 app.use('/groups', groupController)
+app.use('/users', userController)
 
 
 const port = process.env.PORT

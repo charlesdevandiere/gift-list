@@ -30,7 +30,7 @@ groupController.get(
       res.send(group)
     }
     else {
-      res.status(404).send()
+      res.status(404).send({ error: 'group not found'})
     }
   })
 
@@ -57,15 +57,13 @@ groupController.post(
       return
     }
 
-    const group: Group = {
+    const group: Group = await db.group.create({ data: {
       name: name,
       password: password
-    }
-
-    await db.group.create({ data: group })
+    } })
     logger.info(`Group '${name}' created`)
 
-    res.location('/' + name).status(201).send({ name: name })
+    res.location(req.protocol + '://' + req.get('host') + '/groups/' + encodeURI(group.name)).status(201).send({ name: group.name })
   })
 
 // change password

@@ -112,10 +112,51 @@ paths:
         '404':
           description: The group was not found
 
+  /users:
+    get:
+      summary: Lists users in the group
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: The list of the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          description: The created user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Some server error
+
 components:
 
   securitySchemes:
     adminAuth:
+      type: http
+      scheme: basic
+    userAuth:
       type: http
       scheme: basic
 
@@ -159,6 +200,61 @@ components:
       example:
         password: maythe4bewithyou
 
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - picture
+      properties:
+        id:
+          type: string
+          description: The user ID
+        name:
+          type: string
+          description: The user name
+        picture:
+          type: string
+          description: The user picture
+      example:
+        id: 840eec48-5c81-4b93-9343-11d3026f244d
+        name: Obiwan
+        picture: light-saber
+
+    CreateUser:
+      type: object
+      required:
+        - name
+        - picture
+      properties:
+        name:
+          type: string
+          description: The user name
+        picture:
+          type: string
+          description: The user picture
+      example:
+        name: Obiwan
+        picture: light-saber
+
+    UpdateUser:
+      type: object
+      required:
+        - name
+        - picture
+      properties:
+        name:
+          type: string
+          description: The user name
+        picture:
+          type: string
+          description: The user picture
+      example:
+        name: Obiwan
+        picture: light-saber
+
 tags:
   - name: Groups
     description: The groups
+  - name: Users
+    description: The users

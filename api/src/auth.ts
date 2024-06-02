@@ -1,8 +1,10 @@
-import { Group, User } from '@prisma/client'
+import { Group } from '@prisma/client'
+import { compare } from 'bcrypt'
 import { BasicStrategy } from 'passport-http'
 import { db } from './db'
-import { compare } from 'bcrypt'
 import { logger } from './logger'
+
+export interface AuthenticatedUsed { group: string, id?: string, anonymous: boolean }
 
 async function authenticateUser(username: string, password: string, done: (error: any, user?: any) => void): Promise<void> {
   try {
@@ -10,16 +12,27 @@ async function authenticateUser(username: string, password: string, done: (error
     const groupName: string = userInfo[0]
     const userId: string = userInfo[1]
 
-    const group: Group = await db.group.findUniqueOrThrow({ where: { name: groupName } })
+    const group: Group = await db.group.findUniqueOrThrow({
+      where: { name: groupName }
+    })
     if (!await compare(password, group.password)) {
       throw new Error('wrong password')
     }
 
-    const user: User | null = userId
-      ? await db.user.findUniqueOrThrow({ where: { id: userId, groups: { some: { groupName: groupName } } } })
+    const user: { id: string } | null = userId
+      ? await db.user.findUniqueOrThrow({
+        select: { id: true },
+        where: { id: userId, groups: { some: { groupName: groupName } } }
+      })
       : null
 
-    return done(null, { group: group.name, id: user?.id, anonymous: !user })
+    const authenticateUser: AuthenticatedUsed = {
+      group: group.name,
+      id: user?.id,
+      anonymous: !user
+    }
+
+    return done(null, authenticateUser)
   }
   catch (err) {
     logger.error('authentication failed', err)
