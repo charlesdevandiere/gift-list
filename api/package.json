@@ -19,6 +19,7 @@
     "swagger-ui-express": "^5.0.1",
     "tslib": "^2.6.2",
     "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "yaml": "^2.4.2"
   },
   "devDependencies": {

@@ -15,7 +15,9 @@ dotenv.config()
 
 const app = express()
 app.use(helmet())
-app.use(morgan('combined'))
+app.use(morgan(
+  ':remote-addr :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - :response-time ms',
+  { stream: { write: (message) => logger.http(message.trimEnd()) } }))
 app.use(json())
 app.use(urlencoded({ extended: false }))
 
