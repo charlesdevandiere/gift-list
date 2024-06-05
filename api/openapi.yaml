@@ -149,6 +149,31 @@ paths:
                 $ref: '#/components/schemas/User'
         '500':
           description: Some server error
+  /users/{id}:
+    put:
+      summary: Update a user
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: The user id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '204':
+          description: The user has updated
+        '500':
+          description: Some server error
 
 components:
 
