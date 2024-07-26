@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { v4 } from 'uuid';
 import { Gift } from '../models/gift.model';
 import { AppStorage } from '../utils/app-storage';
 import { AuthService } from './auth.service';
+import { AppSettings } from '../app-settings';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +17,12 @@ export class GiftsService {
   private readonly storage: AppStorage = new AppStorage(sessionStorage);
 
   public constructor(
+    private settings: AppSettings,
     private authService: AuthService,
     private http: HttpClient) { }
 
   public getCart(): Observable<Gift[]> {
-    const url = `${environment.apiUrl}?request=gifts`;
+    const url = `${this.settings.apiUrl}?request=gifts`;
     return this.http.get<Gift[]>(url);
   }
 
@@ -37,7 +38,7 @@ export class GiftsService {
       }
     }
 
-    const url = `${environment.apiUrl}?request=gifts&user_id=${userId}`;
+    const url = `${this.settings.apiUrl}?request=gifts&user_id=${userId}`;
     return this.http.get<Gift[]>(url)
       .pipe(
         tap((gifts: Gift[]): void => this.storeGiftsIntoCache(userId, gifts))
@@ -49,12 +50,12 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${environment.apiUrl}?request=gifts&id=${id}`;
+    const url = `${this.settings.apiUrl}?request=gifts&id=${id}`;
     return this.http.get<Gift>(url);
   }
 
   public addGift(gift: { name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `${environment.apiUrl}?request=gifts`;
+    const url = `${this.settings.apiUrl}?request=gifts`;
     const id = v4();
     return this.http.post<void>(url, { ...gift, id })
       .pipe(
@@ -67,7 +68,7 @@ export class GiftsService {
   }
 
   public updateGift(gift: { id: string, name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `${environment.apiUrl}?request=gifts`;
+    const url = `${this.settings.apiUrl}?request=gifts`;
     return this.http.put<void>(url, gift)
       .pipe(
         tap(() => {
@@ -79,7 +80,7 @@ export class GiftsService {
   }
 
   public offerGift(gift: Gift): Observable<void> {
-    const url = `${environment.apiUrl}?request=gifts&id=${gift.id}&action=offer`;
+    const url = `${this.settings.apiUrl}?request=gifts&id=${gift.id}&action=offer`;
     return this.http.patch<void>(url, null)
       .pipe(
         tap(() => this.clearCache(gift.user_id))
@@ -87,7 +88,7 @@ export class GiftsService {
   }
 
   public unofferGift(gift: Gift): Observable<void> {
-    const url = `${environment.apiUrl}?request=gifts&id=${gift.id}&action=unoffer`;
+    const url = `${this.settings.apiUrl}?request=gifts&id=${gift.id}&action=unoffer`;
     return this.http.patch<void>(url, null)
       .pipe(
         tap(() => this.clearCache(gift.user_id))
@@ -99,7 +100,7 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${environment.apiUrl}?request=gifts&id=${id}`;
+    const url = `${this.settings.apiUrl}?request=gifts&id=${id}`;
     return this.http.delete<void>(url)
       .pipe(
         tap(() => {
@@ -118,7 +119,7 @@ export class GiftsService {
     let index = 0;
     const body: { id: string, order: number }[] = gifts.map(gift => ({ id: gift.id, order: index++ }));
 
-    const url = `${environment.apiUrl}?request=gifts&action=reorder`;
+    const url = `${this.settings.apiUrl}?request=gifts&action=reorder`;
     return this.http.patch<void>(url, body)
       .pipe(
         tap(() => {
@@ -137,7 +138,7 @@ export class GiftsService {
       return of({ new_gifts: [] });
     }
 
-    const url = `${environment.apiUrl}?request=gifts&import=true&user_id=${userId}`;
+    const url = `${this.settings.apiUrl}?request=gifts&import=true&user_id=${userId}`;
     return this.http.post<{ new_gifts: Gift[] }>(url, gifts)
       .pipe(
         tap(() => this.clearCache(userId))

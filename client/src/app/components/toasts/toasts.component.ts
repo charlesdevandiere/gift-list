@@ -1,8 +1,8 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Toast } from 'src/app/models/toast.model';
-import { ToastsService } from 'src/app/services/toasts.service';
+import { Toast } from '../../models/toast.model';
+import { ToastsService } from '../../services/toasts.service';
 
 @Component({
   selector: 'app-toasts',

@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { ChangeUserComponent } from '../../change-user/change-user.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
+import { User } from '../../../models/user.model';
+import { AppTranslations } from '../../../utils/app-translations';
+import { AuthService } from '../../../services/auth.service';
+import { UsersService } from '../../../services/users.service';
 
 export type MenuPage = 'main' | 'change-user'
 

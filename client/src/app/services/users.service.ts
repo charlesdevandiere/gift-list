@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { v4 } from 'uuid';
 import { User } from '../models/user.model';
 import { AppStorage } from '../utils/app-storage';
+import { AppSettings } from '../app-settings';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +26,15 @@ export class UsersService {
     }
   }
 
-  public constructor(private http: HttpClient) { }
+  public constructor(
+    private settings: AppSettings,
+    private http: HttpClient) { }
 
   public getUsers(options?: { noCache?: boolean }): Observable<User[]> {
     if (this.cache !== null && !options?.noCache) {
       return of(this.cache);
     } else {
-      const url = `${environment.apiUrl}?request=users`;
+      const url = `${this.settings.apiUrl}?request=users`;
       return this.http.get<User[]>(url)
         .pipe(
           tap((users: User[]): void => {
@@ -43,12 +45,12 @@ export class UsersService {
   }
 
   public getUser(id: string): Observable<User> {
-    const url = `${environment.apiUrl}?request=users&id=${id}`;
+    const url = `${this.settings.apiUrl}?request=users&id=${id}`;
     return this.http.get<User>(url);
   }
 
   public addUser(user: { name: string, picture?: string | null }): Observable<void> {
-    const url = `${environment.apiUrl}?request=users`;
+    const url = `${this.settings.apiUrl}?request=users`;
     const id = v4();
     return this.http.post<void>(url, { ...user, id })
       .pipe(
@@ -57,7 +59,7 @@ export class UsersService {
   }
 
   public updateUser(user: { id: string, name: string, picture?: string | null }): Observable<void> {
-    const url = `${environment.apiUrl}?request=users`;
+    const url = `${this.settings.apiUrl}?request=users`;
     return this.http.put<void>(url, user)
       .pipe(
         tap(() => this.cache = null)
@@ -69,7 +71,7 @@ export class UsersService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${environment.apiUrl}?request=users&id=${id}`;
+    const url = `${this.settings.apiUrl}?request=users&id=${id}`;
     return this.http.delete<void>(url)
       .pipe(
         tap(() => this.cache = null)
@@ -81,7 +83,7 @@ export class UsersService {
       return of({ existing_users: [], new_users: [] });
     }
 
-    const url = `${environment.apiUrl}?request=users&import=true`;
+    const url = `${this.settings.apiUrl}?request=users&import=true`;
     return this.http.post<{ existing_users: User[], new_users: User[] }>(url, users)
       .pipe(
         tap(() => this.cache = null)

@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from 'src/app/models/user.model';
-import { AppTranslations } from 'src/app/utils/app-translations';
+import { User } from '../../models/user.model';
+import { AppTranslations } from '../../utils/app-translations';
 
 @Component({
   selector: 'app-change-user',

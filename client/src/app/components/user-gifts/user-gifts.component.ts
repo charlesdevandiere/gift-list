@@ -3,15 +3,15 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewC
 import { Router, RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Observable, Subject, firstValueFrom, takeUntil } from 'rxjs';
-import { ConfirmModalData } from 'src/app/models/confirm-modal-data.model';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { Gift } from '../../models/gift.model';
 import { GiftsService } from '../../services/gifts.service';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 import { ShareModalComponent } from '../modals/share-modal/share-modal.component';
+import { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { ToastsService } from '../../services/toasts.service';
+import { AppTranslations } from '../../utils/app-translations';
+import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 
 interface State {
   connectedUserId: string | null;

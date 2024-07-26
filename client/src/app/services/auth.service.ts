@@ -1,10 +1,10 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { Auth } from '../models/auth.model';
 import { AppStorage } from '../utils/app-storage';
 import { EventBusService } from './event-bus.service';
+import { AppSettings } from '../app-settings';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +54,7 @@ export class AuthService {
 
   public constructor(
     httpBackend: HttpBackend,
+    private settings: AppSettings,
     private eventBus: EventBusService) {
     this.http = new HttpClient(httpBackend);
     this.load();
@@ -86,7 +87,7 @@ export class AuthService {
     if (token !== null) {
       const authorization = `Basic ${token}`;
       return this.http.get<void>(
-        `${environment.apiUrl}?request=sign-in`,
+        `${this.settings.apiUrl}?request=sign-in`,
         { headers: { 'Authorization': authorization } })
         .pipe(
           tap(() => {

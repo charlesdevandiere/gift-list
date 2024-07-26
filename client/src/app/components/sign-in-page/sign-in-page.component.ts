@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { ChangeUserComponent } from '../change-user/change-user.component';
+import { AuthService } from '../../services/auth.service';
+import { ToastsService } from '../../services/toasts.service';
+import { AppTranslations } from '../../utils/app-translations';
+import { UsersService } from '../../services/users.service';
+import { User } from '../../models/user.model';
 
 interface State {
   authenticated: boolean;

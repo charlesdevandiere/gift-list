@@ -3,14 +3,14 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import * as Papa from 'papaparse';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
-import { CsvGift } from 'src/app/models/csv-gift.model';
-import { Gift } from 'src/app/models/gift.model';
-import { User } from 'src/app/models/user.model';
-import { ExportService } from 'src/app/services/export.service';
-import { GiftsService } from 'src/app/services/gifts.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { v4 } from 'uuid';
+import { ExportService } from '../../services/export.service';
+import { AppTranslations } from '../../utils/app-translations';
+import { GiftsService } from '../../services/gifts.service';
+import { UsersService } from '../../services/users.service';
+import { CsvGift } from '../../models/csv-gift.model';
+import { User } from '../../models/user.model';
+import { Gift } from '../../models/gift.model';
 
 type Step = 'select-file' | 'importing' | 'finish';
 interface State {

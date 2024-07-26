@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmModalData } from 'src/app/models/confirm-modal-data.model';
-import { AppTranslations } from 'src/app/utils/app-translations';
+import { ConfirmModalData } from '../../../models/confirm-modal-data.model';
+import { AppTranslations } from '../../../utils/app-translations';
 
 @Component({
   selector: 'app-confirm-modal',

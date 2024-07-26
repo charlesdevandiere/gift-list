@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { EventBusService } from 'src/app/services/event-bus.service';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
+import { AuthService } from '../../services/auth.service';
+import { UsersService } from '../../services/users.service';
+import { EventBusService } from '../../services/event-bus.service';
+import { ToastsService } from '../../services/toasts.service';
+import { AppTranslations } from '../../utils/app-translations';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-page',

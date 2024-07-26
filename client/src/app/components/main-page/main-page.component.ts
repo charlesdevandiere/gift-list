@@ -2,12 +2,12 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { User } from 'src/app/models/user.model';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { UserGiftsComponent } from '../user-gifts/user-gifts.component';
 import { UserListComponent } from '../user-list/user-list.component';
+import { User } from '../../models/user.model';
+import { AppTranslations } from '../../utils/app-translations';
+import { ToastsService } from '../../services/toasts.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-main-page',

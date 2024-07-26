@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { ColorModesService } from 'src/app/services/color-modes.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { MenuPage } from '../menu-modal.component';
+import { ColorModesService } from '../../../../services/color-modes.service';
+import { User } from '../../../../models/user.model';
+import { AppTranslations } from '../../../../utils/app-translations';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-main-menu',

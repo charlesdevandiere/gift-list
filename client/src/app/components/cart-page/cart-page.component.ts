@@ -3,14 +3,14 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, firstValueFrom, zip } from 'rxjs';
-import { ConfirmModalData } from 'src/app/models/confirm-modal-data.model';
-import { Gift } from 'src/app/models/gift.model';
-import { User } from 'src/app/models/user.model';
-import { GiftsService } from 'src/app/services/gifts.service';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { UsersService } from 'src/app/services/users.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { Gift } from '../../models/gift.model';
+import { User } from '../../models/user.model';
+import { AppTranslations } from '../../utils/app-translations';
+import { GiftsService } from '../../services/gifts.service';
+import { ToastsService } from '../../services/toasts.service';
+import { UsersService } from '../../services/users.service';
+import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 
 @Component({
   selector: 'app-cart-page',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastsService } from 'src/app/services/toasts.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
+import { ToastsService } from '../../../services/toasts.service';
+import { AppTranslations } from '../../../utils/app-translations';
 
 @Component({
   selector: 'app-share-modal',

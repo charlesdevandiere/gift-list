@@ -1,9 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { AppTranslations } from 'src/app/utils/app-translations';
 import { User } from '../../models/user.model';
+import { AppTranslations } from '../../utils/app-translations';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-list',
