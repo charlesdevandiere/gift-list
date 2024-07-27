@@ -52,6 +52,8 @@ userController.patch(
       })
     }
     logger.info(`Order for group '${group}' updated`)
+
+    return res.status(204).send()
   }
 )
 

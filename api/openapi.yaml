@@ -6,6 +6,8 @@ info:
 
 paths:
 
+  # groups
+
   /groups:
     get:
       summary: Lists all the groups
@@ -112,6 +114,8 @@ paths:
         '404':
           description: The group was not found
 
+  # users
+
   /users:
     get:
       summary: Lists users in the group
@@ -128,6 +132,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserListItem'
+    patch:
+      summary: Order users
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderUser'
+      responses:
+        '204':
+          description: Order for group updated.
+        '500':
+          description: Some server error
     post:
       summary: Create a new user
       tags:
@@ -193,7 +216,200 @@ paths:
         '404':
           description: The user was not found
 
+  # gifts
+
+  /users/{userId}/gifts:
+    get:
+      summary: Lists the user's gifts
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+      responses:
+        '200':
+          description: The list of the user's gifts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GiftListItem'
+    patch:
+      summary: Order user's gifts
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderGift'
+      responses:
+        '204':
+          description: Gifts ordered for the user.
+        '500':
+          description: Some server error
+    post:
+      summary: Create a new gift
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGift'
+      responses:
+        '201':
+          description: The created gift.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gift'
+        '500':
+          description: Some server error
+  /users/{userId}/gifts/{giftId}:
+    put:
+      summary: Update a gift
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+        - in: path
+          name: giftId
+          schema:
+            type: string
+          required: true
+          description: The gift id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGift'
+      responses:
+        '204':
+          description: The gift has updated
+        '500':
+          description: Some server error
+    delete:
+      summary: Remove the gift by id
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+        - in: path
+          name: giftId
+          schema:
+            type: string
+          required: true
+          description: The gift id
+      responses:
+        '204':
+          description: The gift was deleted
+        '404':
+          description: The gift was not found
+  /users/{userId}/gifts/{giftId}/offer:
+    post:
+      summary: Offer the gift
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+        - in: path
+          name: giftId
+          schema:
+            type: string
+          required: true
+          description: The gift id
+      responses:
+        '204':
+          description: The gift was offered
+        '403':
+          description: Forbidden
+        '404':
+          description: The gift was not found
+  /users/{userId}/gifts/{giftId}/unoffer:
+    post:
+      summary: Unoffer the gift
+      tags:
+        - Gifts
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+        - in: path
+          name: giftId
+          schema:
+            type: string
+          required: true
+          description: The gift id
+      responses:
+        '204':
+          description: The gift was unoffered
+        '403':
+          description: Forbidden
+        '404':
+          description: The gift was not found
+
+# components
+
 components:
+
+  # security
 
   securitySchemes:
     adminAuth:
@@ -204,6 +420,8 @@ components:
       scheme: basic
 
   schemas:
+
+    # groups
 
     Group:
       type: object
@@ -242,6 +460,8 @@ components:
           description: The group password
       example:
         password: maythe4bewithyou
+
+    # users
 
     User:
       type: object
@@ -289,6 +509,22 @@ components:
         picture: light-saber
         order: 1
 
+    OrderUser:
+      type: object
+      required:
+        - userId
+        - order
+      properties:
+        userId:
+          type: string
+          description: The user id
+        order:
+          type: number
+          description: The order number
+      example:
+        id: 840eec48-5c81-4b93-9343-11d3026f244d
+        order: 1
+
     CreateUser:
       type: object
       required:
@@ -321,8 +557,154 @@ components:
         name: Obiwan
         picture: light-saber
 
+    # gifts
+
+    Gift:
+      type: object
+      required:
+        - id
+        - name
+        - userId
+      properties:
+        id:
+          type: string
+          description: The gift ID
+        name:
+          type: string
+          description: The gift name
+        link1:
+          type: string
+          description: The first gift link
+        link2:
+          type: string
+          description: The second gift link
+        link3:
+          type: string
+          description: The third gift link
+        userId:
+          type: string
+          description: The user gift id
+        offeredBy:
+          type: string
+          description: The id of the user giving the gift
+      example:
+        id: 3e548e1b-44e4-4035-a281-a5226a0196fd
+        name: Light saber
+        link1: https://jedi-order.io/shop/light-saber/JKF93G47
+        userId: 840eec48-5c81-4b93-9343-11d3026f244d
+        offeredBy: fd48dca9-fbd5-4d21-b729-da09d5a3a835
+
+    GiftListItem:
+      type: object
+      required:
+        - id
+        - name
+        - userId
+        - order
+      properties:
+        id:
+          type: string
+          description: The gift ID
+        name:
+          type: string
+          description: The gift name
+        link1:
+          type: string
+          description: The first gift link
+        link2:
+          type: string
+          description: The second gift link
+        link3:
+          type: string
+          description: The third gift link
+        userId:
+          type: string
+          description: The user gift id
+        offeredBy:
+          type: string
+          description: The id of the user giving the gift
+        order:
+          type: number
+      example:
+        id: 3e548e1b-44e4-4035-a281-a5226a0196fd
+        name: Light saber
+        link1: https://jedi-order.io/shop/light-saber/JKF93G47
+        userId: 840eec48-5c81-4b93-9343-11d3026f244d
+        offeredBy: fd48dca9-fbd5-4d21-b729-da09d5a3a835
+        order: 1
+
+    OrderGift:
+      type: object
+      required:
+        - giftId
+        - order
+      properties:
+        giftId:
+          type: string
+          description: The gift id
+        order:
+          type: number
+          description: The order number
+      example:
+        id: 3e548e1b-44e4-4035-a281-a5226a0196fd
+        order: 1
+
+    CreateGift:
+      type: object
+      required:
+        - name
+        - userId
+      properties:
+        name:
+          type: string
+          description: The user name
+        link1:
+          type: string
+          description: The first gift link
+        link2:
+          type: string
+          description: The second gift link
+        link3:
+          type: string
+          description: The third gift link
+        userId:
+          type: string
+          description: The user gift id
+      example:
+        name: Light saber
+        link1: https://jedi-order.io/shop/light-saber/JKF93G47
+        userId: 840eec48-5c81-4b93-9343-11d3026f244d
+
+    UpdateGift:
+      type: object
+      required:
+        - name
+        - userId
+      properties:
+        name:
+          type: string
+          description: The user name
+        link1:
+          type: string
+          description: The first gift link
+        link2:
+          type: string
+          description: The second gift link
+        link3:
+          type: string
+          description: The third gift link
+        userId:
+          type: string
+          description: The user gift id
+      example:
+        name: Light saber
+        link1: https://jedi-order.io/shop/light-saber/JKF93G47
+        userId: 840eec48-5c81-4b93-9343-11d3026f244d
+
 tags:
   - name: Groups
     description: The groups
   - name: Users
     description: The users
+  - name: Gifts
+    description: The gifts
