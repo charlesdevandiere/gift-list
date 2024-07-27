@@ -26,9 +26,9 @@ model User {
 }
 
 model UsersOnGroups {
-  user      User   @relation(fields: [userId], references: [id])
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String @db.Uuid
-  group     Group  @relation(fields: [groupName], references: [name])
+  group     Group  @relation(fields: [groupName], references: [name], onDelete: Cascade)
   groupName String @db.VarChar(255)
   order     Int    @db.SmallInt
 
@@ -44,6 +44,6 @@ model Gift {
   link2              String? @db.Text
   link3              String? @db.Text
   offered_by_user_id String? @db.Uuid
-  offered_by_user    User?   @relation(name: "CartOnUser", fields: [offered_by_user_id], references: [id])
-  user               User    @relation(fields: [userId], references: [id])
+  offered_by_user    User?   @relation(name: "CartOnUser", fields: [offered_by_user_id], references: [id], onDelete: SetNull)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

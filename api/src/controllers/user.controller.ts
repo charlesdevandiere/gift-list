@@ -106,3 +106,19 @@ userController.put(
 
     return res.status(204).send()
   })
+
+// delete
+userController.delete(
+  '/:id',
+  passport.authenticate('user', { session: false }),
+  async (req, res) => {
+    if ((await db.user.count({ where: { id: req.params.id } })) == 0) {
+      return res.status(404).send()
+    }
+
+    await db.user.delete({
+      where: { id: req.params.id }
+    })
+
+    return res.status(204).send()
+  })

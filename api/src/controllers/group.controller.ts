@@ -55,9 +55,12 @@ groupController.post(
       return res.status(409).send({ error: 'group already exists' })
     }
 
+    const salt: string = await genSalt()
+    const hashedPassword: string = await hash(password, salt)
+
     const group: Group = await db.group.create({ data: {
       name: name,
-      password: password
+      password: hashedPassword
     } })
     logger.info(`Group '${name}' created`)
 
