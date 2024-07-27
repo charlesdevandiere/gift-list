@@ -1,9 +1,9 @@
-import { Router } from "express";
-import passport from "passport";
-import { db } from "../db";
-import { AuthenticatedUsed } from "../auth";
-import { logger } from "../logger";
-import { User } from "@prisma/client";
+import { Router } from "express"
+import passport from "passport"
+import { db } from "../db"
+import { AuthenticatedUsed } from "../auth"
+import { logger } from "../logger"
+import { User } from "@prisma/client"
 import 'express-async-errors'
 
 export const userController = Router()
@@ -14,11 +14,46 @@ userController.get(
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
-    const users = await db.user.findMany({
-      where: { groups: { some: { groupName: group } } }
+    const data = await db.group.findUniqueOrThrow({
+      where: { name: group },
+      select: {
+        users: {
+          orderBy: { order: 'asc' },
+          select: { user: true, order: true }
+        }
+      }
     })
-    return res.send(users)
+    return res.send(data.users.map(element => ({ order: element.order, ...element.user })))
   })
+
+// order
+userController.patch(
+  '/',
+  passport.authenticate('user', { session: false }),
+  async (req, res) => {
+    const group: string = (req.user as AuthenticatedUsed).group
+    const data: { userId: string, order: number }[] = req.body
+
+    for (const element of data) {
+      if (!await db.usersOnGroups.count({ where: { userId: element.userId, groupName: group } })) {
+        return res.status(404).send({ error: 'User not found' })
+      }
+
+      await db.usersOnGroups.update({
+        data: {
+          order: element.order
+        },
+        where: {
+          userId_groupName: {
+            userId: element.userId,
+            groupName: group,
+          }
+        }
+      })
+    }
+    logger.info(`Order for group '${group}' updated`)
+  }
+)
 
 // get
 userController.get(
@@ -42,6 +77,7 @@ userController.post(
   '/',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
+    const group: string = (req.user as AuthenticatedUsed).group
     const name: string | null = req.body.name
     const picture: string | null = req.body.picture
 
@@ -53,6 +89,19 @@ userController.post(
       return res.status(400).send({ error: 'user picture must be between 2 and 250 characters' })
     }
 
+    if (process.env.MAX_NUMBER_OF_USERS_PER_GROUP) {
+      const count: number = await db.user.count({ where: { groups: { some: { groupName: group } } } })
+      if (count >= +process.env.MAX_NUMBER_OF_USERS_PER_GROUP) {
+        return res.status(400).send({ error: 'the maximum number of users for this group has already been reached' })
+      }
+    }
+
+    const order: number = (await db.usersOnGroups.findFirst({
+      where: { groupName: group },
+      orderBy: { order: 'desc' },
+      select: { order: true }
+    }))?.order ?? 0
+
     const groupName: string = (req.user as AuthenticatedUsed).group
     const user: User = await db.user.create({
       data: {
@@ -60,7 +109,7 @@ userController.post(
         picture: picture,
         groups: {
           create: {
-            order: 1,
+            order: order + 1,
             groupName: groupName
           }
         }
@@ -119,6 +168,8 @@ userController.delete(
     await db.user.delete({
       where: { id: req.params.id }
     })
+
+    logger.info(`User '${req.params.id}' deleted`)
 
     return res.status(204).send()
   })

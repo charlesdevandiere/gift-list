@@ -127,7 +127,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/UserListItem'
     post:
       summary: Create a new user
       tags:
@@ -263,6 +263,31 @@ components:
         id: 840eec48-5c81-4b93-9343-11d3026f244d
         name: Obiwan
         picture: light-saber
+
+    UserListItem:
+      type: object
+      required:
+        - id
+        - name
+        - picture
+        - order
+      properties:
+        id:
+          type: string
+          description: The user ID
+        name:
+          type: string
+          description: The user name
+        picture:
+          type: string
+          description: The user picture
+        order:
+          type: number
+      example:
+        id: 840eec48-5c81-4b93-9343-11d3026f244d
+        name: Obiwan
+        picture: light-saber
+        order: 1
 
     CreateUser:
       type: object

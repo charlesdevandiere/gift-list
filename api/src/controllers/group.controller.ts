@@ -51,6 +51,13 @@ groupController.post(
       return res.status(400).send({ error: 'group password is required and must be between 4 and 18 characters' })
     }
 
+    if (process.env.MAX_NUMBER_OF_GROUPS) {
+      const count: number = await db.group.count()
+      if (count >= +process.env.MAX_NUMBER_OF_GROUPS) {
+        return res.status(400).send({ error: 'the maximum number of groups has already been reached' })
+      }
+    }
+
     if (await db.group.count({ where: { name: name } })) {
       return res.status(409).send({ error: 'group already exists' })
     }
