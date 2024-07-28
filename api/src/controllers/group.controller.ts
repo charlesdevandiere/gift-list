@@ -10,19 +10,19 @@ export const groupController = Router()
 
 // list
 groupController.get(
-  '/',
+  '/groups',
   passport.authenticate('admin', { session: false }),
   async (req, res) => {
-    const groups = await db.group.findMany({ select: { name: true } })
+    const groups: { name: string }[] = await db.group.findMany({ select: { name: true } })
     return res.send(groups)
   })
 
 // get
 groupController.get(
-  '/:name',
+  '/groups/:name',
   passport.authenticate('admin', { session: false }),
   async (req, res) => {
-    const group = await db.group.findFirst({
+    const group: { name: string } | null = await db.group.findFirst({
       select: { name: true },
       where: { name: req.params.name }
     })
@@ -31,13 +31,13 @@ groupController.get(
       return res.send(group)
     }
     else {
-      return res.status(404).send({ error: 'group not found'})
+      return res.status(404).send({ error: 'group not found' })
     }
   })
 
 // create
 groupController.post(
-  '/',
+  '/groups',
   passport.authenticate('admin', { session: false }),
   async (req, res) => {
     const name: string | null = req.body.name
@@ -65,10 +65,12 @@ groupController.post(
     const salt: string = await genSalt()
     const hashedPassword: string = await hash(password, salt)
 
-    const group: Group = await db.group.create({ data: {
-      name: name,
-      password: hashedPassword
-    } })
+    const group: Group = await db.group.create({
+      data: {
+        name: name,
+        password: hashedPassword
+      }
+    })
     logger.info(`Group '${name}' created`)
 
     return res.location(req.protocol + '://' + req.get('host') + '/groups/' + encodeURI(group.name)).status(201).send({ name: group.name })
@@ -76,14 +78,14 @@ groupController.post(
 
 // change password
 groupController.put(
-  '/:name',
+  '/groups/:name',
   passport.authenticate('admin', { session: false }),
   async (req, res) => {
     if (!req.body.password || req.body.password.length < 4 || req.body.password.length > 18) {
       return res.status(400).send({ error: 'group password is required and must be between 4 and 18 characters' })
     }
 
-    const group = await db.group.findFirst({
+    const group: Group | null = await db.group.findFirst({
       where: { name: req.params.name }
     })
 
@@ -106,7 +108,7 @@ groupController.put(
 
 // delete
 groupController.delete(
-  '/:name',
+  '/groups/:name',
   passport.authenticate('admin', { session: false }),
   async (req, res) => {
     if ((await db.group.count({ where: { name: req.params.name } })) == 0) {

@@ -11,6 +11,7 @@ import { AdminStrategy, UserStrategy } from './auth'
 import { groupController } from './controllers/group.controller'
 import { userController } from './controllers/user.controller'
 import { logger } from './logger'
+import { giftController } from './controllers/gift.controller'
 
 dotenv.config()
 
@@ -44,8 +45,9 @@ passport.use('admin', AdminStrategy)
 passport.use('user', UserStrategy)
 
 // controllers
-app.use('/groups', groupController)
-app.use('/users', userController)
+app.use('/', groupController)
+app.use('/', userController)
+app.use('/', giftController)
 
 // error handler
 app.use((err: Error, _req: any, res: any, _next: any): void => {

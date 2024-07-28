@@ -265,6 +265,10 @@ paths:
       responses:
         '204':
           description: Gifts ordered for the user.
+        '403':
+          description: Forbidden
+        '404':
+          description: Gift not found
         '500':
           description: Some server error
     post:
@@ -653,7 +657,6 @@ components:
       type: object
       required:
         - name
-        - userId
       properties:
         name:
           type: string
@@ -667,19 +670,14 @@ components:
         link3:
           type: string
           description: The third gift link
-        userId:
-          type: string
-          description: The user gift id
       example:
         name: Light saber
         link1: https://jedi-order.io/shop/light-saber/JKF93G47
-        userId: 840eec48-5c81-4b93-9343-11d3026f244d
 
     UpdateGift:
       type: object
       required:
         - name
-        - userId
       properties:
         name:
           type: string
@@ -699,7 +697,6 @@ components:
       example:
         name: Light saber
         link1: https://jedi-order.io/shop/light-saber/JKF93G47
-        userId: 840eec48-5c81-4b93-9343-11d3026f244d
 
 tags:
   - name: Groups

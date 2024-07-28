@@ -36,14 +36,14 @@ model UsersOnGroups {
 }
 
 model Gift {
-  id                 String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId             String  @db.Uuid
-  order              Int     @db.SmallInt
-  name               String  @db.Text
-  link1              String? @db.Text
-  link2              String? @db.Text
-  link3              String? @db.Text
-  offered_by_user_id String? @db.Uuid
-  offered_by_user    User?   @relation(name: "CartOnUser", fields: [offered_by_user_id], references: [id], onDelete: SetNull)
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String  @db.Uuid
+  order           Int     @db.SmallInt
+  name            String  @db.Text
+  link1           String? @db.Text
+  link2           String? @db.Text
+  link3           String? @db.Text
+  offeredByUserId String? @db.Uuid
+  offeredByUser   User?   @relation(name: "CartOnUser", fields: [offeredByUserId], references: [id], onDelete: SetNull)
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

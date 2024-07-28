@@ -33,7 +33,7 @@ CREATE TABLE "Gift" (
     "link1" TEXT,
     "link2" TEXT,
     "link3" TEXT,
-    "offered_by_user_id" UUID,
+    "offeredByUserId" UUID,
 
     CONSTRAINT "Gift_pkey" PRIMARY KEY ("id")
 );
@@ -45,7 +45,7 @@ ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_userId_fkey" FOREIGN K
 ALTER TABLE "UsersOnGroups" ADD CONSTRAINT "UsersOnGroups_groupName_fkey" FOREIGN KEY ("groupName") REFERENCES "Group"("name") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Gift" ADD CONSTRAINT "Gift_offered_by_user_id_fkey" FOREIGN KEY ("offered_by_user_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Gift" ADD CONSTRAINT "Gift_offeredByUserId_fkey" FOREIGN KEY ("offeredByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Gift" ADD CONSTRAINT "Gift_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

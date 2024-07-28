@@ -1,16 +1,16 @@
-import { Router } from "express"
-import passport from "passport"
-import { db } from "../db"
-import { AuthenticatedUsed } from "../auth"
-import { logger } from "../logger"
-import { User } from "@prisma/client"
+import { Router } from 'express'
+import passport from 'passport'
+import { db } from '../db'
+import { AuthenticatedUsed } from '../auth'
+import { logger } from '../logger'
+import { User } from '@prisma/client'
 import 'express-async-errors'
 
 export const userController = Router()
 
 // list
 userController.get(
-  '/',
+  '/users',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
@@ -28,7 +28,7 @@ userController.get(
 
 // order
 userController.patch(
-  '/',
+  '/users',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
@@ -59,10 +59,10 @@ userController.patch(
 
 // get
 userController.get(
-  '/:id',
+  '/users/:id',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
-    const user = await db.user.findFirst({
+    const user: User | null = await db.user.findFirst({
       where: { id: req.params.id }
     })
 
@@ -76,7 +76,7 @@ userController.get(
 
 // create
 userController.post(
-  '/',
+  '/users',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
@@ -124,7 +124,7 @@ userController.post(
 
 // update
 userController.put(
-  '/:id',
+  '/users/:id',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const name: string | null = req.body.name
@@ -160,7 +160,7 @@ userController.put(
 
 // delete
 userController.delete(
-  '/:id',
+  '/users/:id',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     if ((await db.user.count({ where: { id: req.params.id } })) == 0) {
