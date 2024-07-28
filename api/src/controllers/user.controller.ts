@@ -14,16 +14,15 @@ userController.get(
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
-    const data = await db.group.findUniqueOrThrow({
-      where: { name: group },
+    const data = await db.usersOnGroups.findMany({
+      where: { groupName: group },
+      orderBy: { order: 'asc' },
       select: {
-        users: {
-          orderBy: { order: 'asc' },
-          select: { user: true, order: true }
-        }
+        user: true,
+        order: true
       }
     })
-    return res.send(data.users.map(element => ({ order: element.order, ...element.user })))
+    return res.send(data.map(element => ({ order: element.order, ...element.user })))
   })
 
 // order
