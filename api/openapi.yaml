@@ -409,6 +409,46 @@ paths:
         '404':
           description: The gift was not found
 
+  # export
+
+  /export:
+    get:
+      summary: Exports gift lists
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: A CSV file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+
+  # import
+
+  /import:
+    post:
+      summary: Imports gift lists
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                contentType: text/csv
+      responses:
+        '201':
+          description: The gift lists have been imported
+
 # components
 
 components:

@@ -7,11 +7,10 @@ import { db } from '../db'
 import { logger } from '../logger'
 import { CsvGift } from '../models/csv-gift.model'
 
-export const giftController = Router()
+export const exportController = Router()
 
-// list
-giftController.get(
-  '/users/:userId/gifts',
+exportController.get(
+  '/export',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group

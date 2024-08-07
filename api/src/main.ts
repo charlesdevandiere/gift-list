@@ -12,6 +12,8 @@ import { groupController } from './controllers/group.controller'
 import { userController } from './controllers/user.controller'
 import { logger } from './logger'
 import { giftController } from './controllers/gift.controller'
+import { importController } from './controllers/import.controller'
+import { exportController } from './controllers/export.controller'
 
 dotenv.config()
 
@@ -48,6 +50,8 @@ passport.use('user', UserStrategy)
 app.use('/', groupController)
 app.use('/', userController)
 app.use('/', giftController)
+app.use('/', exportController)
+app.use('/', importController)
 
 // error handler
 app.use((err: Error, _req: any, res: any, _next: any): void => {
