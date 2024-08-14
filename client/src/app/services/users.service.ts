@@ -34,7 +34,7 @@ export class UsersService {
     if (this.cache !== null && !options?.noCache) {
       return of(this.cache);
     } else {
-      const url = `${this.settings.apiUrl}?request=users`;
+      const url = `${this.settings.apiUrl}/users`;
       return this.http.get<User[]>(url)
         .pipe(
           tap((users: User[]): void => {
@@ -45,12 +45,12 @@ export class UsersService {
   }
 
   public getUser(id: string): Observable<User> {
-    const url = `${this.settings.apiUrl}?request=users&id=${id}`;
+    const url = `${this.settings.apiUrl}/users/${id}`;
     return this.http.get<User>(url);
   }
 
   public addUser(user: { name: string, picture?: string | null }): Observable<void> {
-    const url = `${this.settings.apiUrl}?request=users`;
+    const url = `${this.settings.apiUrl}/users`;
     const id = v4();
     return this.http.post<void>(url, { ...user, id })
       .pipe(
@@ -59,7 +59,7 @@ export class UsersService {
   }
 
   public updateUser(user: { id: string, name: string, picture?: string | null }): Observable<void> {
-    const url = `${this.settings.apiUrl}?request=users`;
+    const url = `${this.settings.apiUrl}/users/${user.id}`;
     return this.http.put<void>(url, user)
       .pipe(
         tap(() => this.cache = null)
@@ -71,20 +71,8 @@ export class UsersService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${this.settings.apiUrl}?request=users&id=${id}`;
+    const url = `${this.settings.apiUrl}/users/${id}`;
     return this.http.delete<void>(url)
-      .pipe(
-        tap(() => this.cache = null)
-      );
-  }
-
-  public importUsers(users: User[]): Observable<{ existing_users: User[], new_users: User[] }> {
-    if (users.length == 0) {
-      return of({ existing_users: [], new_users: [] });
-    }
-
-    const url = `${this.settings.apiUrl}?request=users&import=true`;
-    return this.http.post<{ existing_users: User[], new_users: User[] }>(url, users)
       .pipe(
         tap(() => this.cache = null)
       );

@@ -2,15 +2,14 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, firstValueFrom, zip } from 'rxjs';
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 import { Gift } from '../../models/gift.model';
 import { User } from '../../models/user.model';
-import { AppTranslations } from '../../utils/app-translations';
 import { GiftsService } from '../../services/gifts.service';
 import { ToastsService } from '../../services/toasts.service';
-import { UsersService } from '../../services/users.service';
-import { ConfirmModalData } from '../../models/confirm-modal-data.model';
+import { AppTranslations } from '../../utils/app-translations';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-cart-page',
@@ -32,8 +31,7 @@ export class CartPageComponent implements OnInit {
     public translations: AppTranslations,
     private giftsService: GiftsService,
     private modalService: NgbModal,
-    private toastsService: ToastsService,
-    private usersService: UsersService) { }
+    private toastsService: ToastsService) { }
 
   public ngOnInit(): void {
     this.loadCart();
@@ -71,36 +69,16 @@ export class CartPageComponent implements OnInit {
 
   private loadCart(): void {
     this.loading$.next(true);
-    zip(
-      this.giftsService.getCart(),
-      this.usersService.getUsers()
-    )
-      .subscribe({
-        next: ([gifts, users]: [Gift[], User[]]) => {
-          this.cart = this.buildCart(gifts, users);
-        },
-        error: (err) => {
-          console.error(err);
-          this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
-        },
-        complete: () => this.loading$.next(false)
-      });
-  }
-
-  private buildCart(gifts: Gift[], users: User[]): { name: string, gifts: Gift[] }[] {
-    const cart: { name: string, gifts: Gift[] }[] = [];
-
-    gifts.forEach((value: Gift) => {
-      const user: string = users.find(u => u.id === value.user_id)?.name ?? '';
-      let group = cart.find(g => g.name === user);
-      if (!group) {
-        group = { name: user, gifts: [] };
-        cart.push(group);
-      }
-      group.gifts.push(value);
+    this.giftsService.getCart().subscribe({
+      next: (cart: User[]) => {
+        this.cart = cart.map(item => ({ name: item.name, gifts: item.gifts ?? [] }));
+      },
+      error: (err) => {
+        console.error(err);
+        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
+      },
+      complete: () => this.loading$.next(false)
     });
-
-    return cart;
   }
 
 }

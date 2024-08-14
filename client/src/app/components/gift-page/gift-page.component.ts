@@ -101,7 +101,12 @@ export class GiftPageComponent implements OnInit {
 
   private prepareForUpdate(giftId: string): void {
     this.action = 'update';
-    this.giftsService.getGift(giftId)
+
+    if (!this.authService.userId) {
+      throw new Error('not identified')
+    }
+
+    this.giftsService.getGift(this.authService.userId, giftId)
       .subscribe((gift: Gift): void => {
         this.form.reset({
           id: giftId,
