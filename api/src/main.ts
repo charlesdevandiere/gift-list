@@ -14,6 +14,7 @@ import { logger } from './logger'
 import { giftController } from './controllers/gift.controller'
 import { importController } from './controllers/import.controller'
 import { exportController } from './controllers/export.controller'
+import { cartController } from './controllers/cart.controller'
 
 dotenv.config()
 
@@ -46,12 +47,20 @@ if (process.env.NODE_ENV === 'development') {
 passport.use('admin', AdminStrategy)
 passport.use('user', UserStrategy)
 
+app.get(
+  '/api/sign-in',
+  passport.authenticate('user', { session: false }),
+  (req, res) => {
+    return res.status(200).send()
+  })
+
 // controllers
-app.use('/', groupController)
-app.use('/', userController)
-app.use('/', giftController)
-app.use('/', exportController)
-app.use('/', importController)
+app.use('/api/', groupController)
+app.use('/api/', userController)
+app.use('/api/', giftController)
+app.use('/api/', cartController)
+app.use('/api/', exportController)
+app.use('/api/', importController)
 
 // error handler
 app.use((err: Error, _req: any, res: any, _next: any): void => {

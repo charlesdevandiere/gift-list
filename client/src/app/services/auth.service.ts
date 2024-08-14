@@ -87,7 +87,7 @@ export class AuthService {
     if (token !== null) {
       const authorization = `Basic ${token}`;
       return this.http.get<void>(
-        `${this.settings.apiUrl}?request=sign-in`,
+        `${this.settings.apiUrl}/sign-in`,
         { headers: { 'Authorization': authorization } })
         .pipe(
           tap(() => {

@@ -6,9 +6,25 @@ info:
 
 paths:
 
+  # auth
+
+  /api/sign-in:
+    get:
+      summary: Sign in
+      tags:
+        - Auth
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: Signed in
+        '401':
+          description: Unauthorized
+
+
   # groups
 
-  /groups:
+  /api/groups:
     get:
       summary: Lists all the groups
       tags:
@@ -46,7 +62,7 @@ paths:
         '500':
           description: Some server error
 
-  /groups/{name}:
+  /api/groups/{name}:
     get:
       summary: Get the group by name
       tags:
@@ -116,7 +132,7 @@ paths:
 
   # users
 
-  /users:
+  /api/users:
     get:
       summary: Lists users in the group
       tags:
@@ -172,7 +188,7 @@ paths:
                 $ref: '#/components/schemas/User'
         '500':
           description: Some server error
-  /users/{id}:
+  /api/users/{id}:
     put:
       summary: Update a user
       tags:
@@ -218,7 +234,7 @@ paths:
 
   # gifts
 
-  /users/{userId}/gifts:
+  /api/users/{userId}/gifts:
     get:
       summary: Lists the user's gifts
       tags:
@@ -299,7 +315,7 @@ paths:
                 $ref: '#/components/schemas/Gift'
         '500':
           description: Some server error
-  /users/{userId}/gifts/{giftId}:
+  /api/users/{userId}/gifts/{giftId}:
     put:
       summary: Update a gift
       tags:
@@ -354,7 +370,7 @@ paths:
           description: The gift was deleted
         '404':
           description: The gift was not found
-  /users/{userId}/gifts/{giftId}/offer:
+  /api/users/{userId}/gifts/{giftId}/offer:
     post:
       summary: Offer the gift
       tags:
@@ -381,7 +397,7 @@ paths:
           description: Forbidden
         '404':
           description: The gift was not found
-  /users/{userId}/gifts/{giftId}/unoffer:
+  /api/users/{userId}/gifts/{giftId}/unoffer:
     post:
       summary: Unoffer the gift
       tags:
@@ -409,9 +425,34 @@ paths:
         '404':
           description: The gift was not found
 
+  # cart
+
+  /api/users/{userId}/cart:
+    get:
+      summary: The cart of the user
+      tags:
+        - Cart
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: The user id
+      responses:
+        '200':
+          description: The list of the gifts offered by the user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CartListItem'
   # export
 
-  /export:
+  /api/export:
     get:
       summary: Exports gift lists
       security:
@@ -427,7 +468,7 @@ paths:
 
   # import
 
-  /import:
+  /api/import:
     post:
       summary: Imports gift lists
       security:
@@ -738,7 +779,47 @@ components:
         name: Light saber
         link1: https://jedi-order.io/shop/light-saber/JKF93G47
 
+    #Cart
+
+    CartListItem:
+      type: object
+      required:
+        - id
+        - name
+        - picture
+        - order
+      properties:
+        id:
+          type: string
+          description: The user ID
+        name:
+          type: string
+          description: The user name
+        picture:
+          type: string
+          description: The user picture
+        order:
+          type: number
+        gifts:
+          type: array
+          items:
+            $ref: '#/components/schemas/GiftListItem'
+      example:
+        id: 840eec48-5c81-4b93-9343-11d3026f244d
+        name: Obiwan
+        picture: light-saber
+        order: 1
+        gifts:
+          - id: 3e548e1b-44e4-4035-a281-a5226a0196fd
+            name: Light saber
+            link1: https://jedi-order.io/shop/light-saber/JKF93G47
+            userId: 840eec48-5c81-4b93-9343-11d3026f244d
+            offeredBy: fd48dca9-fbd5-4d21-b729-da09d5a3a835
+            order: 1
+
 tags:
+  - name: Auth
+    description: Authentication
   - name: Groups
     description: The groups
   - name: Users
