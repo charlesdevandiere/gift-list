@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import passport from 'passport'
 import { serve, setup } from 'swagger-ui-express'
 import * as YAML from 'yaml'
-import { AdminStrategy, UserStrategy } from './auth'
+import { AdminStrategy, AuthenticatedUsed, UserStrategy } from './auth'
 import { groupController } from './controllers/group.controller'
 import { userController } from './controllers/user.controller'
 import { logger } from './logger'
@@ -15,6 +15,8 @@ import { giftController } from './controllers/gift.controller'
 import { importController } from './controllers/import.controller'
 import { exportController } from './controllers/export.controller'
 import { cartController } from './controllers/cart.controller'
+import { db } from './db'
+import { User } from '@prisma/client'
 
 dotenv.config()
 
@@ -48,10 +50,29 @@ passport.use('admin', AdminStrategy)
 passport.use('user', UserStrategy)
 
 app.get(
-  '/api/sign-in',
+  '/api/me',
   passport.authenticate('user', { session: false }),
-  (req, res) => {
-    return res.status(200).send()
+  async (req, res) => {
+    const group: string = (req.user as AuthenticatedUsed).group
+    const userId: string | undefined = (req.user as AuthenticatedUsed).id
+
+    const me: { group: string, name?: string, id?: string, picture?: string | null } = {
+      group: group
+    }
+
+    if (userId) {
+      const user: User | null = await db.user.findUnique({
+        where: { id: userId, groups: { some: { groupName: group } } }
+      })
+
+      if (user) {
+        me.id = user.id
+        me.name = user.name
+        me.picture = user.picture
+      }
+    }
+
+    return res.status(200).send(me)
   })
 
 // controllers

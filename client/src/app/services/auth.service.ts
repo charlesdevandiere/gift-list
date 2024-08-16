@@ -1,10 +1,11 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap, throwError } from 'rxjs';
 import { Auth } from '../models/auth.model';
 import { AppStorage } from '../utils/app-storage';
 import { EventBusService } from './event-bus.service';
 import { AppSettings } from '../app-settings';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,7 @@ export class AuthService {
     this.load();
   }
 
-  public signIn(group: string, password: string): Observable<void> {
+  public signIn(group: string, password: string): Observable<User | null> {
     return this.authenticate(group, password);
   }
 
@@ -82,12 +83,12 @@ export class AuthService {
     this.eventBus.emit(AuthService.CHANGE_USER_EVENT);
   }
 
-  private authenticate(group: string | null, password: string | null): Observable<void> {
+  private authenticate(group: string | null, password: string | null): Observable<User | null> {
     const token: string | null = this.getToken(group, null, password);
     if (token !== null) {
       const authorization = `Basic ${token}`;
-      return this.http.get<void>(
-        `${this.settings.apiUrl}/sign-in`,
+      return this.http.get<{ group: string, name?: string, id?: string, picture?: string | null }>(
+        `${this.settings.apiUrl}/me`,
         { headers: { 'Authorization': authorization } })
         .pipe(
           tap(() => {
@@ -95,6 +96,17 @@ export class AuthService {
             this._auth.password = password;
             this.save();
             this._authenticated$.next(true);
+          }),
+          map(me => {
+            if (me.id && me.name) {
+              const user: User = {
+                id: me.id,
+                name: me.name,
+                picture: me.picture ?? null
+              };
+              return user;
+            }
+            return null;
           }));
     } else {
       return throwError(() => new Error('Invalid authentication informations.'));

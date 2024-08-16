@@ -11,7 +11,7 @@ cartController.get(
   '/users/:userId/cart',
   passport.authenticate('user', { session: false }),
   async (req, res) => {
-    const group: string | undefined = (req.user as AuthenticatedUsed).group
+    const group: string = (req.user as AuthenticatedUsed).group
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
     if (!userId) {
