@@ -27,7 +27,6 @@ interface State {
   templateUrl: './user-gifts.component.html',
   styleUrls: ['./user-gifts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [RouterLink, AsyncPipe, NgClass, JsonPipe]
 })
 export class UserGiftsComponent implements OnDestroy {
@@ -39,7 +38,7 @@ export class UserGiftsComponent implements OnDestroy {
   private readonly _unsubscriber$: Subject<void> = new Subject<void>();
 
   @ViewChild('back')
-  private backButton?: ElementRef<HTMLElement>;
+  private readonly backButton?: ElementRef<HTMLElement>;
 
   @Input()
   public set user(value: User | null) {
@@ -53,11 +52,11 @@ export class UserGiftsComponent implements OnDestroy {
   }
 
   public constructor(
-    private authService: AuthService,
-    private giftsService: GiftsService,
-    private router: Router,
-    private modalService: NgbModal,
-    private toastsService: ToastsService,
+    private readonly authService: AuthService,
+    private readonly giftsService: GiftsService,
+    private readonly router: Router,
+    private readonly modalService: NgbModal,
+    private readonly toastsService: ToastsService,
     public translations: AppTranslations) {
     this.state$ = this._state$.asObservable();
     this.authService.userId$

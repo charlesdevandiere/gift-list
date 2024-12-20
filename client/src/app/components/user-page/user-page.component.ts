@@ -1,22 +1,21 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
-import { UsersService } from '../../services/users.service';
 import { EventBusService } from '../../services/event-bus.service';
 import { ToastsService } from '../../services/toasts.service';
+import { UsersService } from '../../services/users.service';
 import { AppTranslations } from '../../utils/app-translations';
-import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, NgClass, AsyncPipe]
+  imports: [ReactiveFormsModule, RouterLink, AsyncPipe]
 })
 export class UserPageComponent implements OnInit {
 
@@ -80,14 +79,14 @@ export class UserPageComponent implements OnInit {
   protected readonly selectedPicture$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
   public constructor(
-    private authService: AuthService,
-    private usersService: UsersService,
-    private eventBus: EventBusService,
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+    private readonly eventBus: EventBusService,
     formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    public toastsService: ToastsService,
-    public translations: AppTranslations) {
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    public readonly toastsService: ToastsService,
+    public readonly translations: AppTranslations) {
     this.form = formBuilder.group({
       id: [null as string | null],
       name: [null as string | null, [Validators.required, Validators.maxLength(250)]]

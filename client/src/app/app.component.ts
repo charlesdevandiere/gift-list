@@ -23,7 +23,6 @@ interface State {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     AsyncPipe,
     NgbDropdownModule,
@@ -36,14 +35,14 @@ interface State {
 export class AppComponent implements OnInit, OnDestroy {
   protected state$: BehaviorSubject<State> = new BehaviorSubject<State>({ autheticated: false, group: null, user: null });
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
+  private readonly _unsubscriber$: Subject<void> = new Subject<void>();
 
   public constructor(
     public translations: AppTranslations,
-    private authService: AuthService,
-    private modalService: NgbModal,
+    private readonly authService: AuthService,
+    private readonly modalService: NgbModal,
     title: Title,
-    private usersService: UsersService) {
+    private readonly usersService: UsersService) {
     title.setTitle(this.translations.title);
   }
 

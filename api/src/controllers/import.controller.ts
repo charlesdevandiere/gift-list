@@ -40,10 +40,10 @@ async function importGroup(group: string, body: string): Promise<void> {
 }
 
 async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResult> {
-  const result: ImportResult = { success: { importedUser: {}, importedGift: {} } }
+  const result: ImportResult = { }
 
   try {
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async () => {
       const existingUsers: User[] = (
         await db.usersOnGroups.findMany({
           where: { groupName: group },
@@ -58,7 +58,10 @@ async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResu
 
         // user
         const importedUser = await importUser(group, existingUsers, index, csvGift)
-        result.success!.importedUser[csvGift.user] = importedUser.status
+        if (!result.success) {
+          result.success = { importedUser: {}, importedGift: {} }
+        }
+        result.success.importedUser[csvGift.user] = importedUser.status
         const user: User = importedUser.user
 
         // gift

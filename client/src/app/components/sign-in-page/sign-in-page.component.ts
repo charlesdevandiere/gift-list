@@ -20,7 +20,6 @@ interface State {
   templateUrl: './sign-in-page.component.html',
   styleUrls: ['./sign-in-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [AsyncPipe, ChangeUserComponent, ReactiveFormsModule]
 })
 export class SignInPageComponent implements OnInit {
@@ -32,12 +31,12 @@ export class SignInPageComponent implements OnInit {
   protected readonly state$: Observable<State> = this._state$.asObservable();
 
   public constructor(
-    private authService: AuthService,
-    private router: Router,
+    private readonly authService: AuthService,
+    private readonly router: Router,
     formBuilder: FormBuilder,
-    private toastsService: ToastsService,
-    public translations: AppTranslations,
-    private usersService: UsersService) {
+    private readonly toastsService: ToastsService,
+    public readonly translations: AppTranslations,
+    private readonly usersService: UsersService) {
     this.form = formBuilder.group({
       group: ['', Validators.required],
       password: ['', Validators.required]

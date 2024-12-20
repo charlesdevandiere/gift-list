@@ -10,21 +10,20 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [AsyncPipe]
 })
 export class UserListComponent {
 
-  protected connectedUserId$: Observable<string | null> = this.authService.userId$;
+  protected readonly connectedUserId$: Observable<string | null> = this.authService.userId$;
 
   @Input()
   public selectedUser: User | null = null;
 
   @Output()
-  public clickRefresh: EventEmitter<void> = new EventEmitter<void>();
+  public readonly clickRefresh: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
-  public selectUser: EventEmitter<User> = new EventEmitter<User>();
+  public readonly selectUser: EventEmitter<User> = new EventEmitter<User>();
 
   @Input()
   public users: User[] = [];
@@ -33,7 +32,7 @@ export class UserListComponent {
   public loading: boolean | null = false;
 
   public constructor(
-    public translations: AppTranslations,
-    private authService: AuthService) { }
+    public readonly translations: AppTranslations,
+    private readonly authService: AuthService) { }
 
 }

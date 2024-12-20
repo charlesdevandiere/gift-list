@@ -8,7 +8,7 @@ RUN npm clean-install --only=dev && \
 
 COPY ./api ./
 
-RUN npm run lint -- --quiet && \
+RUN npm run lint && \
     npm run build
 
 
@@ -22,7 +22,7 @@ RUN npm clean-install && \
 
 COPY ./client ./
 
-RUN npm run lint -- --quiet && \
+RUN npm run lint && \
     npm run build
 
 
@@ -42,7 +42,7 @@ RUN npm clean-install --only=prod && \
 COPY ./api/prisma ./prisma
 COPY ./api/openapi.yaml ./openapi.yaml
 COPY --from=build-server /app/out-tsc/ /home/giftlist/app/
-COPY --from=build-client /app/dist/browser/ /home/giftlist/app/
+COPY --from=build-client /app/dist/gift-list/browser /home/giftlist/app/
 
 USER giftlist
 EXPOSE 3000

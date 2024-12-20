@@ -8,7 +8,6 @@ import { AppTranslations } from '../../utils/app-translations';
   templateUrl: './change-user.component.html',
   styleUrls: ['./change-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [AsyncPipe]
 })
 export class ChangeUserComponent {

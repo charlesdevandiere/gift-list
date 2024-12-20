@@ -30,9 +30,9 @@ userController.patch(
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
-    const data: { userId: string, order: number }[] = req.body
+    const body = req.body as { userId: string, order: number }[]
 
-    for (const element of data) {
+    for (const element of body) {
       if (!await db.usersOnGroups.count({ where: { userId: element.userId, groupName: group } })) {
         res.status(404).send({ error: 'User not found' })
         return
@@ -79,15 +79,14 @@ userController.post(
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
-    const name: string | null = req.body.name
-    const picture: string | null = req.body.picture
+    const body = req.body as { name: string | null, picture: string | null }
 
-    if (!name || name.length < 2 || name.length > 250) {
+    if (!body.name || body.name.length < 2 || body.name.length > 250) {
       res.status(400).send({ error: 'user name is required and must be between 2 and 250 characters' })
       return
     }
 
-    if (picture && (picture.length < 2 || picture.length > 250)) {
+    if (body.picture && (body.picture.length < 2 || body.picture.length > 250)) {
       res.status(400).send({ error: 'user picture must be between 2 and 250 characters' })
       return
     }
@@ -109,8 +108,8 @@ userController.post(
     const groupName: string = (req.user as AuthenticatedUsed).group
     const user: User = await db.user.create({
       data: {
-        name: name,
-        picture: picture,
+        name: body.name,
+        picture: body.picture,
         groups: {
           create: {
             order: order + 1,
@@ -119,9 +118,10 @@ userController.post(
         }
       }
     })
-    logger.info(`User '${name}' created and added to group ${groupName}`)
+    logger.info(`User '${body.name}' created and added to group ${groupName}`)
 
-    res.location(req.protocol + '://' + req.get('host') + '/users/' + user.id).status(201).send(user)
+    const host: string = req.get('host') ?? ''
+    res.location(req.protocol + '://' + host + '/users/' + user.id).status(201).send(user)
   })
 
 // update
@@ -129,15 +129,14 @@ userController.put(
   '/users/:id',
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
-    const name: string | null = req.body.name
-    const picture: string | null = req.body.picture
+    const body = req.body as { name: string | null, picture: string | null }
 
-    if (!name || name.length < 2 || name.length > 250) {
+    if (!body.name || body.name.length < 2 || body.name.length > 250) {
       res.status(400).send({ error: 'user name is required and must be between 2 and 250 characters' })
       return
     }
 
-    if (picture && (picture.length < 2 || picture.length > 250)) {
+    if (body.picture && (body.picture.length < 2 || body.picture.length > 250)) {
       res.status(400).send({ error: 'user picture must be between 2 and 250 characters' })
       return
     }
@@ -151,8 +150,8 @@ userController.put(
 
     const user: User = await db.user.update({
       data: {
-        name: name,
-        picture: picture
+        name: body.name,
+        picture: body.picture
       },
       where: {
         id: req.params.id

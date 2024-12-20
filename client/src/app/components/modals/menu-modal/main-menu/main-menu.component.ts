@@ -8,7 +8,6 @@ import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-main-menu',
-  standalone: true,
   imports: [],
   templateUrl: './main-menu.component.html',
   styleUrl: './main-menu.component.scss',
@@ -28,8 +27,8 @@ export class MainMenuComponent {
   public constructor(
     public colorModesService: ColorModesService,
     public translations: AppTranslations,
-    private authService: AuthService,
-    private router: Router) { }
+    private readonly authService: AuthService,
+    private readonly router: Router) { }
 
   protected async editProfile(): Promise<void> {
     this.dismiss.emit();

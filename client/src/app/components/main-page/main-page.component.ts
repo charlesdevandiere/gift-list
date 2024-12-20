@@ -14,7 +14,6 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [UserListComponent, UserGiftsComponent, AsyncPipe]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
@@ -31,10 +30,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   public constructor(
     public translations: AppTranslations,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastsService: ToastsService,
-    private usersService: UsersService) { }
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly toastsService: ToastsService,
+    private readonly usersService: UsersService) { }
 
   public ngOnInit(): void {
     this.route.queryParams

@@ -19,7 +19,6 @@ interface State {
 
 @Component({
   selector: 'app-menu-modal',
-  standalone: true,
   imports: [AsyncPipe, ChangeUserComponent, MainMenuComponent],
   templateUrl: './menu-modal.component.html',
   styleUrl: './menu-modal.component.scss',
@@ -36,11 +35,11 @@ export class MenuModalComponent implements OnDestroy, OnInit {
   protected selectedUser: User | null = null;
 
   public constructor(
-    public modal: NgbActiveModal,
-    public translations: AppTranslations,
-    private authService: AuthService,
-    private usersService: UsersService,
-    private router: Router) { }
+    public readonly modal: NgbActiveModal,
+    public readonly translations: AppTranslations,
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+    private readonly router: Router) { }
 
   public ngOnInit(): void {
     if (this.authService.userId) {

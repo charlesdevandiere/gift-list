@@ -9,13 +9,12 @@ import { ToastsService } from '../../services/toasts.service';
   templateUrl: './toasts.component.html',
   styleUrls: ['./toasts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [NgClass, AsyncPipe]
 })
 export class ToastsComponent {
   protected readonly toasts$: Observable<Toast[]>;
 
-  public constructor(private toastsService: ToastsService) {
+  public constructor(private readonly toastsService: ToastsService) {
     this.toasts$ = this.toastsService.toasts$;
   }
 

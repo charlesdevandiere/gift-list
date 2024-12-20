@@ -13,7 +13,6 @@ import { Gift } from '../../models/gift.model';
   templateUrl: './gift-page.component.html',
   styleUrls: ['./gift-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [ReactiveFormsModule]
 })
 export class GiftPageComponent implements OnInit {

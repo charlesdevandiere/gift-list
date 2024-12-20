@@ -39,15 +39,14 @@ groupController.post(
   '/groups',
   passport.authenticate('admin', { session: false }) as RequestHandler,
   async (req, res) => {
-    const name: string | null = req.body.name
-    const password: string | null = req.body.password
+    const body = req.body as { name: string | null, password: string | null }
 
-    if (!name || name.length < 2 || name.length > 50) {
+    if (!body.name || body.name.length < 2 || body.name.length > 50) {
       res.status(400).send({ error: 'group name is required and must be between 2 and 50 characters' })
       return
     }
 
-    if (!password || password.length < 4 || password.length > 18) {
+    if (!body.password || body.password.length < 4 || body.password.length > 18) {
       res.status(400).send({ error: 'group password is required and must be between 4 and 18 characters' })
       return
     }
@@ -60,23 +59,24 @@ groupController.post(
       }
     }
 
-    if (await db.group.count({ where: { name: name } })) {
+    if (await db.group.count({ where: { name: body.name } })) {
       res.status(409).send({ error: 'group already exists' })
       return
     }
 
     const salt: string = await genSalt()
-    const hashedPassword: string = await hash(password, salt)
+    const hashedPassword: string = await hash(body.password, salt)
 
     const group: Group = await db.group.create({
       data: {
-        name: name,
+        name: body.name,
         password: hashedPassword
       }
     })
-    logger.info(`Group '${name}' created`)
+    logger.info(`Group '${body.name}' created`)
 
-    res.location(req.protocol + '://' + req.get('host') + '/groups/' + encodeURI(group.name)).status(201).send({ name: group.name })
+    const host: string = req.get('host') ?? ''
+    res.location(req.protocol + '://' + host + '/groups/' + encodeURI(group.name)).status(201).send({ name: group.name })
   })
 
 // change password
@@ -84,7 +84,9 @@ groupController.put(
   '/groups/:name',
   passport.authenticate('admin', { session: false }) as RequestHandler,
   async (req, res) => {
-    if (!req.body.password || req.body.password.length < 4 || req.body.password.length > 18) {
+    const body = req.body as { password: string | null }
+
+    if (!body.password || body.password.length < 4 || body.password.length > 18) {
       res.status(400).send({ error: 'group password is required and must be between 4 and 18 characters' })
       return
     }
@@ -99,7 +101,7 @@ groupController.put(
     }
 
     const salt: string = await genSalt()
-    const password: string = await hash(req.body.password, salt)
+    const password: string = await hash(body.password, salt)
 
     await db.group.update({
       where: { name: req.params.name },

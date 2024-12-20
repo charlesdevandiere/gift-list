@@ -16,7 +16,6 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
   templateUrl: './cart-page.component.html',
   styleUrls: ['./cart-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [RouterLink, AsyncPipe]
 })
 export class CartPageComponent implements OnInit {
@@ -29,9 +28,9 @@ export class CartPageComponent implements OnInit {
 
   public constructor(
     public translations: AppTranslations,
-    private giftsService: GiftsService,
-    private modalService: NgbModal,
-    private toastsService: ToastsService) { }
+    private readonly giftsService: GiftsService,
+    private readonly modalService: NgbModal,
+    private readonly toastsService: ToastsService) { }
 
   public ngOnInit(): void {
     this.loadCart();

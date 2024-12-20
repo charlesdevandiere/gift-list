@@ -38,7 +38,7 @@ giftController.patch(
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
-    const data: { giftId: string, order: number }[] = req.body
+    const data = req.body as { giftId: string, order: number }[]
 
     if (userId !== req.params.userId) {
       res.status(403).send()
@@ -85,14 +85,14 @@ giftController.post(
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
-    const name: string | null = req.body.name
+    const body = req.body as { name: string | null, link1: string | null, link2: string | null, link3: string | null }
 
     if (userId !== req.params.userId) {
       res.status(403).send()
       return
     }
 
-    if (!name || name.length < 2 || name.length > 250) {
+    if (!body.name || body.name.length < 2 || body.name.length > 250) {
       res.status(400).send({ error: 'gift name is required and must be between 2 and 250 characters' })
       return
     }
@@ -113,17 +113,18 @@ giftController.post(
 
     const gift: Gift = await db.gift.create({
       data: {
-        name: name,
-        link1: req.body.link1,
-        link2: req.body.link2,
-        link3: req.body.link3,
+        name: body.name,
+        link1: body.link1,
+        link2: body.link2,
+        link3: body.link3,
         order: order + 1,
         userId: req.params.userId
       }
     })
-    logger.info(`Gift '${name}' created and added to user ${req.params.userId}`)
+    logger.info(`Gift '${body.name}' created and added to user ${req.params.userId}`)
 
-    res.location(req.protocol + '://' + req.get('host') + `/users/${req.params.userId}/gifts/${gift.id}`).status(201).send(gift)
+    const host: string = req.get('host') ?? ''
+    res.location(req.protocol + '://' + host + `/users/${req.params.userId}/gifts/${gift.id}`).status(201).send(gift)
   })
 
 // update
@@ -132,14 +133,14 @@ giftController.put(
   passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
-    const name: string | null = req.body.name
+    const body = req.body as { name: string | null, link1: string | null, link2: string | null, link3: string | null }
 
     if (userId !== req.params.userId) {
       res.status(403).send()
       return
     }
 
-    if (!name || name.length < 2 || name.length > 250) {
+    if (!body.name || body.name.length < 2 || body.name.length > 250) {
       res.status(400).send({ error: 'user name is required and must be between 2 and 250 characters' })
       return
     }
@@ -151,10 +152,10 @@ giftController.put(
 
     const gift: Gift = await db.gift.update({
       data: {
-        name: name,
-        link1: req.body.link1,
-        link2: req.body.link2,
-        link3: req.body.link3
+        name: body.name,
+        link1: body.link1,
+        link2: body.link2,
+        link3: body.link3
       },
       where: {
         id: req.params.giftId
