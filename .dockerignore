@@ -3,5 +3,7 @@
 .sonarlint
 .vscode
 dist
+logs
 node_modules
 out-tsc
+.env

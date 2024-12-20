@@ -1,24 +1,21 @@
-import dotenv from 'dotenv'
+import { User } from '@prisma/client'
 import express, { json, urlencoded } from 'express'
-import 'express-async-errors'
 import { readFileSync } from 'fs'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import passport from 'passport'
-import { serve, setup } from 'swagger-ui-express'
+import { JsonObject, serve, setup } from 'swagger-ui-express'
 import * as YAML from 'yaml'
 import { AdminStrategy, AuthenticatedUsed, UserStrategy } from './auth'
-import { groupController } from './controllers/group.controller'
-import { userController } from './controllers/user.controller'
-import { logger } from './logger'
-import { giftController } from './controllers/gift.controller'
-import { importController } from './controllers/import.controller'
-import { exportController } from './controllers/export.controller'
 import { cartController } from './controllers/cart.controller'
+import { exportController } from './controllers/export.controller'
+import { giftController } from './controllers/gift.controller'
+import { groupController } from './controllers/group.controller'
+import { importController } from './controllers/import.controller'
+import { userController } from './controllers/user.controller'
 import { db } from './db'
-import { User } from '@prisma/client'
-
-dotenv.config()
+import { logger } from './logger'
+import { errorHandler } from './error-handler'
 
 const app = express()
 app.use(helmet())
@@ -40,7 +37,7 @@ app.use(urlencoded({ extended: false }))
 // swagger
 if (process.env.NODE_ENV === 'development') {
   const openapiFile = readFileSync('./openapi.yaml', 'utf8')
-  const swaggerDocument = YAML.parse(openapiFile)
+  const swaggerDocument = YAML.parse(openapiFile) as JsonObject
 
   app.use('/swagger', serve, setup(swaggerDocument))
 }
@@ -51,6 +48,7 @@ passport.use('user', UserStrategy)
 
 app.get(
   '/api/me',
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   passport.authenticate('user', { session: false }),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
@@ -72,7 +70,7 @@ app.get(
       }
     }
 
-    return res.status(200).send(me)
+    res.status(200).send(me)
   })
 
 // controllers
@@ -84,12 +82,9 @@ app.use('/api/', exportController)
 app.use('/api/', importController)
 
 // error handler
-app.use((err: Error, _req: any, res: any, _next: any): void => {
-  console.error(err.stack)
-  res.status(500).send({ error: 'Internal server error.' })
-})
+app.use(errorHandler)
 
-const port = process.env.PORT
+const port: number = +(process.env.PORT ?? 0)
 app.listen(port, () => {
   logger.info(`⚡️[server]: Server is running at http://localhost:${port}/swagger`)
 })

@@ -1,6 +1,5 @@
 import { Gift } from '@prisma/client'
-import { Router } from 'express'
-import 'express-async-errors'
+import { RequestHandler, Router } from 'express'
 import passport from 'passport'
 import { AuthenticatedUsed } from '../auth'
 import { db } from '../db'
@@ -11,7 +10,7 @@ export const giftController = Router()
 // list
 giftController.get(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
@@ -30,19 +29,20 @@ giftController.get(
       }
     })
 
-    return res.send(gifts)
+    res.send(gifts)
   })
 
 // order
 giftController.patch(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const data: { giftId: string, order: number }[] = req.body
 
     if (userId !== req.params.userId) {
-      return res.status(403).send()
+      res.status(403).send()
+      return
     }
 
     for (const element of data) {
@@ -58,47 +58,50 @@ giftController.patch(
     }
     logger.info(`Gifts order for user '${userId}' updated`)
 
-    return res.status(204).send()
+    res.status(204).send()
   }
 )
 
 // get
 giftController.get(
   '/users/:userId/gifts/:id',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const gift: Gift | null = await db.gift.findFirst({
       where: { id: req.params.id }
     })
 
     if (gift) {
-      return res.send(gift)
+      res.send(gift)
     }
     else {
-      return res.status(404).send({ error: 'gift not found' })
+      res.status(404).send({ error: 'gift not found' })
     }
   })
 
 // create
 giftController.post(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const name: string | null = req.body.name
 
     if (userId !== req.params.userId) {
-      return res.status(403).send()
+      res.status(403).send()
+      return
     }
 
     if (!name || name.length < 2 || name.length > 250) {
-      return res.status(400).send({ error: 'gift name is required and must be between 2 and 250 characters' })
+      res.status(400).send({ error: 'gift name is required and must be between 2 and 250 characters' })
+      return
     }
 
     if (process.env.MAX_NUMBER_OF_GIFTS_PER_USER) {
       const count: number = await db.gift.count({ where: { userId: req.params.userId } })
       if (count >= +process.env.MAX_NUMBER_OF_GIFTS_PER_USER) {
-        return res.status(400).send({ error: 'the maximum number of gifts for this user has already been reached' })
+        res.status(400).send({ error: 'the maximum number of gifts for this user has already been reached' })
+        return
       }
     }
 
@@ -120,27 +123,30 @@ giftController.post(
     })
     logger.info(`Gift '${name}' created and added to user ${req.params.userId}`)
 
-    return res.location(req.protocol + '://' + req.get('host') + `/users/${req.params.userId}/gifts/${gift.id}`).status(201).send(gift)
+    res.location(req.protocol + '://' + req.get('host') + `/users/${req.params.userId}/gifts/${gift.id}`).status(201).send(gift)
   })
 
 // update
 giftController.put(
   '/users/:userId/gifts/:giftId',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const name: string | null = req.body.name
 
     if (userId !== req.params.userId) {
-      return res.status(403).send()
+      res.status(403).send()
+      return
     }
 
     if (!name || name.length < 2 || name.length > 250) {
-      return res.status(400).send({ error: 'user name is required and must be between 2 and 250 characters' })
+      res.status(400).send({ error: 'user name is required and must be between 2 and 250 characters' })
+      return
     }
 
     if (!await db.gift.count({ where: { id: req.params.giftId, userId: req.params.userId } })) {
-      return res.status(404).send({ error: 'Gift not found' })
+      res.status(404).send({ error: 'Gift not found' })
+      return
     }
 
     const gift: Gift = await db.gift.update({
@@ -156,21 +162,23 @@ giftController.put(
     })
     logger.info(`Gift ${gift.id} updated`)
 
-    return res.status(204).send()
+    res.status(204).send()
   })
 
 // delete
 giftController.delete(
   '/users/:userId/gifts/:giftId',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     if (userId !== req.params.userId) {
-      return res.status(403).send()
+      res.status(403).send()
+      return
     }
 
     if ((await db.gift.count({ where: { id: req.params.giftId, userId: req.params.userId } })) == 0) {
-      return res.status(404).send()
+      res.status(404).send()
+      return
     }
 
     await db.gift.delete({
@@ -179,25 +187,28 @@ giftController.delete(
 
     logger.info(`Gift ${req.params.giftId} deleted`)
 
-    return res.status(204).send()
+    res.status(204).send()
   })
 
 // offer
 giftController.post(
   '/users/:userId/gifts/:giftId/offer',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
     if (!userId) {
-      return res.status(403).send({ error: 'anonimous user cannot offer gift' })
+      res.status(403).send({ error: 'anonimous user cannot offer gift' })
+      return
     }
     else if (userId === req.params.userId) {
-      return res.status(403).send({ error: 'user cannot offer gift to himseft' })
+      res.status(403).send({ error: 'user cannot offer gift to himseft' })
+      return
     }
 
     if ((await db.gift.count({ where: { id: req.params.giftId, userId: req.params.userId } })) == 0) {
-      return res.status(404).send({ error: 'gift not found' })
+      res.status(404).send({ error: 'gift not found' })
+      return
     }
 
     await db.gift.update({
@@ -209,30 +220,34 @@ giftController.post(
 
     logger.info(`Gift ${req.params.giftId} offered`)
 
-    return res.status(204).send()
+    res.status(204).send()
   })
 
 // unoffer
 giftController.post(
   '/users/:userId/gifts/:giftId/unoffer',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
     if (!userId) {
-      return res.status(403).send({ error: 'anonimous user cannot unoffer gift' })
+      res.status(403).send({ error: 'anonimous user cannot unoffer gift' })
+      return
     }
     else if (userId === req.params.userId) {
-      return res.status(403).send({ error: 'user cannot unoffer gift to himseft' })
+      res.status(403).send({ error: 'user cannot unoffer gift to himseft' })
+      return
     }
 
     const gift: Gift | null = await db.gift.findFirst({ where: { id: req.params.giftId, userId: req.params.userId } })
 
     if (!gift) {
-      return res.status(404).send({ error: 'gift not found' })
+      res.status(404).send({ error: 'gift not found' })
+      return
     }
     else if (gift.offeredByUserId !== userId) {
-      return res.status(403).send({ error: 'user cannot unoffer a gift that he did not offer' })
+      res.status(403).send({ error: 'user cannot unoffer a gift that he did not offer' })
+      return
     }
 
     await db.gift.update({
@@ -244,5 +259,5 @@ giftController.post(
 
     logger.info(`Gift ${req.params.giftId} unoffered`)
 
-    return res.status(204).send()
+    res.status(204).send()
   })

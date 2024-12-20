@@ -3,7 +3,7 @@ import 'winston-daily-rotate-file';
 
 const serverFormat = [
   format.timestamp(),
-  format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
+  format.printf((info) => `${info.timestamp as string} ${info.level}: ${info.message as string}`),
 ]
 
 export const logger = createLogger({

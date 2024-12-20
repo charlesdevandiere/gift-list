@@ -5,32 +5,26 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   {
-    ignores: ['.angular/', 'dist/', 'eslint.config.mjs']
+    ignores: ['out-tsc/', 'eslint.config.mjs']
   },
   {
-    rules: {
+    rules:{
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {
           allowBoolean: true,
           allowNumber: true
-        }
-      ],
-      "@typescript-eslint/unbound-method": [
-        "error",
-        {
-          "ignoreStatic": true
         }
       ]
     }

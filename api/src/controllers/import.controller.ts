@@ -1,6 +1,5 @@
 import { Gift, User } from '@prisma/client'
-import { Router } from 'express'
-import 'express-async-errors'
+import { RequestHandler, Router } from 'express'
 import multer from 'multer'
 import Papa from 'papaparse'
 import passport from 'passport'
@@ -16,13 +15,14 @@ export const importController = Router()
 
 importController.post(
   '/import',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   upload.single('file'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
 
     if (!req.file) {
-      return res.status(404).send({ error: 'file param is required.' })
+      res.status(404).send({ error: 'file param is required.' })
+      return
     }
 
     const csv: string = req.file.buffer.toString()
@@ -30,7 +30,7 @@ importController.post(
 
     logger.info(`group '${group}' exported`)
 
-    return res.status(201).send()
+    res.status(201).send()
   })
 
 async function importGroup(group: string, body: string): Promise<void> {

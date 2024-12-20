@@ -1,5 +1,4 @@
-import { Router } from 'express'
-import 'express-async-errors'
+import { RequestHandler, Router } from 'express'
 import Papa from 'papaparse'
 import passport from 'passport'
 import { AuthenticatedUsed } from '../auth'
@@ -11,7 +10,7 @@ export const exportController = Router()
 
 exportController.get(
   '/export',
-  passport.authenticate('user', { session: false }),
+  passport.authenticate('user', { session: false }) as RequestHandler,
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
 
@@ -23,7 +22,7 @@ exportController.get(
 
     res.header('Content-Type', 'text/csv');
     res.attachment(filename);
-    return res.send(csv);
+    res.send(csv);
   })
 
 async function exportGroup(group: string): Promise<string> {

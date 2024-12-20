@@ -4,9 +4,13 @@ import { BasicStrategy } from 'passport-http'
 import { db } from './db'
 import { logger } from './logger'
 
-export interface AuthenticatedUsed { group: string, id?: string, anonymous: boolean }
+export interface AuthenticatedUsed {
+  group: string,
+  id?: string,
+  anonymous: boolean
+}
 
-async function authenticateUser(username: string, password: string, done: (error: any, user?: any) => void): Promise<void> {
+async function authenticateUser(username: string, password: string, done: (error: unknown, user?: AuthenticatedUsed | null) => void): Promise<void> {
   try {
     const userInfo: string[] = username.split('@')
     const groupName: string = userInfo[0]
@@ -32,15 +36,15 @@ async function authenticateUser(username: string, password: string, done: (error
       anonymous: !user
     }
 
-    return done(null, authenticateUser)
+    done(null, authenticateUser)
   }
   catch (err) {
     logger.error('authentication failed', err)
-    return done(null, null)
+    done(null, null)
   }
 }
 
-async function authenticateAdmin(username: string, password: string, done: (error: any, user?: any) => void): Promise<void> {
+async function authenticateAdmin(username: string, password: string, done: (error: unknown, user?: { name: string } | null) => void): Promise<void> {
   try {
     if (username !== 'admin') {
       throw new Error('not admin')
@@ -54,11 +58,11 @@ async function authenticateAdmin(username: string, password: string, done: (erro
       throw new Error('wrong password')
     }
 
-    return done(null, { name: 'admin' })
+    done(null, { name: 'admin' })
   }
   catch (err) {
     logger.error('authentication failed', err)
-    return done(null, null)
+    done(null, null)
   }
 }
 
