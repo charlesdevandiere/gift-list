@@ -17,7 +17,8 @@
         "watch"
       ],
       "runtimeExecutable": "npm",
-      "localRoot": "${workspaceFolder}/api"
+      "localRoot": "${workspaceFolder}/api",
+      "outputCapture": "std"
     }
   ]
 }

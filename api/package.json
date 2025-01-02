@@ -5,10 +5,9 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint .",
-    "prestart": "npm run build",
+    "prestart": "tsc --sourceMap true",
     "start": "node --env-file=../.env out-tsc/main.js",
-    "prewatch": "npm run build",
-    "watch": "nodemon -w ./src -e 'ts,json'"
+    "watch": "nodemon -w ./src -e 'ts,json' --exec \"npm start\""
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
