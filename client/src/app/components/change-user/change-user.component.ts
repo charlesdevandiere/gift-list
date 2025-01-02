@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from '../../models/user.model';
 import { AppTranslations } from '../../utils/app-translations';
@@ -8,7 +7,7 @@ import { AppTranslations } from '../../utils/app-translations';
   templateUrl: './change-user.component.html',
   styleUrls: ['./change-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe]
+  imports: []
 })
 export class ChangeUserComponent {
 

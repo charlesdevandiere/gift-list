@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "lint": "eslint .",
-    "start": "npx ts-node ./src/main.ts --env-file=.env",
-    "watch": "npx nodemon -w ./src -e 'ts,json' --env-file=.env"
+    "prestart": "npm run build",
+    "start": "node --env-file=../.env out-tsc/main.js",
+    "prewatch": "npm run build",
+    "watch": "nodemon -w ./src -e 'ts,json'"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",

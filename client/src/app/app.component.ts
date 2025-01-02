@@ -6,7 +6,6 @@ import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { MenuModalComponent } from './components/modals/menu-modal/menu-modal.component';
 import { ToastsComponent } from './components/toasts/toasts.component';
-import { UserPageComponent } from './components/user-page/user-page.component';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/users.service';
@@ -29,7 +28,6 @@ interface State {
     RouterLink,
     RouterOutlet,
     ToastsComponent,
-    UserPageComponent,
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {

@@ -41,7 +41,7 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/gift-list",
-            "baseHref": "/gift-list/",
+            "baseHref": "/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [

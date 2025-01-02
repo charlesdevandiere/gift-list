@@ -1,17 +1,17 @@
-import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Observable, Subject, firstValueFrom, takeUntil } from 'rxjs';
+import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 import { Gift } from '../../models/gift.model';
-import { GiftsService } from '../../services/gifts.service';
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
-import { ShareModalComponent } from '../modals/share-modal/share-modal.component';
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
+import { GiftsService } from '../../services/gifts.service';
 import { ToastsService } from '../../services/toasts.service';
 import { AppTranslations } from '../../utils/app-translations';
-import { ConfirmModalData } from '../../models/confirm-modal-data.model';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { ShareModalComponent } from '../modals/share-modal/share-modal.component';
 
 interface State {
   connectedUserId: string | null;
@@ -27,7 +27,7 @@ interface State {
   templateUrl: './user-gifts.component.html',
   styleUrls: ['./user-gifts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, AsyncPipe, NgClass, JsonPipe]
+  imports: [RouterLink, AsyncPipe]
 })
 export class UserGiftsComponent implements OnDestroy {
 

@@ -47,4 +47,4 @@ COPY --from=build-client /app/dist/gift-list/browser /home/giftlist/app/
 USER giftlist
 EXPOSE 3000
 
-CMD ["node", "./main.js"]
+CMD ["node", "./main.js", "--env-file=/var/lib/gift-list/.env"]
