@@ -10,7 +10,7 @@
       <div class="flex-grow-1">{{ translations.cart.title }}</div>
     </div>
   </div>
-  @if (!(loading$ | async)) {
+  @if ((loading$ | async) === false) {
   @if (cart.length > 0) {
   <div class="row page-height">
     <div class="col h-100 overflow-auto">

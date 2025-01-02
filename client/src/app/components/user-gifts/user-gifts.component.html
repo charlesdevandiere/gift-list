@@ -113,14 +113,14 @@
         <button type="button"
                 class="btn btn-link me-2"
                 (click)="reorder(gift.id, 'up')"
-                [disabled]="index == 0">
+                [disabled]="index === 0">
           <i class="bi-caret-up-fill"
              aria-label="move up"></i>
         </button>
         <button type="button"
                 class="btn btn-link me-2"
                 (click)="reorder(gift.id, 'down')"
-                [disabled]="index == state.gifts.length - 1">
+                [disabled]="index === state.gifts.length - 1">
           <i class="bi-caret-down-fill"
              aria-label="move down"></i>
         </button>
