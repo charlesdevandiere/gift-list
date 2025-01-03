@@ -100,7 +100,7 @@ export class AppTranslations implements Translations {
 
   public async load(): Promise<void> {
     try {
-      const response = await fetch(`assets/${this.language}.json`);
+      const response = await fetch(`${this.language}.json`);
       if (!response.ok) {
         throw new Error('Request failed.');
       }

@@ -48,15 +48,15 @@ export class AuthService {
     return this.getToken(this.group, this.userId, this._auth.password);
   }
 
-  private http: HttpClient;
+  private readonly http: HttpClient;
 
   private readonly storage: AppStorage = new AppStorage(localStorage);
   private readonly cache: AppStorage = new AppStorage(sessionStorage);
 
   public constructor(
     httpBackend: HttpBackend,
-    private settings: AppSettings,
-    private eventBus: EventBusService) {
+    private readonly settings: AppSettings,
+    private readonly eventBus: EventBusService) {
     this.http = new HttpClient(httpBackend);
     this.load();
   }
@@ -118,7 +118,7 @@ export class AuthService {
       return null;
     }
 
-    const login: string = userId ? `${group}|${userId}` : group;
+    const login: string = userId ? `${group}@${userId}` : group;
     return window.btoa(`${login}:${password}`);
   }
 

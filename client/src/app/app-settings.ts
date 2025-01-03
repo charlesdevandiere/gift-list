@@ -7,7 +7,7 @@ export class AppSettings {
 
   public async load(): Promise<void> {
     try {
-      const response = await fetch(`app-setting.json`);
+      const response = await fetch(`app-settings.json`);
       if (!response.ok) {
         throw new Error('Request failed.');
       }

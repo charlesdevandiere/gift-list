@@ -16,9 +16,16 @@ import { userController } from './controllers/user.controller'
 import { db } from './db'
 import { logger } from './logger'
 import { errorHandler } from './error-handler'
+import cors from 'cors'
 
 const app = express()
 app.use(helmet())
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  app.use(cors({
+    origin: 'http://localhost:4200'
+  }))
+}
 app.use(morgan(
   ':remote-addr :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" - :response-time ms',
   { stream: { write: (message) => logger.http(message.trimEnd()) } }))
