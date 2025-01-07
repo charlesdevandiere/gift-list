@@ -41,8 +41,11 @@ RUN npm clean-install --only=prod && \
 
 COPY ./api/prisma ./prisma
 COPY ./api/openapi.yaml ./openapi.yaml
-COPY --from=build-server /app/out-tsc/ /home/giftlist/app/
-COPY --from=build-client /app/dist/gift-list/browser /home/giftlist/app/
+COPY --from=build-server /app/out-tsc/ .
+COPY --from=build-client /app/dist/gift-list/browser ./www
+
+ARG HOST=http://localhost:3000
+RUN echo "$HOST" > ./app-settings.json
 
 USER giftlist
 EXPOSE 3000

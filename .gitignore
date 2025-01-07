@@ -1,6 +1,8 @@
 # Compiled output
 **/dist
 **/out-tsc
+api/www/*
+!api/www/.gitkeep
 
 # Node
 **/node_modules

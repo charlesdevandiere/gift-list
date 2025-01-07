@@ -19,7 +19,13 @@ import { errorHandler } from './error-handler'
 import cors from 'cors'
 
 const app = express()
-app.use(helmet())
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      "script-src-attr": ["'unsafe-inline'"]
+    },
+  },
+}))
 if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   app.use(cors({
@@ -88,10 +94,16 @@ app.use('/api/', cartController)
 app.use('/api/', exportController)
 app.use('/api/', importController)
 
+// client
+app.use(express.static(`${process.cwd()}/www`))
+app.use((_req, res) => {
+  res.sendFile(`${process.cwd()}/www/index.html`)
+})
+
 // error handler
 app.use(errorHandler)
 
 const port: number = +(process.env.PORT ?? 0)
 app.listen(port, () => {
-  logger.info(`⚡️[server]: Server is running at http://localhost:${port}/swagger`)
+  logger.info(`⚡️[server]: Server is running at http://localhost:${port}`)
 })

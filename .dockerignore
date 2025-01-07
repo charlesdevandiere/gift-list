@@ -1,9 +1,10 @@
-.angular
+**/node_modules
 .git
 .sonarlint
 .vscode
-dist
-logs
-node_modules
-out-tsc
+api/www
+api/logs
+api/out-tsc
+client/.angular
+client/dist
 .env
