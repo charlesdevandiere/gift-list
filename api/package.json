@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prisma-generate": "prisma generate",
+    "prebuild": "rm -rf out-tsc && npm run prisma-generate",
     "build": "tsc",
+    "postbuild": "cp -r ./src/generated/ ./out-tsc/generated/",
     "lint": "eslint .",
     "prestart": "tsc --sourceMap true",
     "start": "node --env-file=../.env out-tsc/main.js",

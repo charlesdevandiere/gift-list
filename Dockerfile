@@ -3,13 +3,13 @@ FROM node:22-alpine AS build-server
 WORKDIR /app
 
 COPY ./api/package.json ./api/package-lock.json ./
-RUN npm clean-install --only=dev && \
+RUN npm clean-install && \
     npm cache clean --force
 
 COPY ./api ./
 
-RUN npm run lint && \
-    npm run build
+RUN npm run build && \
+    npm run lint
 
 
 FROM node:22-alpine AS build-client
@@ -22,8 +22,8 @@ RUN npm clean-install && \
 
 COPY ./client ./
 
-RUN npm run lint && \
-    npm run build
+RUN npm run build && \
+    npm run lint
 
 
 FROM node:22-alpine AS app
@@ -41,13 +41,10 @@ RUN npm clean-install --only=prod && \
 
 COPY ./api/prisma ./prisma
 COPY ./api/openapi.yaml ./openapi.yaml
-COPY --from=build-server /app/out-tsc/ .
-COPY --from=build-client /app/dist/gift-list/browser ./www
-
-ARG HOST=http://localhost:3000
-RUN echo "$HOST" > ./app-settings.json
+COPY --from=build-server /app/out-tsc/ ./
+COPY --from=build-client /app/dist/gift-list/browser ./www/
 
 USER giftlist
 EXPOSE 3000
 
-CMD ["node", "./main.js", "--env-file=/var/lib/gift-list/.env"]
+CMD ["node", "--env-file=/var/lib/gift-list/.env", "./main.js"]

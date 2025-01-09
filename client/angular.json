@@ -41,7 +41,6 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/gift-list",
-            "baseHref": "/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -95,7 +94,10 @@
               "buildTarget": "gift-list:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

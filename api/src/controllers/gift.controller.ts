@@ -1,8 +1,8 @@
-import { Gift } from '@prisma/client'
 import { RequestHandler, Router } from 'express'
 import passport from 'passport'
 import { AuthenticatedUsed } from '../auth'
 import { db } from '../db'
+import { Gift } from '../generated/client'
 import { logger } from '../logger'
 
 export const giftController = Router()

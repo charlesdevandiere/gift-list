@@ -1,0 +1,16 @@
+name: gift-list
+
+services:
+  giftlist:
+    build: .
+    container_name: gift-list
+    image: gift-list:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind
+        source: .
+        target: /var/lib/gift-list
+        read_only: true
+        bind:
+          create_host_path: true

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, throwError } from 'rxjs';
-import { AppSettings } from '../app-settings';
 import { Gift } from '../models/gift.model';
 import { User } from '../models/user.model';
 import { AppStorage } from '../utils/app-storage';
@@ -17,12 +16,11 @@ export class GiftsService {
   private readonly storage: AppStorage = new AppStorage(sessionStorage);
 
   public constructor(
-    private settings: AppSettings,
-    private authService: AuthService,
-    private http: HttpClient) { }
+    private readonly authService: AuthService,
+    private readonly http: HttpClient) { }
 
   public getCart(): Observable<User[]> {
-    const url = `${this.settings.apiUrl}/users/${this.authService.userId}/cart`;
+    const url = `/api/users/${this.authService.userId}/cart`;
     return this.http.get<User[]>(url);
   }
 
@@ -38,7 +36,7 @@ export class GiftsService {
       }
     }
 
-    const url = `${this.settings.apiUrl}/users/${userId}/gifts`;
+    const url = `/api/users/${userId}/gifts`;
     return this.http.get<Gift[]>(url)
       .pipe(
         tap((gifts: Gift[]): void => this.storeGiftsIntoCache(userId, gifts))
@@ -50,12 +48,12 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${this.settings.apiUrl}/users/${userId}/gifts/${giftId}`;
+    const url = `/api/users/${userId}/gifts/${giftId}`;
     return this.http.get<Gift>(url);
   }
 
   public addGift(gift: { name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `${this.settings.apiUrl}/users/${this.authService.userId}/gifts`;
+    const url = `/api/users/${this.authService.userId}/gifts`;
     return this.http.post<void>(url, gift)
       .pipe(
         tap(() => {
@@ -67,7 +65,7 @@ export class GiftsService {
   }
 
   public updateGift(gift: { id: string, name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `${this.settings.apiUrl}/users/${this.authService.userId}/gifts/${gift.id}`;
+    const url = `/api/users/${this.authService.userId}/gifts/${gift.id}`;
     return this.http.put<void>(url, gift)
       .pipe(
         tap(() => {
@@ -79,7 +77,7 @@ export class GiftsService {
   }
 
   public offerGift(gift: Gift): Observable<void> {
-    const url = `${this.settings.apiUrl}/users/${gift.user_id}/gifts/${gift.id}/offer`;
+    const url = `/api/users/${gift.user_id}/gifts/${gift.id}/offer`;
     return this.http.patch<void>(url, null)
       .pipe(
         tap(() => this.clearCache(gift.user_id))
@@ -87,7 +85,7 @@ export class GiftsService {
   }
 
   public unofferGift(gift: Gift): Observable<void> {
-    const url = `${this.settings.apiUrl}/users/${gift.user_id}/gifts/${gift.id}/unoffer`;
+    const url = `/api/users/${gift.user_id}/gifts/${gift.id}/unoffer`;
     return this.http.patch<void>(url, null)
       .pipe(
         tap(() => this.clearCache(gift.user_id))
@@ -99,7 +97,7 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `${this.settings.apiUrl}/users/${this.authService.userId}/gifts/${id}`;
+    const url = `/api/users/${this.authService.userId}/gifts/${id}`;
     return this.http.delete<void>(url)
       .pipe(
         tap(() => {
@@ -118,7 +116,7 @@ export class GiftsService {
     let index = 0;
     const body: { id: string, order: number }[] = gifts.map(gift => ({ id: gift.id, order: index++ }));
 
-    const url = `${this.settings.apiUrl}/users/${this.authService.userId}/gifts`;
+    const url = `/api/users/${this.authService.userId}/gifts`;
     return this.http.patch<void>(url, body)
       .pipe(
         tap(() => {

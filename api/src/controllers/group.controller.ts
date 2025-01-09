@@ -1,9 +1,9 @@
+import { genSalt, hash } from 'bcrypt'
 import { RequestHandler, Router } from 'express'
 import passport from 'passport'
 import { db } from '../db'
-import { Group } from '@prisma/client'
+import { Group } from '../generated/client'
 import { logger } from '../logger'
-import { genSalt, hash } from 'bcrypt'
 
 export const groupController = Router()
 

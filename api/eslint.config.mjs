@@ -16,7 +16,7 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['out-tsc/', 'eslint.config.mjs']
+    ignores: ['out-tsc/', 'eslint.config.mjs', 'www/', 'src/generated/']
   },
   {
     rules:{

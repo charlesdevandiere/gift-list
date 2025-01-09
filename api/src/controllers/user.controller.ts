@@ -1,9 +1,9 @@
 import { RequestHandler, Router } from 'express'
 import passport from 'passport'
-import { db } from '../db'
 import { AuthenticatedUsed } from '../auth'
+import { db } from '../db'
 import { logger } from '../logger'
-import { User } from '@prisma/client'
+import { User } from '../generated/client'
 
 export const userController = Router()
 

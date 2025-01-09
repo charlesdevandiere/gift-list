@@ -6,7 +6,7 @@ import { Observable, Subject, filter } from 'rxjs';
 })
 export class EventBusService implements OnDestroy {
 
-  private _bus$ = new Subject<string>();
+  private readonly _bus$ = new Subject<string>();
 
   public listen(event?: string): Observable<string> {
     if (event) {

@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import cors from 'cors'
 import express, { json, urlencoded } from 'express'
 import { readFileSync } from 'fs'
 import helmet from 'helmet'
@@ -14,9 +14,9 @@ import { groupController } from './controllers/group.controller'
 import { importController } from './controllers/import.controller'
 import { userController } from './controllers/user.controller'
 import { db } from './db'
-import { logger } from './logger'
 import { errorHandler } from './error-handler'
-import cors from 'cors'
+import { User } from './generated/client'
+import { logger } from './logger'
 
 const app = express()
 app.use(helmet({
@@ -27,7 +27,6 @@ app.use(helmet({
   },
 }))
 if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   app.use(cors({
     origin: 'http://localhost:4200'
   }))
@@ -52,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
   const openapiFile = readFileSync('./openapi.yaml', 'utf8')
   const swaggerDocument = YAML.parse(openapiFile) as JsonObject
 
-  app.use('/swagger', serve, setup(swaggerDocument))
+  app.use('/api/swagger', serve, setup(swaggerDocument))
 }
 
 // authentication

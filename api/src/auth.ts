@@ -1,7 +1,7 @@
-import { Group } from '@prisma/client'
 import { compare } from 'bcrypt'
 import { BasicStrategy } from 'passport-http'
 import { db } from './db'
+import { Group } from './generated/client'
 import { logger } from './logger'
 
 export interface AuthenticatedUsed {

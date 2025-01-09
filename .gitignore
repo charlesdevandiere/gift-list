@@ -1,26 +1,29 @@
 # Compiled output
-**/dist
-**/out-tsc
+api/out-tsc
 api/www/*
 !api/www/.gitkeep
+client/dist
 
 # Node
 **/node_modules
 
 # Visual Studio Code
-**/.vscode/*
-!**/.vscode/settings.json
-!**/.vscode/tasks.json
-!**/.vscode/launch.json
-!**/.vscode/extensions.json
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 **/.history/*
 
-# Miscellaneous
-**/.angular/cache
+# Angular cache
+client/.angular/cache
+
+# Prisma client
+api/src/generated/client
 
 # env files
 .env
 
 # logs
-**/logs/*
-!**/logs/.gitkeep
+api/logs/*
+!api/logs/.gitkeep

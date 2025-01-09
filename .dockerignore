@@ -2,9 +2,10 @@
 .git
 .sonarlint
 .vscode
-api/www
-api/logs
+api/www/*
+api/logs/*
 api/out-tsc
+api/src/generated/client
 client/.angular
 client/dist
 .env

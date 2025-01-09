@@ -4,7 +4,6 @@ import { BehaviorSubject, map, Observable, tap, throwError } from 'rxjs';
 import { Auth } from '../models/auth.model';
 import { AppStorage } from '../utils/app-storage';
 import { EventBusService } from './event-bus.service';
-import { AppSettings } from '../app-settings';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -55,7 +54,6 @@ export class AuthService {
 
   public constructor(
     httpBackend: HttpBackend,
-    private readonly settings: AppSettings,
     private readonly eventBus: EventBusService) {
     this.http = new HttpClient(httpBackend);
     this.load();
@@ -88,7 +86,7 @@ export class AuthService {
     if (token !== null) {
       const authorization = `Basic ${token}`;
       return this.http.get<{ group: string, name?: string, id?: string, picture?: string | null }>(
-        `${this.settings.apiUrl}/me`,
+        '/api/me',
         { headers: { 'Authorization': authorization } })
         .pipe(
           tap(() => {
