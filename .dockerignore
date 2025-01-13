@@ -3,7 +3,7 @@
 .sonarlint
 .vscode
 api/www/*
-api/logs/*
+api/logs
 api/out-tsc
 api/src/generated/client
 client/.angular

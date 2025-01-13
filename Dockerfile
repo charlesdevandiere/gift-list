@@ -28,9 +28,8 @@ RUN npm run build && \
 
 FROM node:22-alpine AS app
 
-RUN addgroup giftlist && \
-    adduser -D -S -g giftlist giftlist
-WORKDIR /home/giftlist/app
+RUN addgroup --gid 1961 gift-list && adduser --uid 1969 -D -S -g gift-list gift-list
+WORKDIR /home/gift-list/app
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
@@ -44,7 +43,7 @@ COPY ./api/openapi.yaml ./openapi.yaml
 COPY --from=build-server /app/out-tsc/ ./
 COPY --from=build-client /app/dist/gift-list/browser ./www/
 
-USER giftlist
+USER gift-list
 EXPOSE 3000
 
-CMD ["node", "--env-file=/var/lib/gift-list/.env", "./main.js"]
+CMD ["node", "--env-file=.env", "./main.js"]

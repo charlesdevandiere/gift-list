@@ -9,7 +9,7 @@
     "postbuild": "cp -r ./src/generated/ ./out-tsc/generated/",
     "lint": "eslint .",
     "prestart": "tsc --sourceMap true",
-    "start": "node --env-file=../.env out-tsc/main.js",
+    "start": "node --env-file=.env out-tsc/main.js",
     "watch": "nodemon -w ./src -e 'ts,json' --exec \"npm start\""
   },
   "dependencies": {

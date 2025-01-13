@@ -9,8 +9,10 @@ services:
       - 3000:3000
     volumes:
       - type: bind
-        source: .
-        target: /var/lib/gift-list
+        source: ./.env
+        target: /home/gift-list/app/.env
         read_only: true
-        bind:
-          create_host_path: true
+      - type: bind
+        source: /var/log/gift-list
+        target: /var/log/gift-list
+        read_only: false

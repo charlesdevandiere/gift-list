@@ -17,6 +17,7 @@ import { db } from './db'
 import { errorHandler } from './error-handler'
 import { User } from './generated/client'
 import { logger } from './logger'
+import path from 'path'
 
 const app = express()
 app.use(helmet({
@@ -94,9 +95,9 @@ app.use('/api/', exportController)
 app.use('/api/', importController)
 
 // client
-app.use(express.static(`${process.cwd()}/www`))
+app.use(express.static(path.join(process.cwd(), 'www')))
 app.use((_req, res) => {
-  res.sendFile(`${process.cwd()}/www/index.html`)
+  res.sendFile(path.join(process.cwd(), 'www', 'index.html'))
 })
 
 // error handler
