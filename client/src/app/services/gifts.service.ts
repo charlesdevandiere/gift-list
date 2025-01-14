@@ -20,7 +20,7 @@ export class GiftsService {
     private readonly http: HttpClient) { }
 
   public getCart(): Observable<User[]> {
-    const url = `/api/users/${this.authService.userId}/cart`;
+    const url = '/api/me/cart';
     return this.http.get<User[]>(url);
   }
 

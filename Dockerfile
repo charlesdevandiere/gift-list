@@ -35,10 +35,9 @@ ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
 
 COPY ./api/package.json ./api/package-lock.json ./
-RUN npm clean-install --only=prod && \
+RUN npm clean-install --omit=dev && \
     npm cache clean --force
 
-COPY ./api/prisma ./prisma
 COPY ./api/openapi.yaml ./openapi.yaml
 COPY --from=build-server /app/out-tsc/ ./
 COPY --from=build-client /app/dist/gift-list/browser ./www/
