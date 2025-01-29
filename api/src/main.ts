@@ -70,6 +70,12 @@ app.use((_req, res) => {
 
 // error handler
 app.use(errorHandler)
+app.use((_req, res, next) => {
+  if (res.statusCode === 401) {
+    res.removeHeader('WWW-Authenticate');
+  }
+  next()
+})
 
 const port: number = +(process.env.PORT ?? 0)
 app.listen(port, () => {

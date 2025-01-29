@@ -42,8 +42,8 @@ export class MenuModalComponent implements OnDestroy, OnInit {
     private readonly router: Router) { }
 
   public ngOnInit(): void {
-    if (this.authService.userId) {
-      this.usersService.getUser(this.authService.userId)
+    if (this.authService.me?.id) {
+      this.usersService.getUser(this.authService.me?.id)
         .subscribe((user: User) => {
           this._state$.next({
             ...this._state$.value,

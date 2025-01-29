@@ -4,5 +4,8 @@ export interface User {
   id: string;
   name: string;
   picture: string | null;
-  gifts?: Gift[];
+}
+
+export interface UserWithGifts extends User {
+  gifts: Gift[];
 }

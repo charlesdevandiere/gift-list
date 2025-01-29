@@ -57,7 +57,7 @@ export class GiftPageComponent implements OnInit {
   protected async back(): Promise<void> {
     await this.router.navigate(
       ['/'],
-      { queryParams: { 'user-id': this.authService.userId } }
+      { queryParams: { 'user-id': this.authService.me?.id } }
     );
   }
 
@@ -101,11 +101,11 @@ export class GiftPageComponent implements OnInit {
   private prepareForUpdate(giftId: string): void {
     this.action = 'update';
 
-    if (!this.authService.userId) {
+    if (!this.authService.me?.id) {
       throw new Error('not identified')
     }
 
-    this.giftsService.getGift(this.authService.userId, giftId)
+    this.giftsService.getGift(this.authService.me?.id, giftId)
       .subscribe((gift: Gift): void => {
         this.form.reset({
           id: giftId,

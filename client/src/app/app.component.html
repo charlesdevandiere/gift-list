@@ -8,12 +8,12 @@
           <i class="bi bi-gift-fill text-primary me-2 fs-2"></i>
           <div>
             <div class="lh-1">{{ translations.title }}</div>
-            <div class="group text-body-secondary lh-1">{{ state.group }}</div>
+            <div class="group text-body-secondary lh-1">{{ state.me?.group }}</div>
           </div>
         </a>
         @if (state.autheticated) {
         <div class="d-flex align-items-center">
-          @if (state.user) {
+          @if (state.me?.id) {
           <button type="button"
                   class="btn btn-link me-1 text-body"
                   [routerLink]="['cart']">
@@ -25,9 +25,9 @@
           <button type="button"
                   class="btn btn-link d-flex ms-1 align-items-center text-body text-decoration-none"
                   (click)="openMenu()">
-            <i class="bi bi-{{state.user?.picture || 'person-fill' }}"></i>
-            @if (state.user?.name) {
-            <span class="d-none d-sm-inline ms-2">{{ state.user?.name }}</span>
+            <i class="bi bi-{{state.me?.picture || 'person-fill' }}"></i>
+            @if (state.me?.name) {
+            <span class="d-none d-sm-inline ms-2">{{ state.me?.name }}</span>
             }
           </button>
         </div>

@@ -1,7 +1,6 @@
-import { RequestHandler, Router } from 'express'
+import { Router } from 'express'
 import Papa from 'papaparse'
-import passport from 'passport'
-import { AuthenticatedUsed } from '../auth'
+import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
 import { logger } from '../logger'
 import { CsvGift } from '../models/csv-gift.model'
@@ -10,7 +9,7 @@ export const exportController = Router()
 
 exportController.get(
   '/export',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
 

@@ -3,6 +3,8 @@ import { BasicStrategy } from 'passport-http'
 import { db } from './db'
 import { Group } from './generated/client'
 import { logger } from './logger'
+import passport from 'passport'
+import { RequestHandler } from 'express'
 
 export interface AuthenticatedUsed {
   group: string,
@@ -10,25 +12,32 @@ export interface AuthenticatedUsed {
   anonymous: boolean
 }
 
-async function authenticateUser(username: string, password: string, done: (error: unknown, user?: AuthenticatedUsed | null) => void): Promise<void> {
+async function authenticateUser(username: string, password: string, done: (error: unknown, user?: AuthenticatedUsed | false) => void): Promise<void> {
   try {
     const userInfo: string[] = username.split('@')
     const groupName: string = userInfo[0]
     const userId: string = userInfo[1]
 
-    const group: Group = await db.group.findUniqueOrThrow({
+    const group: Group | null = await db.group.findUnique({
       where: { name: groupName }
     })
+    if (!group) {
+      throw new Error('group not found')
+    }
     if (!await compare(password, group.password)) {
       throw new Error('wrong password')
     }
 
-    const user: { id: string } | null = userId
-      ? await db.user.findUniqueOrThrow({
+    let user: { id: string } | null = null;
+    if (userId) {
+      user = await db.user.findUnique({
         select: { id: true },
         where: { id: userId, groups: { some: { groupName: groupName } } }
       })
-      : null
+      if (!user) {
+        throw new Error('user not found')
+      }
+    }
 
     const authenticateUser: AuthenticatedUsed = {
       group: group.name,
@@ -40,11 +49,11 @@ async function authenticateUser(username: string, password: string, done: (error
   }
   catch (err) {
     logger.error('authentication failed', err)
-    done(null, null)
+    done(err, false)
   }
 }
 
-async function authenticateAdmin(username: string, password: string, done: (error: unknown, user?: { name: string } | null) => void): Promise<void> {
+async function authenticateAdmin(username: string, password: string, done: (error: unknown, user?: { name: string } | false) => void): Promise<void> {
   try {
     if (username !== 'admin') {
       throw new Error('not admin')
@@ -62,9 +71,30 @@ async function authenticateAdmin(username: string, password: string, done: (erro
   }
   catch (err) {
     logger.error('authentication failed', err)
-    done(null, null)
+    done(err, false)
   }
 }
 
 export const UserStrategy = new BasicStrategy({ realm: 'user' }, authenticateUser)
 export const AdminStrategy = new BasicStrategy({ realm: 'admin' }, authenticateAdmin)
+
+export function authenticate(strategy: string): RequestHandler {
+  return (req, res, next) => {
+    return (passport.authenticate(strategy, { session: false }, (err: unknown, user?: Express.User | false | null) => {
+      if (!user) {
+        const info = err instanceof Error ? { message: err.message } : null
+        // send 401 without www-authenticate header to prevent browser auth dialog
+        res.status(401).send(info)
+      }
+      else if (err) {
+        next(err)
+      }
+      else {
+        req.logIn(user, { session: false }, (err) => {
+          if (err) next(err)
+          else next()
+        })
+      }
+    }) as RequestHandler)(req, res, next)
+  }
+}

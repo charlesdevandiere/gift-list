@@ -1,6 +1,5 @@
-import { RequestHandler, Router } from 'express'
-import passport from 'passport'
-import { AuthenticatedUsed } from '../auth'
+import { Router } from 'express'
+import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
 import { User } from '../generated/client'
 
@@ -9,7 +8,7 @@ export const meController = Router()
 // me
 meController.get(
   '/me',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
@@ -39,7 +38,7 @@ meController.get(
 // cart
 meController.get(
   '/me/cart',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
     const userId: string | undefined = (req.user as AuthenticatedUsed).id

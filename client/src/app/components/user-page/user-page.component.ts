@@ -122,7 +122,7 @@ export class UserPageComponent implements OnInit {
         };
         await firstValueFrom(this.usersService.updateUser(user));
         this.eventBus.emit(UserPageComponent.UPDATE_USER_EVENT);
-        if (this.authService.userId === this.userId) {
+        if (this.authService.me?.id === this.userId) {
           this.authService.setCurrentUser(user.id);
         }
         this.toastsService.show(this.translations.user.userUpdatedMessage, { severity: 'success' });

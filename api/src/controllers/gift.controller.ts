@@ -1,6 +1,5 @@
-import { RequestHandler, Router } from 'express'
-import passport from 'passport'
-import { AuthenticatedUsed } from '../auth'
+import { Router } from 'express'
+import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
 import { Gift } from '../generated/client'
 import { logger } from '../logger'
@@ -10,7 +9,7 @@ export const giftController = Router()
 // list
 giftController.get(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
@@ -35,7 +34,7 @@ giftController.get(
 // order
 giftController.patch(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const data = req.body as { giftId: string, order: number }[]
@@ -65,7 +64,7 @@ giftController.patch(
 // get
 giftController.get(
   '/users/:userId/gifts/:id',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const gift: Gift | null = await db.gift.findFirst({
       where: { id: req.params.id }
@@ -82,7 +81,7 @@ giftController.get(
 // create
 giftController.post(
   '/users/:userId/gifts',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const body = req.body as { name: string | null, link1: string | null, link2: string | null, link3: string | null }
@@ -130,7 +129,7 @@ giftController.post(
 // update
 giftController.put(
   '/users/:userId/gifts/:giftId',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     const body = req.body as { name: string | null, link1: string | null, link2: string | null, link3: string | null }
@@ -169,7 +168,7 @@ giftController.put(
 // delete
 giftController.delete(
   '/users/:userId/gifts/:giftId',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
     if (userId !== req.params.userId) {
@@ -194,7 +193,7 @@ giftController.delete(
 // offer
 giftController.post(
   '/users/:userId/gifts/:giftId/offer',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 
@@ -227,7 +226,7 @@ giftController.post(
 // unoffer
 giftController.post(
   '/users/:userId/gifts/:giftId/unoffer',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const userId: string | undefined = (req.user as AuthenticatedUsed).id
 

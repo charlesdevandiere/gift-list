@@ -1,10 +1,10 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { Auth } from '../models/auth.model';
+import { Me } from '../models/me.model';
 import { AppStorage } from '../utils/app-storage';
 import { EventBusService } from './event-bus.service';
-import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,8 @@ import { User } from '../models/user.model';
 export class AuthService {
 
   public static readonly CHANGE_USER_EVENT = 'CHANGE_USER_EVENT';
+
+  private static readonly AUTH_STORAGE_KEY = 'auth';
 
   private readonly _auth: Auth = {
     group: null,
@@ -21,7 +23,7 @@ export class AuthService {
 
   private readonly _authenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  private readonly _userId$: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  private readonly _me$: BehaviorSubject<Me | null> = new BehaviorSubject<Me | null>(null);
 
   public get authenticated(): boolean {
     return this._authenticated$.getValue();
@@ -35,16 +37,21 @@ export class AuthService {
     return this._auth.group;
   }
 
-  public get userId(): string | null {
-    return this._auth.userId;
+  public get me(): Me | null {
+    return this._me$.getValue();
   }
 
-  public get userId$(): Observable<string | null> {
-    return this._userId$.asObservable();
+  public get me$(): Observable<Me | null> {
+    return this._me$.asObservable();
   }
 
   public get token(): string | null {
-    return this.getToken(this.group, this.userId, this._auth.password);
+    if (this._auth.group && this._auth.password) {
+      return this.getToken(this._auth.group, this._auth.userId, this._auth.password);
+    }
+    else {
+      return null;
+    }
   }
 
   private readonly http: HttpClient;
@@ -56,10 +63,27 @@ export class AuthService {
     httpBackend: HttpBackend,
     private readonly eventBus: EventBusService) {
     this.http = new HttpClient(httpBackend);
-    this.load();
   }
 
-  public signIn(group: string, password: string): Observable<User | null> {
+  public async load(): Promise<void> {
+    const auth: Auth | null = this.restoreAuth();
+    if (auth) {
+      this._auth.group = auth.group;
+      this._auth.password = auth.password;
+      this._auth.userId = auth.userId;
+      try {
+        await this.setCurrentUser(auth.userId);
+        this._authenticated$.next(true);
+      }
+      catch (err) {
+        console.error(err);
+      }
+    } else {
+      this.storage.removeItem(AuthService.AUTH_STORAGE_KEY);
+    }
+  }
+
+  public signIn(group: string, password: string): Promise<void> {
     return this.authenticate(group, password);
   }
 
@@ -70,85 +94,79 @@ export class AuthService {
     this._auth.userId = null;
     this._auth.password = null;
     this._authenticated$.next(false);
-    this._userId$.next(null);
+    this._me$.next(null);
   }
 
-  public setCurrentUser(userId: string | null): void {
-    this.cache.clear();
-    this._auth.userId = userId;
-    this._userId$.next(userId);
+  public async setCurrentUser(userId: string | null): Promise<void> {
+    const oldUserId: string | null = this._auth.userId
+    this._auth.userId = userId ?? null;
+    try {
+      const me: Me = await this.getMe();
+      this.cache.clear();
+      this._me$.next(me);
+      this.save();
+      this.eventBus.emit(AuthService.CHANGE_USER_EVENT);
+    }
+    catch (err) {
+      this._auth.userId = oldUserId;
+      console.error(err);
+      throw new Error('Invalid user');
+    }
+  }
+
+  private async authenticate(group: string, password: string, userId?: string): Promise<void> {
+    const me: Me = await this.getMe({ group, userId: userId, password });
+    this._auth.group = group;
+    this._auth.password = password;
+    this._auth.userId = userId ?? null;
+    this._me$.next(me);
     this.save();
     this.eventBus.emit(AuthService.CHANGE_USER_EVENT);
+    this.save();
+    this._authenticated$.next(true);
   }
 
-  private authenticate(group: string | null, password: string | null): Observable<User | null> {
-    const token: string | null = this.getToken(group, null, password);
-    if (token !== null) {
-      const authorization = `Basic ${token}`;
-      return this.http.get<{ group: string, name?: string, id?: string, picture?: string | null }>(
-        '/api/me',
-        { headers: { 'Authorization': authorization } })
-        .pipe(
-          tap(() => {
-            this._auth.group = group;
-            this._auth.password = password;
-            this.save();
-            this._authenticated$.next(true);
-          }),
-          map(me => {
-            if (me.id && me.name) {
-              const user: User = {
-                id: me.id,
-                name: me.name,
-                picture: me.picture ?? null
-              };
-              return user;
-            }
-            return null;
-          }));
-    } else {
-      return throwError(() => new Error('Invalid authentication informations.'));
-    }
+  private async getMe(options?: { group: string, userId?: string, password: string }): Promise<Me> {
+    const group: string = options?.group ?? this._auth.group ?? '';
+    const userId: string | null = options?.userId ?? this._auth.userId ?? null;
+    const password: string = options?.password ?? this._auth.password ?? '';
+
+    const token: string | null = this.getToken(group, userId, password);
+    const authorization = `Basic ${token}`;
+
+    return await firstValueFrom(
+      this.http.get<Me>('/api/me', { headers: { 'Authorization': authorization } })
+    );
   }
 
-  private getToken(group: string | null, userId: string | null, password: string | null): string | null {
-    if (!group || !password) {
-      return null;
+  private getToken(group: string, userId: string | null, password: string): string {
+    if (!group?.length || !password?.length) {
+      throw new Error('group and password are required.');
     }
 
-    const login: string = userId ? `${group}@${userId}` : group;
+    const login: string = userId?.length ? `${group}@${userId}` : group;
     return window.btoa(`${login}:${password}`);
   }
 
-  private load(): void {
-    const auth: Auth | null = AuthService.validateAuth(this.storage.getItem<Auth>('auth'));
-    if (auth) {
-      this._auth.group = auth.group;
-      this._auth.password = auth.password;
-      this._auth.userId = auth.userId;
-      this._authenticated$.next(true);
-      this._userId$.next(auth.userId);
-    } else {
-      this.storage.removeItem('auth');
-    }
-  }
-
   private save(): void {
-    this.storage.setItem('auth', this._auth);
+    this.storage.setItem(AuthService.AUTH_STORAGE_KEY, this._auth);
   }
 
-  private static validateAuth(auth: Auth | null): Auth | null {
+  private restoreAuth(): Auth | null {
+    const auth: Auth | null = this.storage.getItem<Auth>(AuthService.AUTH_STORAGE_KEY);
     let result: Auth | null = null;
 
-    // validate auth
     if (typeof auth?.group === 'string'
-      && typeof auth?.password === 'string'
-      && typeof auth?.userId === 'string') {
+      && typeof auth?.password === 'string') {
       result = {
         group: auth.group,
         password: auth.password,
-        userId: auth.userId
+        userId: null
       }
+    }
+
+    if (result && typeof auth?.userId === 'string') {
+      result.userId = auth.userId;
     }
 
     return result;

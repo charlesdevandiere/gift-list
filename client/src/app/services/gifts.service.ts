@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, throwError } from 'rxjs';
 import { Gift } from '../models/gift.model';
-import { User } from '../models/user.model';
 import { AppStorage } from '../utils/app-storage';
 import { AuthService } from './auth.service';
 
@@ -18,11 +17,6 @@ export class GiftsService {
   public constructor(
     private readonly authService: AuthService,
     private readonly http: HttpClient) { }
-
-  public getCart(): Observable<User[]> {
-    const url = '/api/me/cart';
-    return this.http.get<User[]>(url);
-  }
 
   public getUserGifts(userId: string, options?: { noCache?: boolean }): Observable<Gift[]> {
     if (!userId) {
@@ -53,24 +47,24 @@ export class GiftsService {
   }
 
   public addGift(gift: { name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `/api/users/${this.authService.userId}/gifts`;
+    const url = `/api/users/${this.authService.me?.id}/gifts`;
     return this.http.post<void>(url, gift)
       .pipe(
         tap(() => {
-          if (this.authService.userId) {
-            this.clearCache(this.authService.userId);
+          if (this.authService.me?.id) {
+            this.clearCache(this.authService.me?.id);
           }
         })
       );
   }
 
   public updateGift(gift: { id: string, name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `/api/users/${this.authService.userId}/gifts/${gift.id}`;
+    const url = `/api/users/${this.authService.me?.id}/gifts/${gift.id}`;
     return this.http.put<void>(url, gift)
       .pipe(
         tap(() => {
-          if (this.authService.userId) {
-            this.clearCache(this.authService.userId);
+          if (this.authService.me?.id) {
+            this.clearCache(this.authService.me?.id);
           }
         })
       );
@@ -97,12 +91,12 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'));
     }
 
-    const url = `/api/users/${this.authService.userId}/gifts/${id}`;
+    const url = `/api/users/${this.authService.me?.id}/gifts/${id}`;
     return this.http.delete<void>(url)
       .pipe(
         tap(() => {
-          if (this.authService.userId) {
-            this.clearCache(this.authService.userId);
+          if (this.authService.me?.id) {
+            this.clearCache(this.authService.me?.id);
           }
         })
       );
@@ -116,12 +110,12 @@ export class GiftsService {
     let index = 0;
     const body: { id: string, order: number }[] = gifts.map(gift => ({ id: gift.id, order: index++ }));
 
-    const url = `/api/users/${this.authService.userId}/gifts`;
+    const url = `/api/users/${this.authService.me?.id}/gifts`;
     return this.http.patch<void>(url, body)
       .pipe(
         tap(() => {
-          if (this.authService.userId) {
-            this.clearCache(this.authService.userId);
+          if (this.authService.me?.id) {
+            this.clearCache(this.authService.me?.id);
           }
         })
       );

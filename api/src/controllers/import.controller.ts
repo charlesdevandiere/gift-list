@@ -1,8 +1,7 @@
-import { RequestHandler, Router } from 'express'
+import { Router } from 'express'
 import multer from 'multer'
 import Papa from 'papaparse'
-import passport from 'passport'
-import { AuthenticatedUsed } from '../auth'
+import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
 import { Gift, User } from '../generated/client'
 import { logger } from '../logger'
@@ -15,7 +14,7 @@ export const importController = Router()
 
 importController.post(
   '/import',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   upload.single('file'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group

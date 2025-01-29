@@ -5,11 +5,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 import { Gift } from '../../models/gift.model';
-import { User } from '../../models/user.model';
+import { User, UserWithGifts } from '../../models/user.model';
 import { GiftsService } from '../../services/gifts.service';
 import { ToastsService } from '../../services/toasts.service';
 import { AppTranslations } from '../../utils/app-translations';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { MeService } from '../../services/me.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -29,6 +30,7 @@ export class CartPageComponent implements OnInit {
   public constructor(
     public translations: AppTranslations,
     private readonly giftsService: GiftsService,
+    private readonly meService: MeService,
     private readonly modalService: NgbModal,
     private readonly toastsService: ToastsService) { }
 
@@ -68,8 +70,8 @@ export class CartPageComponent implements OnInit {
 
   private loadCart(): void {
     this.loading$.next(true);
-    this.giftsService.getCart().subscribe({
-      next: (cart: User[]) => {
+    this.meService.getCart().subscribe({
+      next: (cart: UserWithGifts[]) => {
         this.cart = cart.map(item => ({ name: item.name, gifts: item.gifts ?? [] }));
       },
       error: (err) => {

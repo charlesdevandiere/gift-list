@@ -1,16 +1,15 @@
-import { RequestHandler, Router } from 'express'
-import passport from 'passport'
-import { AuthenticatedUsed } from '../auth'
+import { Router } from 'express'
+import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
-import { logger } from '../logger'
 import { User } from '../generated/client'
+import { logger } from '../logger'
 
 export const userController = Router()
 
 // list
 userController.get(
   '/users',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
     const data = await db.usersOnGroups.findMany({
@@ -27,7 +26,7 @@ userController.get(
 // order
 userController.patch(
   '/users',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
     const body = req.body as { userId: string, order: number }[]
@@ -59,7 +58,7 @@ userController.patch(
 // get
 userController.get(
   '/users/:id',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const user: User | null = await db.user.findFirst({
       where: { id: req.params.id }
@@ -76,7 +75,7 @@ userController.get(
 // create
 userController.post(
   '/users',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const group: string = (req.user as AuthenticatedUsed).group
     const body = req.body as { name: string | null, picture: string | null }
@@ -127,7 +126,7 @@ userController.post(
 // update
 userController.put(
   '/users/:id',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     const body = req.body as { name: string | null, picture: string | null }
 
@@ -165,7 +164,7 @@ userController.put(
 // delete
 userController.delete(
   '/users/:id',
-  passport.authenticate('user', { session: false }) as RequestHandler,
+  authenticate('user'),
   async (req, res) => {
     if ((await db.user.count({ where: { id: req.params.id } })) == 0) {
       res.status(404).send()

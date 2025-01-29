@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from '../../models/user.model';
 import { AppTranslations } from '../../utils/app-translations';
 import { AuthService } from '../../services/auth.service';
@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class UserListComponent {
 
-  protected readonly connectedUserId$: Observable<string | null> = this.authService.userId$;
+  protected readonly connectedUserId$: Observable<string | null> = this.authService.me$.pipe(map(me => me?.id ?? null));
 
   @Input()
   public selectedUser: User | null = null;

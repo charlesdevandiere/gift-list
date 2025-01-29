@@ -12,6 +12,7 @@ import { ToastsService } from '../../services/toasts.service';
 import { AppTranslations } from '../../utils/app-translations';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 import { ShareModalComponent } from '../modals/share-modal/share-modal.component';
+import { Me } from '../../models/me.model';
 
 interface State {
   connectedUserId: string | null;
@@ -59,12 +60,12 @@ export class UserGiftsComponent implements OnDestroy {
     private readonly toastsService: ToastsService,
     public translations: AppTranslations) {
     this.state$ = this._state$.asObservable();
-    this.authService.userId$
+    this.authService.me$
       .pipe(takeUntil(this._unsubscriber$))
-      .subscribe((value: string | null) => {
+      .subscribe((value: Me | null) => {
         const state: State = {
           ...this._state$.getValue(),
-          connectedUserId: value
+          connectedUserId: value?.id ?? null
         };
         this._state$.next(state);
       });
@@ -144,7 +145,7 @@ export class UserGiftsComponent implements OnDestroy {
 
     if (!gift.offered_by) {
       action = this.giftsService.offerGift(gift);
-    } else if (gift.offered_by === this.authService.userId) {
+    } else if (gift.offered_by === this.authService.me?.id) {
       action = this.giftsService.unofferGift(gift);
     }
 

@@ -1,6 +1,6 @@
 import { genSalt, hash } from 'bcrypt'
-import { RequestHandler, Router } from 'express'
-import passport from 'passport'
+import { Router } from 'express'
+import { authenticate } from '../auth'
 import { db } from '../db'
 import { Group } from '../generated/client'
 import { logger } from '../logger'
@@ -10,7 +10,7 @@ export const groupController = Router()
 // list
 groupController.get(
   '/groups',
-  passport.authenticate('admin', { session: false }) as RequestHandler,
+  authenticate('admin'),
   async (req, res) => {
     const groups: { name: string }[] = await db.group.findMany({ select: { name: true } })
     res.send(groups)
@@ -19,7 +19,7 @@ groupController.get(
 // get
 groupController.get(
   '/groups/:name',
-  passport.authenticate('admin', { session: false }) as RequestHandler,
+  authenticate('admin'),
   async (req, res) => {
     const group: { name: string } | null = await db.group.findFirst({
       select: { name: true },
@@ -37,7 +37,7 @@ groupController.get(
 // create
 groupController.post(
   '/groups',
-  passport.authenticate('admin', { session: false }) as RequestHandler,
+  authenticate('admin'),
   async (req, res) => {
     const body = req.body as { name: string | null, password: string | null }
 
@@ -82,7 +82,7 @@ groupController.post(
 // change password
 groupController.put(
   '/groups/:name',
-  passport.authenticate('admin', { session: false }) as RequestHandler,
+  authenticate('admin'),
   async (req, res) => {
     const body = req.body as { password: string | null }
 
@@ -116,7 +116,7 @@ groupController.put(
 // delete
 groupController.delete(
   '/groups/:name',
-  passport.authenticate('admin', { session: false }) as RequestHandler,
+  authenticate('admin'),
   async (req, res) => {
     if ((await db.group.count({ where: { name: req.params.name } })) == 0) {
       res.status(404).send()

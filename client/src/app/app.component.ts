@@ -6,15 +6,13 @@ import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { MenuModalComponent } from './components/modals/menu-modal/menu-modal.component';
 import { ToastsComponent } from './components/toasts/toasts.component';
-import { User } from './models/user.model';
+import { Me } from './models/me.model';
 import { AuthService } from './services/auth.service';
-import { UsersService } from './services/users.service';
 import { AppTranslations } from './utils/app-translations';
 
 interface State {
   autheticated: boolean;
-  group: string | null;
-  user: User | null;
+  me: Me | null;
 };
 
 @Component({
@@ -31,7 +29,7 @@ interface State {
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  protected state$: BehaviorSubject<State> = new BehaviorSubject<State>({ autheticated: false, group: null, user: null });
+  protected state$: BehaviorSubject<State> = new BehaviorSubject<State>({ autheticated: false, me: null });
 
   private readonly _unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -39,8 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public translations: AppTranslations,
     private readonly authService: AuthService,
     private readonly modalService: NgbModal,
-    title: Title,
-    private readonly usersService: UsersService) {
+    title: Title) {
     title.setTitle(this.translations.title);
   }
 
@@ -50,31 +47,18 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((authenticated: boolean) => {
         const state: State = {
           ...this.state$.getValue(),
-          autheticated: authenticated,
-          group: this.authService.group
+          autheticated: authenticated
         };
         this.state$.next(state);
       });
-    this.authService.userId$
+    this.authService.me$
       .pipe(takeUntil(this._unsubscriber$))
-      .subscribe((userId: string | null) => {
-        if (userId) {
-          this.usersService.getUser(userId)
-            .subscribe((user: User) => {
-              const state: State = {
-                ...this.state$.getValue(),
-                user: user
-              };
-              this.state$.next(state);
-            });
-        }
-        else {
-          const state: State = {
-            ...this.state$.getValue(),
-            user: null
-          };
-          this.state$.next(state);
-        }
+      .subscribe((me: Me | null) => {
+        const state: State = {
+          ...this.state$.getValue(),
+          me: me
+        };
+        this.state$.next(state);
       });
   }
 

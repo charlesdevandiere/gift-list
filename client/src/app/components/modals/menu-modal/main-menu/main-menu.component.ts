@@ -32,7 +32,7 @@ export class MainMenuComponent {
 
   protected async editProfile(): Promise<void> {
     this.dismiss.emit();
-    await this.router.navigate(['/user', this.authService.userId]);
+    await this.router.navigate(['/user', this.authService.me?.id]);
   }
 
   protected async addUser(): Promise<void> {

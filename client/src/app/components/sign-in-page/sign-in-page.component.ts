@@ -58,9 +58,10 @@ export class SignInPageComponent implements OnInit {
     }
 
     try {
-      await firstValueFrom(this.authService.signIn(group, password));
-    } catch {
+      await this.authService.signIn(group, password);
+    } catch (error: unknown) {
       this.toastsService.show(this.translations.signIn.wrongGroupOrPasswordMessage, { severity: 'danger' });
+      console.error(error);
       throw new Error('wrong group or password.');
     }
 
@@ -72,7 +73,7 @@ export class SignInPageComponent implements OnInit {
   }
 
   public async selectUser(user: User | null): Promise<void> {
-    this.authService.setCurrentUser(user?.id ?? null);
+    await this.authService.setCurrentUser(user?.id ?? null);
     await this.router.navigate(['/']);
   }
 
