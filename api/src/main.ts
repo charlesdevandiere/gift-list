@@ -64,7 +64,7 @@ app.use('/api/', importController)
 
 // client
 app.use(express.static(path.join(process.cwd(), 'www')))
-app.use((_req, res) => {
+app.use(/^(?!\/api)(.*)$/, (_req, res) => {
   res.sendFile(path.join(process.cwd(), 'www', 'index.html'))
 })
 

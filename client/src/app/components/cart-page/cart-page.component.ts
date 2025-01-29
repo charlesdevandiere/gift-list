@@ -5,12 +5,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ConfirmModalData } from '../../models/confirm-modal-data.model';
 import { Gift } from '../../models/gift.model';
-import { User, UserWithGifts } from '../../models/user.model';
+import { UserWithGifts } from '../../models/user.model';
 import { GiftsService } from '../../services/gifts.service';
+import { MeService } from '../../services/me.service';
 import { ToastsService } from '../../services/toasts.service';
 import { AppTranslations } from '../../utils/app-translations';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
-import { MeService } from '../../services/me.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -25,8 +25,6 @@ export class CartPageComponent implements OnInit {
 
   protected cart: { name: string, gifts: Gift[] }[] = [];
 
-  protected users: User[] = [];
-
   public constructor(
     public translations: AppTranslations,
     private readonly giftsService: GiftsService,
@@ -38,7 +36,7 @@ export class CartPageComponent implements OnInit {
     this.loadCart();
   }
 
-  public async unoffer(gift: Gift): Promise<void> {
+  public async unoffer(userId: string, gift: Gift): Promise<void> {
     const data: ConfirmModalData = {
       message: this.translations.cart.unoffer(gift.name),
       yesButton: {
@@ -55,7 +53,7 @@ export class CartPageComponent implements OnInit {
     try {
       await modal.result;
       try {
-        await firstValueFrom(this.giftsService.unofferGift(gift));
+        await firstValueFrom(this.giftsService.unofferGift(userId, gift.id));
         this.loadCart();
       }
       catch (err) {

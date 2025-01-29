@@ -141,12 +141,17 @@ export class UserGiftsComponent implements OnDestroy {
   }
 
   public async toggleOffer(gift: Gift): Promise<void> {
+    const userId: string | null = this._state$.value.user?.id ?? null;
+    if (!userId) {
+      throw new Error('userId cannot be null.');
+    }
+
     let action: Observable<void> | null = null;
 
     if (!gift.offered_by) {
-      action = this.giftsService.offerGift(gift);
+      action = this.giftsService.offerGift(userId, gift.id);
     } else if (gift.offered_by === this.authService.me?.id) {
-      action = this.giftsService.unofferGift(gift);
+      action = this.giftsService.unofferGift(userId, gift.id);
     }
 
     const offerings = this._state$.getValue().offerings;
