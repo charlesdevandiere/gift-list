@@ -148,10 +148,10 @@ export class UserGiftsComponent implements OnDestroy {
 
     let action: Observable<void> | null = null;
 
-    if (!gift.offered_by) {
-      action = this.giftsService.offerGift(userId, gift.id);
-    } else if (gift.offered_by === this.authService.me?.id) {
-      action = this.giftsService.unofferGift(userId, gift.id);
+    if (!gift.offeredByUserId) {
+      action = this.giftsService.offerGift(gift);
+    } else if (gift.offeredByUserId === this.authService.me?.id) {
+      action = this.giftsService.unofferGift(gift);
     }
 
     const offerings = this._state$.getValue().offerings;

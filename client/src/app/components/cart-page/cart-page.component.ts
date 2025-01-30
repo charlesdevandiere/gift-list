@@ -36,7 +36,7 @@ export class CartPageComponent implements OnInit {
     this.loadCart();
   }
 
-  public async unoffer(userId: string, gift: Gift): Promise<void> {
+  public async unoffer(gift: Gift): Promise<void> {
     const data: ConfirmModalData = {
       message: this.translations.cart.unoffer(gift.name),
       yesButton: {
@@ -53,7 +53,7 @@ export class CartPageComponent implements OnInit {
     try {
       await modal.result;
       try {
-        await firstValueFrom(this.giftsService.unofferGift(userId, gift.id));
+        await firstValueFrom(this.giftsService.unofferGift(gift));
         this.loadCart();
       }
       catch (err) {

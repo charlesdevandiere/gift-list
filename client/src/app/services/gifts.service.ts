@@ -70,19 +70,19 @@ export class GiftsService {
       );
   }
 
-  public offerGift(userId: string, giftId: string): Observable<void> {
-    const url = `/api/users/${userId}/gifts/${giftId}/offer`;
+  public offerGift(gift: Gift): Observable<void> {
+    const url = `/api/users/${gift.userId}/gifts/${gift.id}/offer`;
     return this.http.post<void>(url, null)
       .pipe(
-        tap(() => this.clearCache(userId))
+        tap(() => this.clearCache(gift.userId))
       );
   }
 
-  public unofferGift(userId: string, giftId: string): Observable<void> {
-    const url = `/api/users/${userId}/gifts/${giftId}/unoffer`;
+  public unofferGift(gift: Gift): Observable<void> {
+    const url = `/api/users/${gift.userId}/gifts/${gift.id}/unoffer`;
     return this.http.post<void>(url, null)
       .pipe(
-        tap(() => this.clearCache(userId))
+        tap(() => this.clearCache(gift.userId))
       );
   }
 

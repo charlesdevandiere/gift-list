@@ -45,8 +45,8 @@
       @if (!state.loading) {
       @for (gift of state.gifts; track gift.id; let index = $index) {
       <li class="list-group-item d-flex flex-row align-items-center"
-          [class.list-group-item-primary]="gift.offered_by === state.connectedUserId"
-          [class.list-group-item-secondary]="gift.offered_by && gift.offered_by !== state.connectedUserId">
+          [class.list-group-item-primary]="gift.offeredByUserId === state.connectedUserId"
+          [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== state.connectedUserId">
         <div class="flex-grow-1 py-2">{{ gift.name }}</div>
         @if (!state.reordering) {
         @if (gift.link1) {
@@ -96,7 +96,7 @@
         <button type="button"
                 class="btn btn-link me-2"
                 (click)="toggleOffer(gift)"
-                [disabled]="gift.offered_by && gift.offered_by !== state.connectedUserId || state.offerings.indexOf(gift.id) >= 0">
+                [disabled]="gift.offeredByUserId && gift.offeredByUserId !== state.connectedUserId || state.offerings.indexOf(gift.id) >= 0">
           @if (state.offerings.indexOf(gift.id) >= 0) {
           <span class="spinner-border spinner-border-sm"
                 aria-hidden="true"></span>
@@ -104,7 +104,7 @@
                 role="status">Loading...</span>
           }
           @else {
-          <i [class]="gift.offered_by === state.connectedUserId ? 'bi-gift-fill' : 'bi-gift'"
+          <i [class]="gift.offeredByUserId === state.connectedUserId ? 'bi-gift-fill' : 'bi-gift'"
              aria-label="offer"></i>
           }
         </button>
