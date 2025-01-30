@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, throwError } from 'rxjs';
-import { v4 } from 'uuid';
 import { User } from '../models/user.model';
 import { AppStorage } from '../utils/app-storage';
 
@@ -49,8 +48,7 @@ export class UsersService {
 
   public addUser(user: { name: string, picture?: string | null }): Observable<void> {
     const url = '/api/users';
-    const id = v4();
-    return this.http.post<void>(url, { ...user, id })
+    return this.http.post<void>(url, user)
       .pipe(
         tap(() => this.cache = null)
       );
