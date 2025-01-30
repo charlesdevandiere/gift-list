@@ -10,7 +10,8 @@
       "name": "API",
       "skipFiles": [
         "<node_internals>/**",
-        "**/node_modules/**"
+        "**/node_modules/**",
+        "**/generated/**"
       ],
       "runtimeArgs": [
         "run-script",

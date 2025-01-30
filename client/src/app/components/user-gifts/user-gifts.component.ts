@@ -95,8 +95,8 @@ export class UserGiftsComponent implements OnDestroy {
       await firstValueFrom(this.giftsService.deleteGift(gift.id));
       await this.getUserGifts({ noLoader: true })
     }
-    catch {
-      void 0;
+    catch (err) {
+      console.error(err);
     }
   }
 

@@ -4,6 +4,7 @@ import { Observable, of, tap, throwError } from 'rxjs';
 import { Gift } from '../models/gift.model';
 import { AppStorage } from '../utils/app-storage';
 import { AuthService } from './auth.service';
+import { GiftOrder } from '../models/gift-order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -108,7 +109,7 @@ export class GiftsService {
     }
 
     let index = 0;
-    const body: { id: string, order: number }[] = gifts.map(gift => ({ id: gift.id, order: index++ }));
+    const body: GiftOrder[] = gifts.map(gift => ({ giftId: gift.id, order: index++ }));
 
     const url = `/api/users/${this.authService.me?.id}/gifts`;
     return this.http.patch<void>(url, body)
