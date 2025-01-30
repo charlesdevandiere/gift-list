@@ -44,7 +44,7 @@
     <ul class="list-group mb-6">
       @if (!state.loading) {
       @for (gift of state.gifts; track gift.id; let index = $index) {
-      <li class="list-group-item d-flex flex-row align-items-center"
+      <li class="list-group-item d-flex flex-row align-items-center pe-0"
           [class.list-group-item-primary]="gift.offeredByUserId === state.connectedUserId"
           [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== state.connectedUserId">
         <div class="flex-grow-1 py-2">{{ gift.name }}</div>

@@ -129,15 +129,20 @@ export class UserGiftsComponent implements OnDestroy {
     await this.getUserGifts();
   }
 
-  protected share(gift: Gift): void {
-    let text: string = gift.name;
-    [gift.link1, gift.link2, gift.link3].forEach(link => {
-      if (link) {
-        text += ` ${link}`;
-      }
-    });
-    const modal = this.modalService.open(ShareModalComponent);
-    (modal.componentInstance as ShareModalComponent).text = text;
+  protected async share(gift: Gift): Promise<void> {
+    const data: ShareData = {
+      url: gift.link1 ?? undefined,
+      title: gift.name,
+      text: [gift.link1, gift.link2, gift.link3].filter(link => link?.length).join(' ')
+    };
+
+    if (!!navigator.canShare && navigator.canShare(data)) {
+      await navigator.share(data);
+    }
+    else {
+      const modal = this.modalService.open(ShareModalComponent);
+      (modal.componentInstance as ShareModalComponent).data = data;
+    }
   }
 
   public async toggleOffer(gift: Gift): Promise<void> {

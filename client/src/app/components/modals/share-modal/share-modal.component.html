@@ -1,24 +1,19 @@
 <div class="modal-header">
-  <h5 class="modal-title"
-      id="shareModalLabel">{{ translations.share.title }}</h5>
-  <button type="button"
-          class="btn-close"
-          (click)="modal.dismiss()"
-          aria-label="Close"></button>
+  <h5 class="modal-title" id="shareModalLabel">{{ translations.share.title }}</h5>
+  <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
 </div>
 <div class="modal-body">
-  <input #textToShare
-         type="text"
-         class="form-control"
-         [value]="text"
-         aria-label="Text to share"
-         readonly>
+  @if (data?.title?.length) {
+  <div>{{ data?.title }}</div>
+  }
+  @if (data?.text?.length) {
+  <div>{{ data?.text }}</div>
+  }
 </div>
 <div class="modal-footer">
-  <button type="button"
-          class="btn btn-secondary"
-          (click)="modal.dismiss()">{{ translations.misc.cancel }}</button>
-  <button type="button"
-          class="btn btn-primary"
-          (click)="copy()">{{ translations.share.copyToClipboard }}</button>
+  <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">{{ translations.misc.cancel }}</button>
+  <button type="button" class="btn btn-primary" (click)="copy()">
+    <i class="bi-clipboard"></i>
+    <span class="ms-2">{{ translations.share.copyToClipboard }}</span>
+  </button>
 </div>

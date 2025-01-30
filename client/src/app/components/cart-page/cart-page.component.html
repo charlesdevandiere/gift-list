@@ -22,7 +22,7 @@
         <div class="col-12 col-lg-6 offset-lg-3">
           <ul class="list-group">
             @for (gift of group.gifts; track gift.id) {
-            <li class="list-group-item d-flex flex-row align-items-center">
+            <li class="list-group-item d-flex flex-row align-items-center pe-0">
               <div class="flex-grow-1 py-2">{{ gift.name }}</div>
               @if (gift.link1) {
               <a class="btn btn-link"

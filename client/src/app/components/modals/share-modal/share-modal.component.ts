@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastsService } from '../../../services/toasts.service';
 import { AppTranslations } from '../../../utils/app-translations';
@@ -13,22 +13,20 @@ import { AppTranslations } from '../../../utils/app-translations';
 export class ShareModalComponent {
 
   @Input()
-  public text: string | null = null;
-
-  @ViewChild('textToShare', { static: true })
-  public input!: ElementRef<HTMLInputElement>;
+  public data: ShareData | null = null;
 
   public constructor(
-    public modal: NgbActiveModal,
-    public toastsService: ToastsService,
-    public translations: AppTranslations) { }
+    public readonly modal: NgbActiveModal,
+    public readonly translations: AppTranslations,
+    private readonly toastsService: ToastsService) { }
 
-  public copy(): void {
-    this.input.nativeElement.focus();
-    this.input.nativeElement.select();
-    document.execCommand('copy');
-    this.modal.close();
-    this.toastsService.show(this.translations.share.successMessage, { severity: 'success' });
+  public async copy(): Promise<void> {
+    if (this.data) {
+      const text: string = [this.data.title, this.data.text].filter(str => str?.length).join(' ');
+      await navigator.clipboard.writeText(text);
+      this.modal.close();
+      this.toastsService.show(this.translations.share.successMessage, { severity: 'success' });
+    }
   }
 
 }
