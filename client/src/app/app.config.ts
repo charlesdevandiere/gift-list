@@ -6,6 +6,7 @@ import { ColorModesService } from './services/color-modes.service';
 import { AppTranslations } from './utils/app-translations';
 import { AuthInterceptor } from './utils/auth.interceptor';
 import { AuthService } from './services/auth.service';
+import { provideServiceWorker } from '@angular/service-worker';
 
 async function initializeApp(): Promise<void> {
   const colorModesService: ColorModesService = inject(ColorModesService);
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true
     },
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    provideServiceWorker('ngsw-worker.js')
   ]
 };
