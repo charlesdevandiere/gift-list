@@ -65,7 +65,7 @@ export class SignInPageComponent implements OnInit {
       throw new Error('wrong group or password.');
     }
 
-    const users: User[] = await firstValueFrom(this.usersService.getUsers({ noCache: true }));
+    const users: User[] = await firstValueFrom(this.usersService.getUsers());
     this._state$.next({
       authenticated: true,
       users: users

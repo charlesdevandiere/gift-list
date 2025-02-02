@@ -56,7 +56,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.loadUsers({ noCache: true });
+    this.loadUsers();
   }
 
   public async selectUser(user: User): Promise<void> {
@@ -72,9 +72,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadUsers(options?: { noCache: boolean }): void {
+  private loadUsers(): void {
     this.loading$.next(true);
-    this.usersService.getUsers(options).subscribe({
+    this.usersService.getUsers().subscribe({
       next: (users: User[]): void => {
         this.users = users;
         this.getSelectedUser();

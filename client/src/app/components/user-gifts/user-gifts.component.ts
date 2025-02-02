@@ -216,7 +216,7 @@ export class UserGiftsComponent implements OnDestroy {
       }
 
       try {
-        const gifts: Gift[] = await firstValueFrom(this.giftsService.getUserGifts(user.id, { noCache: options?.noCache }));
+        const gifts: Gift[] = await firstValueFrom(this.giftsService.getUserGifts(user.id));
         const state: State = {
           ...this._state$.getValue(),
           gifts: gifts
