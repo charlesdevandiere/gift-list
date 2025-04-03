@@ -1,7 +1,7 @@
 export interface ImportResult {
   success?: {
-    importedUser: Record<string, 'already exists' | 'imported'>
-    importedGift: Record<string, number>
+    importedUsers: Record<string, 'already exists' | 'imported'>
+    importedGifts: Record<string, number>
   }
   error?: string
 }

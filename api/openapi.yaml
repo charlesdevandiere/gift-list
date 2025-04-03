@@ -461,6 +461,8 @@ paths:
   /api/export:
     get:
       summary: Exports gift lists
+      tags:
+        - ImportExport
       security:
         - userAuth: []
       responses:
@@ -477,6 +479,8 @@ paths:
   /api/import:
     post:
       summary: Imports gift lists
+      tags:
+        - ImportExport
       security:
         - userAuth: []
       requestBody:
@@ -495,6 +499,10 @@ paths:
       responses:
         '201':
           description: The gift lists have been imported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResult'
 
 # components
 
@@ -848,6 +856,38 @@ components:
             offeredBy: fd48dca9-fbd5-4d21-b729-da09d5a3a835
             order: 1
 
+    # Import
+
+    ImportResult:
+      type: object
+      properties:
+        success:
+          type: object
+          properties:
+            importedUsers:
+              type: object
+              additionalProperties:
+                type: string
+              description: The imported users
+            importedGifts:
+              type: object
+              additionalProperties:
+                type: number
+              description: The imported gifts by user
+          description: The success result
+        error:
+          type: string
+          description: The error message
+      example:
+        success:
+          importedUsers:
+            Obiwan: already exists
+            Anakin: imported
+          importedGifts:
+            Obiwan: 5
+            Anakin: 3
+
+
 tags:
   - name: Auth
     description: Authentication
@@ -857,3 +897,5 @@ tags:
     description: The users
   - name: Gifts
     description: The gifts
+  - name: ImportExport
+    description: Import / Export

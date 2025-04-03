@@ -25,17 +25,17 @@ importController.post(
     }
 
     const csv: string = req.file.buffer.toString()
-    await importGroup(group, csv)
+    const result: ImportResult = await importGroup(group, csv)
 
     logger.info(`group '${group}' exported`)
 
-    res.status(201).send()
+    res.status(201).send(result)
   })
 
-async function importGroup(group: string, body: string): Promise<void> {
+async function importGroup(group: string, body: string): Promise<ImportResult> {
   const fileContent: string = body.replace('ï»¿', '')
   const csv: Papa.ParseResult<CsvGift> = Papa.parse<CsvGift>(fileContent, { delimiter: '', header: true, skipEmptyLines: true })
-  await importCsvData(group, csv.data)
+  return await importCsvData(group, csv.data)
 }
 
 async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResult> {
@@ -58,13 +58,14 @@ async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResu
         // user
         const importedUser = await importUser(group, existingUsers, index, csvGift)
         if (!result.success) {
-          result.success = { importedUser: {}, importedGift: {} }
+          result.success = { importedUsers: {}, importedGifts: {} }
         }
-        result.success.importedUser[csvGift.user] = importedUser.status
+        result.success.importedUsers[csvGift.user] = importedUser.status
         const user: User = importedUser.user
 
         // gift
         await importGift(user, index, csvGift)
+        result.success.importedGifts[csvGift.user] = (result.success.importedGifts[csvGift.user] ?? 0) + 1
       }
     })
   } catch (err) {
