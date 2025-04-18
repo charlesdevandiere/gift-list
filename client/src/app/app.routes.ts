@@ -13,6 +13,6 @@ export const routes: Routes = [
   { path: 'new-gift', component: GiftPageComponent, canActivate: [authGuard] },
   { path: 'gift/:id', component: GiftPageComponent, canActivate: [authGuard] },
   { path: 'cart', component: CartPageComponent, canActivate: [authGuard] },
-  { path: 'import-export', loadComponent: () => import('./components/import-export-page/import-export-page.component').then(mod => mod.ImportExportPageComponent), canActivate: [authGuard] },
+  { path: 'import', loadComponent: () => import('./components/import-page/import-page.component').then(mod => mod.ImportPageComponent), canActivate: [authGuard] },
   { path: 'sign-in', component: SignInPageComponent }
 ];

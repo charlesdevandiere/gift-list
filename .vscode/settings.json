@@ -1,5 +1,10 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "editor.formatOnSave": true,
   "files.autoSave": "off",
+  "html.format.wrapAttributes": "force-aligned",
   "sonarlint.connectedMode.project": {
     "connectionId": "charlesdevandiere",
     "projectKey": "charlesdevandiere_gift-list"

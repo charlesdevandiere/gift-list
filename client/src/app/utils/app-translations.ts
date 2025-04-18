@@ -49,13 +49,12 @@ export class AppTranslations implements Translations {
     wrongGroupOrPasswordMessage: '',
     selectUser: ''
   };
-  public importExport = {
+  public import = {
     title: '',
     downloadTemplateFile: '',
     csvFile: '',
     browse: '',
     import: '',
-    export: '',
     details: '',
     errorMessage: '',
     successMessage: ''

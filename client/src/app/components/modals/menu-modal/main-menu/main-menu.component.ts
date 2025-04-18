@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuPage } from '../menu-modal.component';
-import { ColorModesService } from '../../../../services/color-modes.service';
 import { User } from '../../../../models/user.model';
-import { AppTranslations } from '../../../../utils/app-translations';
 import { AuthService } from '../../../../services/auth.service';
+import { ColorModesService } from '../../../../services/color-modes.service';
+import { ExportService } from '../../../../services/export.service';
+import { AppTranslations } from '../../../../utils/app-translations';
+import { MenuPage } from '../menu-modal.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -28,6 +29,7 @@ export class MainMenuComponent {
     public colorModesService: ColorModesService,
     public translations: AppTranslations,
     private readonly authService: AuthService,
+    private readonly exportService: ExportService,
     private readonly router: Router) { }
 
   protected async editProfile(): Promise<void> {
@@ -44,9 +46,14 @@ export class MainMenuComponent {
     this.move.emit('change-user');
   }
 
-  protected async importExport(): Promise<void> {
+  protected async import(): Promise<void> {
     this.dismiss.emit();
-    await this.router.navigate(['/import-export']);
+    await this.router.navigate(['/import']);
+  }
+
+  protected export(): void {
+    this.dismiss.emit();
+    this.exportService.export();
   }
 
   protected async signOut(): Promise<void> {

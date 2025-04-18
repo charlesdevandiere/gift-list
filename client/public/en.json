@@ -1,5 +1,5 @@
 {
-  "$schema": "../translations.schema.json",
+  "$schema": "../src/translations.schema.json",
   "title": "Gift list",
   "menu": {
     "editProfile": "Edit profile",
@@ -46,13 +46,12 @@
     "wrongGroupOrPasswordMessage": "Incorrect group or password.",
     "selectUser": "Choose a profile"
   },
-  "importExport": {
+  "import": {
     "title": "Import / export gift lists",
     "downloadTemplateFile": "Download template file",
     "csvFile": "CSV file",
     "browse": "Browse",
     "import": "Import",
-    "export": "Export",
     "details": "Details",
     "errorMessage": "An error occurred while importing gift lists.",
     "successMessage": "Gift lists are successfuly imported."

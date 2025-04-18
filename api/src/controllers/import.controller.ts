@@ -27,7 +27,7 @@ importController.post(
     const csv: string = req.file.buffer.toString()
     const result: ImportResult = await importGroup(group, csv)
 
-    logger.info(`group '${group}' exported`)
+    logger.info(`group '${group}' imported`)
 
     res.status(201).send(result)
   })
@@ -39,7 +39,8 @@ async function importGroup(group: string, body: string): Promise<ImportResult> {
 }
 
 async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResult> {
-  const result: ImportResult = { }
+  logger.info(`import ${data.length} gifts`)
+  const result: ImportResult = {}
 
   try {
     await db.$transaction(async () => {

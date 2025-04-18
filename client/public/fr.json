@@ -1,5 +1,5 @@
 {
-  "$schema": "../translations.schema.json",
+  "$schema": "../src/translations.schema.json",
   "title": "Liste de cadeaux",
   "menu": {
     "editProfile": "Modifier son profil",
@@ -46,13 +46,12 @@
     "wrongGroupOrPasswordMessage": "Groupe ou mot de passe incorrect.",
     "selectUser": "Choisir un profil"
   },
-  "importExport": {
+  "import": {
     "title": "Importer / exporter des listes de cadeaux",
     "downloadTemplateFile": "Télécharger le modèle de fichier",
     "csvFile": "Fichier CSV",
     "browse": "Parcourir",
     "import": "Importer",
-    "export": "Exporter",
     "details": "Détails",
     "errorMessage": "Une erreur est survenue lors de l'import des listes de cadeaux.",
     "successMessage": "Les listes de cadeaux ont été importées avec succès."

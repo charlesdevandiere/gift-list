@@ -15,7 +15,7 @@ exportController.get(
 
     const csv: string = await exportGroup(group)
     const date: string = (new Date()).toISOString().split('T')[0]
-    const filename = `giftlist_${group}_${date}.csv`;
+    const filename = `giftlist_${group}_${date}.csv`.replace(/[\s<>:"/\\|?*]/, '_') // replace forbidden characters
 
     logger.info(`group '${group}' exported`)
 

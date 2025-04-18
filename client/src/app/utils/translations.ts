@@ -4,7 +4,7 @@ export interface Translations {
   menu: MenuTranslations;
   home: HomeTranslations;
   signIn: SignInTranslations;
-  importExport: ImportExportTranslations;
+  import: ImportTranslations;
   gift: GiftTranslations;
   share: ShareTranslations;
   misc: MiscellaneousTranslations;
@@ -64,13 +64,12 @@ export interface SignInTranslations {
   selectUser: string;
 }
 
-export interface ImportExportTranslations {
+export interface ImportTranslations {
   title: string;
   downloadTemplateFile: string;
   csvFile: string;
   browse: string;
   import: string;
-  export: string;
   details: string;
   errorMessage: string;
   successMessage: string;
