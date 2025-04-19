@@ -13,7 +13,6 @@ import { AppTranslations } from '../../utils/app-translations';
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule, RouterLink, AsyncPipe]
 })
@@ -123,7 +122,7 @@ export class UserPageComponent implements OnInit {
         await firstValueFrom(this.usersService.updateUser(user));
         this.eventBus.emit(UserPageComponent.UPDATE_USER_EVENT);
         if (this.authService.me?.id === this.userId) {
-          this.authService.setCurrentUser(user.id);
+          await this.authService.setCurrentUser(user.id);
         }
         this.toastsService.show(this.translations.user.userUpdatedMessage, { severity: 'success' });
         await this.router.navigate(['/']);

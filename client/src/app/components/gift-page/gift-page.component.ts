@@ -2,16 +2,15 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AppTranslations } from '../../utils/app-translations';
+import { Gift } from '../../models/gift.model';
 import { AuthService } from '../../services/auth.service';
 import { GiftsService } from '../../services/gifts.service';
 import { ToastsService } from '../../services/toasts.service';
-import { Gift } from '../../models/gift.model';
+import { AppTranslations } from '../../utils/app-translations';
 
 @Component({
   selector: 'app-gift-page',
   templateUrl: './gift-page.component.html',
-  styleUrls: ['./gift-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ReactiveFormsModule]
 })

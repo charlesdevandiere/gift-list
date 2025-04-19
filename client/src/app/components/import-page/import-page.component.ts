@@ -15,7 +15,6 @@ interface State {
 @Component({
   selector: 'app-import-page',
   templateUrl: './import-page.component.html',
-  styleUrls: ['./import-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, KeyValuePipe, RouterModule]
 })

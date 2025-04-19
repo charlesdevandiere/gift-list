@@ -2,13 +2,12 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { User } from '../../models/user.model';
-import { AppTranslations } from '../../utils/app-translations';
 import { AuthService } from '../../services/auth.service';
+import { AppTranslations } from '../../utils/app-translations';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe]
 })

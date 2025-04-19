@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChangeUserComponent } from '../../change-user/change-user.component';
-import { MainMenuComponent } from './main-menu/main-menu.component';
 import { User } from '../../../models/user.model';
-import { AppTranslations } from '../../../utils/app-translations';
 import { AuthService } from '../../../services/auth.service';
 import { UsersService } from '../../../services/users.service';
+import { AppTranslations } from '../../../utils/app-translations';
+import { ChangeUserComponent } from '../../change-user/change-user.component';
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 export type MenuPage = 'main' | 'change-user'
 
@@ -21,7 +21,6 @@ interface State {
   selector: 'app-menu-modal',
   imports: [AsyncPipe, ChangeUserComponent, MainMenuComponent],
   templateUrl: './menu-modal.component.html',
-  styleUrl: './menu-modal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuModalComponent implements OnDestroy, OnInit {
@@ -58,7 +57,7 @@ export class MenuModalComponent implements OnDestroy, OnInit {
   }
 
   protected async changeUser(user: User | null): Promise<void> {
-    this.authService.setCurrentUser(user?.id ?? null);
+    await this.authService.setCurrentUser(user?.id ?? null);
     this._state$.next({
       ...this._state$.value,
       user: user,

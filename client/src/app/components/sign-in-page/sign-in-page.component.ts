@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
-import { ChangeUserComponent } from '../change-user/change-user.component';
+import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { ToastsService } from '../../services/toasts.service';
-import { AppTranslations } from '../../utils/app-translations';
 import { UsersService } from '../../services/users.service';
-import { User } from '../../models/user.model';
+import { AppTranslations } from '../../utils/app-translations';
+import { ChangeUserComponent } from '../change-user/change-user.component';
 
 interface State {
   authenticated: boolean;
@@ -18,7 +18,6 @@ interface State {
 @Component({
   selector: 'app-sign-in-page',
   templateUrl: './sign-in-page.component.html',
-  styleUrls: ['./sign-in-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, ChangeUserComponent, ReactiveFormsModule]
 })

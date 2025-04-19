@@ -6,7 +6,6 @@ import { AppTranslations } from '../../../utils/app-translations';
 @Component({
   selector: 'app-share-modal',
   templateUrl: './share-modal.component.html',
-  styleUrls: ['./share-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true
 })

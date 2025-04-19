@@ -6,7 +6,6 @@ import { AppTranslations } from '../../../utils/app-translations';
 @Component({
   selector: 'app-confirm-modal',
   templateUrl: './confirm-modal.component.html',
-  styleUrls: ['./confirm-modal.component.scss'],
   standalone: true
 })
 export class ConfirmModalComponent {

@@ -5,7 +5,6 @@ import { AppTranslations } from '../../utils/app-translations';
 @Component({
   selector: 'app-change-user',
   templateUrl: './change-user.component.html',
-  styleUrls: ['./change-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: []
 })
