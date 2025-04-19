@@ -16,10 +16,10 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['out-tsc/', 'eslint.config.mjs', 'www/', 'src/generated/']
+    ignores: ['out-tsc/', 'eslint.config.mjs', 'hash.mjs', 'www/', 'src/generated/']
   },
   {
-    rules:{
+    rules: {
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {

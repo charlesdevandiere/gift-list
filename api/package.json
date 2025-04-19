@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "prestart": "tsc --sourceMap true",
     "start": "node --env-file=.env out-tsc/main.js",
-    "watch": "nodemon -w ./src -e 'ts,json' --exec \"npm start\""
+    "watch": "nodemon -w ./src -e 'ts,json' --exec \"npm start\"",
+    "hash-password": "node hash.mjs"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
