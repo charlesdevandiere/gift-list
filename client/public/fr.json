@@ -52,7 +52,6 @@
     "csvFile": "Fichier CSV",
     "browse": "Parcourir",
     "import": "Importer",
-    "details": "Détails",
     "errorMessage": "Une erreur est survenue lors de l'import des listes de cadeaux.",
     "successMessage": "Les listes de cadeaux ont été importées avec succès."
   },

@@ -1,16 +1,15 @@
-import { AsyncPipe } from '@angular/common';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { AsyncPipe, KeyValuePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ImportResult } from '../../models/import-result.model';
 import { AppTranslations } from '../../utils/app-translations';
 
-type Step = 'select-file' | 'importing' | 'finish';
+type Step = 'select-file' | 'importing' | 'finished';
 interface State {
   step: Step;
-  progress: number;
-  logs: string
+  result?: ImportResult
 };
 
 @Component({
@@ -18,7 +17,7 @@ interface State {
   templateUrl: './import-page.component.html',
   styleUrls: ['./import-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, RouterModule]
+  imports: [AsyncPipe, KeyValuePipe, RouterModule]
 })
 export class ImportPageComponent implements OnDestroy {
 
@@ -26,7 +25,7 @@ export class ImportPageComponent implements OnDestroy {
 
   protected readonly state$: Observable<State>;
 
-  private readonly _state$: BehaviorSubject<State> = new BehaviorSubject<State>({ step: 'select-file', progress: 0, logs: '' });
+  private readonly _state$: BehaviorSubject<State> = new BehaviorSubject<State>({ step: 'select-file' });
 
   public constructor(
     public translations: AppTranslations,
@@ -47,42 +46,18 @@ export class ImportPageComponent implements OnDestroy {
       throw new Error('File required.');
     }
 
-    this.changeStep('importing');
+    this._state$.next({
+      step: 'importing'
+    });
 
     const formData = new FormData();
     formData.append('file', this.file);
-    this.http.post<ImportResult>('/api/import', formData, {
-      reportProgress: true,
-      observe: 'events'
-    })
-      .subscribe(event => {
-        console.log(event)
-        if (event.type == HttpEventType.UploadProgress) { // not work
-          this.changeProgress(Math.round(100 * (event.loaded / (event.total ?? 1))))
-        }
-        else if (event.type == HttpEventType.Response) {
-          this.changeStep('finish')
-          this._state$.next({
-            ...this._state$.value,
-            logs: JSON.stringify(event.body)
-          });
-        }
-      })
-  }
-
-  private changeStep(step: Step): void {
-    this._state$.next({
-      ...this._state$.value,
-      step: step
-    });
-  }
-
-  private changeProgress(progress: number): void {
-    console.log(progress)
-    this._state$.next({
-      ...this._state$.value,
-      progress: progress
-    });
+    this.http.post<ImportResult>('/api/import', formData)
+      .subscribe(result =>
+        this._state$.next({
+          step: 'finished',
+          result: result
+        }))
   }
 
 }

@@ -70,7 +70,6 @@ export interface ImportTranslations {
   csvFile: string;
   browse: string;
   import: string;
-  details: string;
   errorMessage: string;
   successMessage: string;
 }

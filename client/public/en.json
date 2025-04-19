@@ -52,7 +52,6 @@
     "csvFile": "CSV file",
     "browse": "Browse",
     "import": "Import",
-    "details": "Details",
     "errorMessage": "An error occurred while importing gift lists.",
     "successMessage": "Gift lists are successfuly imported."
   },

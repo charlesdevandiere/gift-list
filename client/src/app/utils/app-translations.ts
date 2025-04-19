@@ -55,7 +55,6 @@ export class AppTranslations implements Translations {
     csvFile: '',
     browse: '',
     import: '',
-    details: '',
     errorMessage: '',
     successMessage: ''
   };
