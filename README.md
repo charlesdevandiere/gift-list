@@ -3,14 +3,31 @@ Share your gift list with family.
 
 ## Deploy
 
+1. Configure postgresql
+   - `/etc/postgresql/16/main/postgresql.conf`
+     ```
+     listen_addresses = 'localhost,<docker0_ip_address>'
+     ```
+   - `/etc/postgresql/16/main/pg_hba.conf`
+     ```
+     host    all             all             172.0.0.0/8           scram-sha-256
+     ```
+   - Restart postgresql
+1. Create database and user
+   ```shell
+   sudo -u postgres createuser gift-list_user
+   ```
+   ```shell
+   sudo -u postgres createdb gift-list
+   ```
+   ```shell
+   sudo -u postgres psql
+   psql=# alter user "gift-list_user" with encrypted password '<password>';
+   psql=# grant all privileges on database "gift-list" to "gift-list_user" ;
+   ```
 1. Build image
    ```shell
    docker compose build
-   ```
-1. Hash your admin password
-   ```shell
-   cd api/ && \
-   npm run hash-password -- <your-password>
    ```
 1. Create `/var/lib/gift-list` folder
    ```shell
@@ -22,7 +39,7 @@ Share your gift list with family.
    PORT=3000
    LOG_LEVEL=http
    LOG_FOLDER=/var/log/gift-list
-   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/gift-list?schema=gift-list
+   DATABASE_URL=postgresql://gift-list_user:<password>@host.docker.internal:5432/gift-list?schema=gift-list
    ADMIN_PASSWORD_HASH=<your-admin-password-hash>
    MAX_NUMBER_OF_GROUPS=10
    MAX_NUMBER_OF_USERS_PER_GROUP=100

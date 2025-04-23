@@ -11,6 +11,17 @@ COPY ./api ./
 RUN npm run build && \
     npm run lint
 
+FROM node:22-alpine AS migrations
+
+WORKDIR /app
+
+RUN npm install --global prisma && \
+    npm cache clean --force
+
+COPY ./api/prisma ./prisma
+
+CMD ["prisma", "migrate", "deploy"]
+
 
 FROM node:22-alpine AS build-client
 
