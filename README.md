@@ -45,8 +45,16 @@ Share your gift list with family.
    MAX_NUMBER_OF_USERS_PER_GROUP=100
    MAX_NUMBER_OF_GIFTS_PER_USER=100
    ```
+   ```shell
+   sudo chown 1969:docker /var/lib/gift-list/.env && \
+   sudo chmod 660 /var/lib/gift-list/.env
+   ```
+1. Copy `compose.yaml` into `/var/lib/gift-list`
+   ```shell
+   sudo cp compose.yaml /var/lib/gift-list
+   ``` 
 1. Create `/var/log/gift-list` folder
    ```shell
    sudo mkdir /var/log/gift-list && \
-   sudo chmod 1969:1961 /var/log/gift-list
+   sudo chown 1969:1961 /var/log/gift-list
    ```
