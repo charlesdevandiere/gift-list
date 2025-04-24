@@ -63,6 +63,9 @@ Share your gift list with family.
    ```
 1. Update nginx conf
    ```nginx
+   access_log /var/log/nginx/gift-list.access.log;
+   error_log /var/log/nginx/gift-list.error.log;
+
    location / {
        proxy_pass              http://localhost:3000/;
        proxy_set_header        Host $host;
