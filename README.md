@@ -4,15 +4,18 @@ Share your gift list with family.
 ## Deploy
 
 1. Configure postgresql
-   - `/etc/postgresql/16/main/postgresql.conf`
-     ```
-     listen_addresses = 'localhost,<docker0_ip_address>'
-     ```
-   - `/etc/postgresql/16/main/pg_hba.conf`
-     ```
-     host    all             all             172.0.0.0/8           scram-sha-256
-     ```
-   - Restart postgresql
+
+   `/etc/postgresql/16/main/postgresql.conf`
+   ```
+   listen_addresses = 'localhost,<docker0_ip_address>'
+   ```
+   `/etc/postgresql/16/main/pg_hba.conf`
+   ```
+   host    all             all             172.0.0.0/8           scram-sha-256
+   ```
+   ```shell
+   sudo systemctl restart postgresql
+   ```
 1. Create database and user
    ```shell
    sudo -u postgres createuser gift-list_user
@@ -57,4 +60,14 @@ Share your gift list with family.
    ```shell
    sudo mkdir /var/log/gift-list && \
    sudo chown 1969:1961 /var/log/gift-list
+   ```
+1. Update nginx conf
+   ```nginx
+   location / {
+       proxy_pass              http://localhost:3000/;
+       proxy_set_header        Host $host;
+   }
+   ```
+   ```shell
+   sudo systemctl restart nginx.service
    ```
