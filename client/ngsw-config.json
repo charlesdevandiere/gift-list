@@ -7,13 +7,18 @@
       "installMode": "prefetch",
       "resources": {
         "files": [
+          "/fonts/*",
+          "/images/**",
           "/favicon.ico",
           "/index.html",
+          "/apple-touch-icon.png",
+          "/favicon*.png",
+          "/en.json",
+          "/fr.json",
           "/gift-list.webmanifest",
-          "en.json",
-          "fr.json",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "/*.(svg|cur|otf|ttf|woff|woff2|csv)"
         ]
       }
     },
@@ -23,9 +28,7 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/fonts/*",
-          "/images/**",
-          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|csv)"
+          "/*.(jpg|jpeg|png|apng|webp|avif|gif)"
         ]
       }
     }
