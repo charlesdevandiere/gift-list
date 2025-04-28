@@ -11,7 +11,7 @@ Share your gift list with family.
    ```
    `/etc/postgresql/16/main/pg_hba.conf`
    ```
-   host    all             all             172.0.0.0/8           scram-sha-256
+   hostssl all             all             172.0.0.0/8           scram-sha-256
    ```
    ```shell
    sudo systemctl restart postgresql
