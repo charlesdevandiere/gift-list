@@ -8,11 +8,7 @@
       "resources": {
         "files": [
           "/fonts/*",
-          "/images/**",
-          "/favicon.ico",
           "/index.html",
-          "/apple-touch-icon.png",
-          "/favicon*.png",
           "/en.json",
           "/fr.json",
           "/gift-list.webmanifest",
@@ -28,6 +24,10 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
+          "/images/**",
+          "/favicon.ico",
+          "/apple-touch-icon.png",
+          "/favicon*.png",
           "/*.(jpg|jpeg|png|apng|webp|avif|gif)"
         ]
       }

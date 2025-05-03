@@ -8,4 +8,7 @@ api/out-tsc
 api/src/generated/client
 client/.angular
 client/dist
+client/public/images/icons/icon.svg
+client/src/proxy.conf.json
+client/src/translations.schema.json
 .env
