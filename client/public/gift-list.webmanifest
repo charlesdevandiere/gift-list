@@ -4,6 +4,7 @@
     "short_name": "Gift list",
     "start_url": ".",
     "display": "standalone",
+    "background_color": "#ffffff",
     "description": "Share your gift list with your family!",
     "icons": [
         {
