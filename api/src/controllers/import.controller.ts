@@ -58,9 +58,7 @@ async function importCsvData(group: string, data: CsvGift[]): Promise<ImportResu
 
         // user
         const importedUser = await importUser(group, existingUsers, index, csvGift)
-        if (!result.success) {
-          result.success = { importedUsers: {}, importedGifts: {} }
-        }
+        result.success ??= { importedUsers: {}, importedGifts: {} };
         result.success.importedUsers[csvGift.user] = importedUser.status
         const user: User = importedUser.user
 
