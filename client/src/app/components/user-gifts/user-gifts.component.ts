@@ -130,9 +130,8 @@ export class UserGiftsComponent implements OnDestroy {
 
   protected async share(gift: Gift): Promise<void> {
     const data: ShareData = {
-      url: gift.link1 ?? undefined,
       title: gift.name,
-      text: [gift.link1, gift.link2, gift.link3].filter(link => link?.length).join(' ')
+      text: [gift.name, gift.link1, gift.link2, gift.link3].filter(link => link?.length).join(' ')
     };
 
     if (!!navigator.canShare && navigator.canShare(data)) {

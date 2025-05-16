@@ -21,8 +21,7 @@ export class ShareModalComponent {
 
   public async copy(): Promise<void> {
     if (this.data) {
-      const text: string = [this.data.title, this.data.text].filter(str => str?.length).join(' ');
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(this.data.text ?? '');
       this.modal.close();
       this.toastsService.show(this.translations.share.successMessage, { severity: 'success' });
     }
