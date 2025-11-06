@@ -7,11 +7,11 @@ Share your gift list with family.
 
    `/etc/postgresql/16/main/postgresql.conf`
    ```
-   listen_addresses = 'localhost,<docker0_ip_address>'
+   listen_addresses = 'localhost,<main_network_interface_ip_address>'
    ```
    `/etc/postgresql/16/main/pg_hba.conf`
    ```
-   hostssl all             all             172.0.0.0/8           scram-sha-256
+   hostssl all             all             172.0.0.0/8            scram-sha-256
    ```
    ```shell
    sudo systemctl restart postgresql
@@ -42,7 +42,7 @@ Share your gift list with family.
    PORT=3000
    LOG_LEVEL=http
    LOG_FOLDER=/var/log/gift-list
-   DATABASE_URL=postgresql://gift-list_user:<password>@host.docker.internal:5432/gift-list?schema=gift-list
+   DATABASE_URL=postgresql://gift-list_user:<password>@<main_network_interface_ip_address>:5432/gift-list?schema=gift-list
    ADMIN_PASSWORD_HASH=<your-admin-password-hash>
    MAX_NUMBER_OF_GROUPS=10
    MAX_NUMBER_OF_USERS_PER_GROUP=100

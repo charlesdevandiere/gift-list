@@ -39,7 +39,8 @@ RUN npm run build && \
 
 FROM node:22-alpine AS app
 
-RUN addgroup --gid 1961 gift-list && adduser --uid 1969 -D -S -g gift-list gift-list
+RUN addgroup --gid 1961 gift-list && \
+    adduser --uid 1969 -D -S -g gift-list gift-list
 WORKDIR /home/gift-list/app
 
 ARG NODE_ENV=production
