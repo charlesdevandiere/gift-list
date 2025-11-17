@@ -4,34 +4,13 @@
     "short_name": "Gift list",
     "start_url": ".",
     "display": "standalone",
+    "theme_color": "#0d6efd",
     "background_color": "#ffffff",
     "description": "Share your gift list with your family!",
+    "categories": [
+        "lifestyle"
+    ],
     "icons": [
-        {
-            "src": "images/icons/icon48.png",
-            "sizes": "48x48",
-            "type": "image/png"
-        },
-        {
-            "src": "images/icons/icon72.png",
-            "sizes": "72x72",
-            "type": "image/png"
-        },
-        {
-            "src": "images/icons/icon96.png",
-            "sizes": "96x96",
-            "type": "image/png"
-        },
-        {
-            "src": "images/icons/icon144.png",
-            "sizes": "144x144",
-            "type": "image/png"
-        },
-        {
-            "src": "images/icons/icon168.png",
-            "sizes": "168x168",
-            "type": "image/png"
-        },
         {
             "src": "images/icons/icon192.png",
             "sizes": "192x192",
@@ -63,6 +42,38 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "monochrome"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "images/screenshots/gift-list_narrow_01_users.png",
+            "sizes": "750x1334",
+            "form_factor": "narrow",
+            "label": "Each person has their own gift list"
+        },
+        {
+            "src": "images/screenshots/gift-list_narrow_02_my_gifts.png",
+            "sizes": "750x1334",
+            "form_factor": "narrow",
+            "label": "Add a gift to your list"
+        },
+        {
+            "src": "images/screenshots/gift-list_narrow_03_gifts.png",
+            "sizes": "750x1334",
+            "form_factor": "narrow",
+            "label": "Check your friends' gift list"
+        },
+        {
+            "src": "images/screenshots/gift-list_wide_01_my_gifts.png",
+            "sizes": "2048x1536",
+            "form_factor": "wide",
+            "label": "Add a gift to your list"
+        },
+        {
+            "src": "images/screenshots/gift-list_wide_02_gifts.png",
+            "sizes": "2048x1536",
+            "form_factor": "wide",
+            "label": "Check your friends' gift list"
         }
     ]
 }
