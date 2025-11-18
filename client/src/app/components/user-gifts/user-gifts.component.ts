@@ -1,82 +1,53 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, Observable, Subject, firstValueFrom, takeUntil } from 'rxjs';
-import { ConfirmModalData } from '../../models/confirm-modal-data.model';
-import { Gift } from '../../models/gift.model';
-import { Me } from '../../models/me.model';
-import { User } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
-import { GiftsService } from '../../services/gifts.service';
-import { ToastsService } from '../../services/toasts.service';
-import { AppTranslations } from '../../utils/app-translations';
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
-import { ShareModalComponent } from '../modals/share-modal/share-modal.component';
-
-interface State {
-  connectedUserId: string | null;
-  gifts: Gift[];
-  offerings: string[];
-  loading: boolean;
-  reordering: boolean;
-  user: User | null;
-};
+import { ChangeDetectionStrategy, Component, ElementRef, Signal, effect, inject, input, signal, viewChild } from '@angular/core'
+import { Router, RouterLink } from '@angular/router'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { Observable, firstValueFrom } from 'rxjs'
+import { ConfirmModalData } from '../../models/confirm-modal-data.model'
+import { Gift } from '../../models/gift.model'
+import { User } from '../../models/user.model'
+import { AuthService } from '../../services/auth.service'
+import { GiftsService } from '../../services/gifts.service'
+import { ToastsService } from '../../services/toasts.service'
+import { AppTranslations } from '../../utils/app-translations'
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
+import { ShareModalComponent } from '../modals/share-modal/share-modal.component'
 
 @Component({
   selector: 'app-user-gifts',
   templateUrl: './user-gifts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, AsyncPipe]
+  imports: [RouterLink],
+  standalone: true
 })
-export class UserGiftsComponent implements OnDestroy {
+export class UserGiftsComponent {
+  protected readonly translations = inject(AppTranslations)
+  private readonly authService = inject(AuthService)
+  private readonly giftsService = inject(GiftsService)
+  private readonly router = inject(Router)
+  private readonly modalService = inject(NgbModal)
+  private readonly toastsService = inject(ToastsService)
 
-  protected state$: Observable<State>;
+  protected readonly connectedUserId: Signal<string | null> = this.authService.connectedUserId
+  protected readonly gifts = signal<Gift[]>([])
+  protected readonly offerings = signal<string[]>([])
+  protected readonly loading = signal<boolean>(false)
+  protected readonly reordering = signal<boolean>(false)
 
-  private readonly _state$: BehaviorSubject<State> = new BehaviorSubject<State>({ connectedUserId: null, gifts: [], offerings: [], loading: false, reordering: false, user: null });
+  private readonly backButton = viewChild<ElementRef<HTMLElement>>('back')
 
-  private readonly _unsubscriber$: Subject<void> = new Subject<void>();
+  public readonly user = input<User>()
 
-  @ViewChild('back')
-  private readonly backButton?: ElementRef<HTMLElement>;
-
-  @Input()
-  public set user(value: User | null) {
-    const state: State = {
-      ...this._state$.getValue(),
-      user: value
-    };
-    this._state$.next(state);
-    this.getUserGifts().then(() => void 0).catch(() => void 0);
-    this.backButton?.nativeElement.focus();
-  }
-
-  public constructor(
-    private readonly authService: AuthService,
-    private readonly giftsService: GiftsService,
-    private readonly router: Router,
-    private readonly modalService: NgbModal,
-    private readonly toastsService: ToastsService,
-    public translations: AppTranslations) {
-    this.state$ = this._state$.asObservable();
-    this.authService.me$
-      .pipe(takeUntil(this._unsubscriber$))
-      .subscribe((value: Me | null) => {
-        const state: State = {
-          ...this._state$.getValue(),
-          connectedUserId: value?.id ?? null
-        };
-        this._state$.next(state);
-      });
-  }
-
-  public ngOnDestroy(): void {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
+  public constructor() {
+    effect(() => {
+      if (this.user()) {
+        this.backButton()?.nativeElement.focus()
+        this.getUserGifts().catch(console.error)
+      }
+    })
   }
 
   protected async addGift(): Promise<void> {
-    await this.router.navigate(['/new-gift']);
+    await this.router.navigate(['/new-gift'])
   }
 
   protected async deleteGift(gift: Gift): Promise<void> {
@@ -87,159 +58,132 @@ export class UserGiftsComponent implements OnDestroy {
           color: 'danger',
           value: this.translations.misc.delete
         }
-      };
-      const modal = this.modalService.open(ConfirmModalComponent);
-      (modal.componentInstance as ConfirmModalComponent).data = data;
-      await modal.result;
-      await firstValueFrom(this.giftsService.deleteGift(gift.id));
+      }
+      const modal = this.modalService.open(ConfirmModalComponent)
+      const component: ConfirmModalComponent = modal.componentInstance as ConfirmModalComponent
+      component.data.set(data)
+      await modal.result
+      await firstValueFrom(this.giftsService.deleteGift(gift.id))
       await this.getUserGifts({ noLoader: true })
     }
     catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
   protected async refresh(): Promise<void> {
-    await this.getUserGifts({ noCache: true });
+    await this.getUserGifts({ noCache: true })
   }
 
   protected reorder(id: string, direction: 'up' | 'down'): void {
-    const gifts: Gift[] = this._state$.getValue().gifts;
-    const from: number = gifts.findIndex(gift => gift.id == id);
-    const gift: Gift | undefined = gifts.splice(from, 1)[0];
-    if (!gift) {
-      throw new Error(`Unable to reorder gift ${id}.`);
-    }
-    const to: number = direction == 'up' ? from - 1 : from + 1;
-    gifts.splice(to, 0, gift);
-    this._state$.next({
-      ...this._state$.getValue(),
-      gifts: gifts
-    });
+    this.gifts.update((gifts: Gift[]) => {
+      const from: number = gifts.findIndex(gift => gift.id == id)
+      const gift: Gift | undefined = gifts.splice(from, 1)[0]
+      if (!gift) {
+        throw new Error(`Unable to reorder gift ${id}.`)
+      }
+      const to: number = direction == 'up' ? from - 1 : from + 1
+      gifts.splice(to, 0, gift)
+      return gifts
+    })
   }
 
   protected async saveOrder(): Promise<void> {
-    const gifts: Gift[] = this._state$.getValue().gifts;
-    this._state$.next({
-      ...this._state$.getValue(),
-      reordering: false
-    });
-    await firstValueFrom(this.giftsService.reorderGifts(gifts));
-    await this.getUserGifts();
+    this.reordering.set(false)
+    await firstValueFrom(this.giftsService.reorderGifts(this.gifts()))
+    await this.getUserGifts()
   }
 
   protected async share(gift: Gift): Promise<void> {
     const data: ShareData = {
       title: gift.name,
       text: [gift.name, gift.link1, gift.link2, gift.link3].filter(link => link?.length).join(' ')
-    };
+    }
 
     if (!!navigator.canShare && navigator.canShare(data)) {
-      await navigator.share(data);
+      await navigator.share(data)
     }
     else {
-      const modal = this.modalService.open(ShareModalComponent);
-      (modal.componentInstance as ShareModalComponent).data = data;
+      const modal = this.modalService.open(ShareModalComponent)
+      const component: ShareModalComponent = modal.componentInstance as ShareModalComponent
+      component.data.set(data)
     }
   }
 
   public async toggleOffer(gift: Gift): Promise<void> {
-    const userId: string | null = this._state$.value.user?.id ?? null;
-    if (!userId) {
-      throw new Error('userId cannot be null.');
+    const connectedUserId: string | null = this.authService.connectedUserId()
+    if (!connectedUserId) {
+      throw new Error('no connected user')
     }
 
-    let action: Observable<void> | null = null;
+    const userId: string | undefined = this.user()?.id
+    if (!userId) {
+      throw new Error('userId cannot be null.')
+    }
+    if (userId === connectedUserId) {
+      throw new Error('forbidden')
+    }
+
+    let action: Observable<void> | null = null
 
     if (!gift.offeredByUserId) {
-      action = this.giftsService.offerGift(gift);
-    } else if (gift.offeredByUserId === this.authService.me?.id) {
-      action = this.giftsService.unofferGift(gift);
-    }
-
-    const offerings = this._state$.getValue().offerings;
-    this._state$.next({
-      ...this._state$.getValue(),
-      offerings: [...offerings, gift.id]
-    });
-
-    const removeFromOfferings = (giftId: string) => {
-      const offerings = this._state$.getValue().offerings;
-      const index: number = offerings.indexOf(giftId);
-      if (index >= 0) {
-        offerings.splice(index, 1);
-        this._state$.next({
-          ...this._state$.getValue(),
-          offerings: offerings
-        });
-      }
+      action = this.giftsService.offerGift(gift)
+    } else if (gift.offeredByUserId === connectedUserId) {
+      action = this.giftsService.unofferGift(gift)
     }
 
     if (action) {
+      this.offerings.update(value => [...value, gift.id])
+
       try {
-        await firstValueFrom(action);
-        await this.getUserGifts({ noLoader: true });
-        removeFromOfferings(gift.id);
+        await firstValueFrom(action)
+        await this.getUserGifts({ noLoader: true })
       }
       catch (err) {
-        console.error(err);
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
-        removeFromOfferings(gift.id);
+        console.error(err)
+        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
       }
+
+      this.offerings.update(offerings => {
+        const index: number = offerings.indexOf(gift.id)
+        if (index >= 0) {
+          offerings.splice(index, 1)
+        }
+        return offerings
+      })
     }
   }
 
   public toggleReorder(): void {
-    const state: State = {
-      ...this._state$.getValue()
-    };
-    state.reordering = !state.reordering;
-    this._state$.next(state);
+    this.reordering.update(value => !value)
   }
 
   public async updateGift(gift: Gift): Promise<void> {
-    await this.router.navigate(['/gift', gift.id]);
+    await this.router.navigate(['/gift', gift.id])
   }
 
   private async getUserGifts(options?: { noCache?: boolean, noLoader?: boolean }): Promise<void> {
-    const displayLoader = !options?.noLoader;
-    const user: User | null = this._state$.getValue().user;
+    const displayLoader = !options?.noLoader
+    const user: User | undefined = this.user()
+    this.reordering.set(false)
     if (user) {
       if (displayLoader) {
-        this._state$.next({
-          ...this._state$.getValue(),
-          loading: true,
-          reordering: false
-        });
+        this.loading.set(true)
       }
 
       try {
-        const gifts: Gift[] = await firstValueFrom(this.giftsService.getUserGifts(user.id));
-        const state: State = {
-          ...this._state$.getValue(),
-          gifts: gifts
-        };
-        if (displayLoader) {
-          state.loading = false;
-        }
-        this._state$.next(state);
+        this.gifts.set(await firstValueFrom(this.giftsService.getUserGifts(user.id)))
       }
       catch (err) {
-        console.error(err);
-        if (displayLoader) {
-          this._state$.next({
-            ...this._state$.getValue(),
-            loading: false
-          });
-        }
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
+        console.error(err)
+        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+      }
+
+      if (displayLoader) {
+        this.loading.set(false)
       }
     } else {
-      const state: State = {
-        ...this._state$.getValue(),
-        gifts: []
-      };
-      this._state$.next(state);
+      this.gifts.set([])
     }
   }
 

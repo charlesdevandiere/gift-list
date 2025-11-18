@@ -1,5 +1,5 @@
 export interface Auth {
-  group: string | null;
-  userId: string | null;
-  password: string | null;
+  group: string | null
+  userId: string | null
+  password: string | null
 }

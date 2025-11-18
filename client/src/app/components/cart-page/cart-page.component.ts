@@ -1,38 +1,36 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { ConfirmModalData } from '../../models/confirm-modal-data.model';
-import { Gift } from '../../models/gift.model';
-import { UserWithGifts } from '../../models/user-with-gifts.model';
-import { GiftsService } from '../../services/gifts.service';
-import { MeService } from '../../services/me.service';
-import { ToastsService } from '../../services/toasts.service';
-import { AppTranslations } from '../../utils/app-translations';
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
+import { RouterLink } from '@angular/router'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { firstValueFrom } from 'rxjs'
+import { ConfirmModalData } from '../../models/confirm-modal-data.model'
+import { Gift } from '../../models/gift.model'
+import { UserWithGifts } from '../../models/user-with-gifts.model'
+import { GiftsService } from '../../services/gifts.service'
+import { MeService } from '../../services/me.service'
+import { ToastsService } from '../../services/toasts.service'
+import { AppTranslations } from '../../utils/app-translations'
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
 
 @Component({
   selector: 'app-cart-page',
   templateUrl: './cart-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, AsyncPipe]
+  imports: [RouterLink],
+  standalone: true
 })
 export class CartPageComponent implements OnInit {
+  protected readonly translations = inject(AppTranslations)
+  private readonly giftsService = inject(GiftsService)
+  private readonly meService = inject(MeService)
+  private readonly modalService = inject(NgbModal)
+  private readonly toastsService = inject(ToastsService)
 
-  protected loading$ = new BehaviorSubject<boolean>(false);
+  protected loading = signal<boolean>(false)
 
-  protected cart: { name: string, gifts: Gift[] }[] = [];
-
-  public constructor(
-    public translations: AppTranslations,
-    private readonly giftsService: GiftsService,
-    private readonly meService: MeService,
-    private readonly modalService: NgbModal,
-    private readonly toastsService: ToastsService) { }
+  protected cart = signal<{ name: string, gifts: Gift[] }[]>([])
 
   public ngOnInit(): void {
-    this.loadCart();
+    this.loadCart().catch(console.error)
   }
 
   public async unoffer(gift: Gift): Promise<void> {
@@ -45,38 +43,37 @@ export class CartPageComponent implements OnInit {
       noButton: {
         value: this.translations.misc.no
       }
-    };
-    const modal = this.modalService.open(ConfirmModalComponent);
-    (modal.componentInstance as ConfirmModalComponent).data = data;
+    }
+    const modal = this.modalService.open(ConfirmModalComponent)
+    const component: ConfirmModalComponent = modal.componentInstance as ConfirmModalComponent
+    component.data.set(data)
 
     try {
-      await modal.result;
+      await modal.result
       try {
-        await firstValueFrom(this.giftsService.unofferGift(gift));
-        this.loadCart();
+        await firstValueFrom(this.giftsService.unofferGift(gift))
+        await this.loadCart()
       }
       catch (err) {
-        console.error(err);
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
+        console.error(err)
+        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
       }
     }
     catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
-  private loadCart(): void {
-    this.loading$.next(true);
-    this.meService.getCart().subscribe({
-      next: (cart: UserWithGifts[]) => {
-        this.cart = cart.map(item => ({ name: item.name, gifts: item.gifts ?? [] }));
-      },
-      error: (err) => {
-        console.error(err);
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
-      },
-      complete: () => this.loading$.next(false)
-    });
+  private async loadCart(): Promise<void> {
+    this.loading.set(true)
+    try {
+      const cart: UserWithGifts[] = await firstValueFrom(this.meService.getCart())
+      this.cart.set(cart.map(item => ({ name: item.name, gifts: item.gifts ?? [] })))
+    } catch (err) {
+      console.error(err)
+      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+    }
+    this.loading.set(false)
   }
 
 }

@@ -1,28 +1,26 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { User } from '../../models/user.model';
-import { AppTranslations } from '../../utils/app-translations';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core'
+import { User } from '../../models/user.model'
+import { AppTranslations } from '../../utils/app-translations'
+import { PicturePipe } from '../../utils/picture.pipe'
 
 @Component({
   selector: 'app-change-user',
   templateUrl: './change-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: []
+  imports: [PicturePipe],
+  standalone: true
 })
 export class ChangeUserComponent {
+  protected readonly translations = inject(AppTranslations)
 
-  @Input()
-  public connectedUser: User | null = null;
+  public currentUser = input<User | null>()
 
-  @Input()
-  public users: User[] = [];
+  public users = input.required<User[]>()
 
-  @Output()
-  public selectedUser = new EventEmitter<User | null>();
+  public readonly selectedUser = output<User | null>();
 
-  public constructor(public translations: AppTranslations) { }
-
-  public selectUser(user: User | null): void {
-    this.selectedUser.emit(user);
+  public selectUser(user?: User | null): void {
+    this.selectedUser.emit(user ?? null)
   }
 
 }

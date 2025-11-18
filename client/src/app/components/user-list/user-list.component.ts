@@ -1,37 +1,28 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { User } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
-import { AppTranslations } from '../../utils/app-translations';
+import { ChangeDetectionStrategy, Component, computed, inject, input, Signal, output } from '@angular/core'
+import { User } from '../../models/user.model'
+import { AuthService } from '../../services/auth.service'
+import { AppTranslations } from '../../utils/app-translations'
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe]
+  standalone: true
 })
 export class UserListComponent {
+  protected readonly translations = inject(AppTranslations)
+  private readonly authService = inject(AuthService)
 
-  protected readonly connectedUserId$: Observable<string | null> = this.authService.me$.pipe(map(me => me?.id ?? null));
+  protected readonly connectedUserId: Signal<string | null> = computed(() => this.authService.me()?.id ?? null)
 
-  @Input()
-  public selectedUser: User | null = null;
+  public selectedUser = input<User>()
 
-  @Output()
-  public readonly clickRefresh: EventEmitter<void> = new EventEmitter<void>();
+  public readonly clickRefresh = output<void>();
 
-  @Output()
-  public readonly selectUser: EventEmitter<User> = new EventEmitter<User>();
+  public readonly selectUser = output<User>();
 
-  @Input()
-  public users: User[] = [];
+  public users = input.required<User[]>()
 
-  @Input()
-  public loading: boolean | null = false;
-
-  public constructor(
-    public readonly translations: AppTranslations,
-    private readonly authService: AuthService) { }
+  public loading = input<boolean>(false)
 
 }

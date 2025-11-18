@@ -1,4 +1,5 @@
 # gift-list
+
 Share your gift list with family.
 
 ## Deploy
@@ -6,16 +7,21 @@ Share your gift list with family.
 1. Configure postgresql
 
    `/etc/postgresql/16/main/postgresql.conf`
+
    ```
    listen_addresses = 'localhost,<main_network_interface_ip_address>'
    ```
+
    `/etc/postgresql/16/main/pg_hba.conf`
+
    ```
    hostssl all             all             172.0.0.0/8            scram-sha-256
    ```
+
    ```shell
    sudo systemctl restart postgresql
    ```
+
 1. Create database and user
    ```shell
    sudo -u postgres createuser gift-list_user
@@ -26,7 +32,7 @@ Share your gift list with family.
    ```shell
    sudo -u postgres psql
    psql=# alter user "gift-list_user" with encrypted password '<password>';
-   psql=# grant all privileges on database "gift-list" to "gift-list_user" ;
+   psql=# grant all privileges on database "gift-list" to "gift-list_user";
    ```
 1. Build image
    ```shell
@@ -55,13 +61,14 @@ Share your gift list with family.
 1. Copy `compose.yaml` into `/var/lib/gift-list`
    ```shell
    sudo cp compose.yaml /var/lib/gift-list
-   ``` 
+   ```
 1. Create `/var/log/gift-list` folder
    ```shell
    sudo mkdir /var/log/gift-list && \
    sudo chown 1969:1961 /var/log/gift-list
    ```
 1. Update nginx conf
+
    ```nginx
    access_log /var/log/nginx/gift-list.access.log;
    error_log /var/log/nginx/gift-list.error.log;
@@ -71,6 +78,7 @@ Share your gift list with family.
        proxy_set_header        Host $host;
    }
    ```
+
    ```shell
    sudo systemctl restart nginx.service
    ```

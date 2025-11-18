@@ -1,91 +1,79 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { UserGiftsComponent } from '../user-gifts/user-gifts.component';
-import { UserListComponent } from '../user-list/user-list.component';
-import { User } from '../../models/user.model';
-import { AppTranslations } from '../../utils/app-translations';
-import { ToastsService } from '../../services/toasts.service';
-import { UsersService } from '../../services/users.service';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { ActivatedRoute, Params, Router } from '@angular/router'
+import { firstValueFrom } from 'rxjs'
+import { User } from '../../models/user.model'
+import { ToastsService } from '../../services/toasts.service'
+import { UsersService } from '../../services/users.service'
+import { AppTranslations } from '../../utils/app-translations'
+import { UserGiftsComponent } from '../user-gifts/user-gifts.component'
+import { UserListComponent } from '../user-list/user-list.component'
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UserListComponent, UserGiftsComponent, AsyncPipe]
+  imports: [UserListComponent, UserGiftsComponent],
+  standalone: true
 })
-export class MainPageComponent implements OnInit, OnDestroy {
+export class MainPageComponent implements OnInit {
+  protected readonly translations = inject(AppTranslations)
+  private readonly route = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly toastsService = inject(ToastsService)
+  private readonly usersService = inject(UsersService)
 
-  protected readonly loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  protected readonly loading = signal<boolean>(false)
 
-  protected readonly selectedUser$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  protected readonly users = signal<User[]>([])
 
-  protected users: User[] = [];
+  protected readonly userId = signal<string | null>(null)
 
-  protected userId: string | null = null;
+  protected readonly selectedUser = computed<User | undefined>(
+    () => this.users().find(user => user.id === this.userId())
+  )
 
-  private readonly unsubscriber$: Subject<void> = new Subject<void>();
-
-  public constructor(
-    public translations: AppTranslations,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly toastsService: ToastsService,
-    private readonly usersService: UsersService) { }
+  public constructor() {
+    this.route.queryParams
+      .pipe(takeUntilDestroyed())
+      .subscribe((params: Params): void => {
+        this.userId.set(params['user-id'] as string ?? null)
+      })
+  }
 
   public ngOnInit(): void {
-    this.route.queryParams
-      .pipe(takeUntil(this.unsubscriber$))
-      .subscribe((params: Params): void => {
-        this.userId = params['user-id'] as string || null;
-        this.getSelectedUser();
-      });
-    this.loadUsers();
-  }
-
-  public ngOnDestroy(): void {
-    this.unsubscriber$.next();
-    this.unsubscriber$.complete();
-  }
-
-  private getSelectedUser(): void {
-    const user: User | null = this.users.find(u => u.id === this.userId) ?? null;
-    this.selectedUser$.next(user);
+    this.loadUsers().catch(console.error)
   }
 
   public refresh(): void {
-    this.loadUsers();
+    this.loadUsers().catch(console.error)
   }
 
   public async selectUser(user: User): Promise<void> {
-    if (this.selectedUser$.getValue() !== user) {
+    if (this.selectedUser() === user) {
+      // unselect current user
+      await this.router.navigate([])
+    } else {
+      // select new user
       await this.router.navigate(
         [],
         {
           relativeTo: this.route,
           queryParams: { 'user-id': user.id },
-        });
-    } else {
-      await this.router.navigate([]);
+        })
     }
   }
 
-  private loadUsers(): void {
-    this.loading$.next(true);
-    this.usersService.getUsers().subscribe({
-      next: (users: User[]): void => {
-        this.users = users;
-        this.getSelectedUser();
-        this.loading$.next(false);
-      },
-      error: (err) => {
-        console.error(err);
-        this.loading$.next(false);
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' });
-      }
-    });
+  private async loadUsers(): Promise<void> {
+    this.loading.set(true)
+    try {
+      this.users.set(await firstValueFrom(this.usersService.getUsers()))
+    } catch (err) {
+      console.error(err)
+      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+    }
+    this.loading.set(false)
   }
 
 }

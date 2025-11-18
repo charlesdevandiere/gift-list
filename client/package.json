@@ -9,36 +9,48 @@
     "lint": "eslint .",
     "generate-json-schema": "ts-json-schema-generator --path src/app/utils/translations.ts --type Translations --out src/translations.schema.json"
   },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular",
+          "bracketSameLine": true,
+          "singleAttributePerLine": true
+        }
+      }
+    ]
+  },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^19.2.11",
-    "@angular/common": "^19.2.11",
-    "@angular/compiler": "^19.2.11",
-    "@angular/core": "^19.2.11",
-    "@angular/forms": "^19.2.11",
-    "@angular/platform-browser": "^19.2.11",
-    "@angular/platform-browser-dynamic": "^19.2.11",
-    "@angular/router": "^19.2.11",
-    "@angular/service-worker": "^19.2.11",
-    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@angular/common": "^20.3.12",
+    "@angular/compiler": "^20.3.12",
+    "@angular/core": "^20.3.12",
+    "@angular/forms": "^20.3.12",
+    "@angular/platform-browser": "^20.3.12",
+    "@angular/router": "^20.3.12",
+    "@angular/service-worker": "^20.3.12",
+    "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.6",
+    "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "^0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "^19.2.12",
-    "@angular/cli": "^19.2.12",
-    "@angular/compiler-cli": "^19.2.11",
-    "@angular/localize": "^19.2.11",
-    "@eslint/js": "^9.27.0",
+    "@angular/build": "^20.3.10",
+    "@angular/cli": "^20.3.10",
+    "@angular/compiler-cli": "^20.3.12",
+    "@eslint/js": "^9.39.1",
     "@types/uuid": "^10.0.0",
-    "angular-eslint": "^19.4.0",
-    "eslint": "^9.27.0",
+    "angular-eslint": "^20.6.0",
+    "eslint": "^9.28.0",
+    "prettier": "^3.6.2",
     "ts-json-schema-generator": "^2.4.0",
-    "typescript": "~5.6.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.33.1"
   }
 }

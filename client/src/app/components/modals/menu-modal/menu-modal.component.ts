@@ -1,80 +1,49 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../../models/user.model';
-import { AuthService } from '../../../services/auth.service';
-import { UsersService } from '../../../services/users.service';
-import { AppTranslations } from '../../../utils/app-translations';
-import { ChangeUserComponent } from '../../change-user/change-user.component';
-import { MainMenuComponent } from './main-menu/main-menu.component';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject, signal } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { Router } from '@angular/router'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { User } from '../../../models/user.model'
+import { AuthService } from '../../../services/auth.service'
+import { UsersService } from '../../../services/users.service'
+import { AppTranslations } from '../../../utils/app-translations'
+import { PicturePipe } from '../../../utils/picture.pipe'
+import { ChangeUserComponent } from '../../change-user/change-user.component'
+import { MainMenuComponent } from './main-menu/main-menu.component'
 
 export type MenuPage = 'main' | 'change-user'
 
-interface State {
-  user: User | null;
-  page: MenuPage;
-};
-
 @Component({
   selector: 'app-menu-modal',
-  imports: [AsyncPipe, ChangeUserComponent, MainMenuComponent],
+  imports: [ChangeUserComponent, MainMenuComponent, PicturePipe],
   templateUrl: './menu-modal.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
-export class MenuModalComponent implements OnDestroy, OnInit {
+export class MenuModalComponent {
+  protected readonly modal = inject(NgbActiveModal)
+  protected readonly translations = inject(AppTranslations)
+  private readonly authService = inject(AuthService)
+  private readonly usersService = inject(UsersService)
+  private readonly router = inject(Router)
 
-  private readonly _state$: BehaviorSubject<State> = new BehaviorSubject<State>({ user: null, page: 'main' });
-
-  protected readonly state$: Observable<State | null> = this._state$.asObservable();
-
-  protected readonly users$: Observable<User[]> = this.usersService.getUsers();
-
-  protected selectedUser: User | null = null;
-
-  public constructor(
-    public readonly modal: NgbActiveModal,
-    public readonly translations: AppTranslations,
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-    private readonly router: Router) { }
-
-  public ngOnInit(): void {
-    if (this.authService.me?.id) {
-      this.usersService.getUser(this.authService.me?.id)
-        .subscribe((user: User) => {
-          this._state$.next({
-            ...this._state$.value,
-            user: user
-          });
-        });
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this._state$.complete();
-  }
+  protected readonly page = signal<MenuPage>('main')
+  protected readonly users: Signal<User[]> = toSignal(this.usersService.getUsers(), { initialValue: [] })
+  protected readonly user: Signal<User | null> = computed(
+    () => this.users().find(user => user.id === this.authService.connectedUserId()) ?? null
+  )
 
   protected async changeUser(user: User | null): Promise<void> {
-    await this.authService.setCurrentUser(user?.id ?? null);
-    this._state$.next({
-      ...this._state$.value,
-      user: user,
-      page: 'main'
-    });
-    await this.router.navigate(['/']);
+    await this.authService.setCurrentUser(user?.id ?? null)
+    this.page.set('main')
+    await this.router.navigate(['/'])
   }
 
   protected dismiss(): void {
-    this.modal.dismiss();
+    this.modal.dismiss()
   }
 
   protected move(page: MenuPage): void {
-    this._state$.next({
-      ...this._state$.value,
-      page: page
-    });
+    this.page.set(page)
   }
 
 }

@@ -1,0 +1,37 @@
+<nav class="navbar bg-body border-bottom">
+  <div class="container">
+    <a
+      class="navbar-brand d-flex focus-ring focus-ring-light align-items-center p-2 rounded"
+      routerLink="/">
+      <i class="bi bi-gift-fill text-primary me-2 fs-2"></i>
+      <div>
+        <div class="lh-1">{{ translations.title }}</div>
+        <div class="group text-body-secondary lh-1">{{ group() }}</div>
+      </div>
+    </a>
+    @if (authenticated()) {
+      <div class="d-flex align-items-center">
+        @if (id()) {
+          <button
+            type="button"
+            class="btn btn-link me-1 text-body"
+            [routerLink]="['cart']">
+            <i
+              class="bi-cart"
+              aria-label="cart"></i>
+          </button>
+          <div class="border-end separator"></div>
+        }
+        <button
+          type="button"
+          class="btn btn-link d-flex ms-1 align-items-center text-body text-decoration-none"
+          (click)="openMenu()">
+          <i class="bi bi-{{ picture() || 'person-fill' }}"></i>
+          @if (name()) {
+            <span class="d-none d-sm-inline ms-2">{{ name() }}</span>
+          }
+        </button>
+      </div>
+    }
+  </div>
+</nav>

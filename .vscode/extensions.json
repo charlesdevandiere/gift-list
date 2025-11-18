@@ -4,6 +4,7 @@
     "angular.ng-template",
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
-    "sonarsource.sonarlint-vscode"
+    "sonarsource.sonarlint-vscode",
+    "esbenp.prettier-vscode"
   ]
 }

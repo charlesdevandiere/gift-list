@@ -1,55 +1,34 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { Toast } from '../models/toast.model';
+import { Injectable, signal } from '@angular/core'
+import { Toast } from '../models/toast.model'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastsService {
-
-  private static readonly TOAST_DURATION = 5000;
-
-  private readonly _toasts$ = new Subject<Toast[]>();
-
-  public get toasts$(): Observable<Toast[]> {
-    return this._toasts$.asObservable();
-  }
-
-  private readonly toastsQueue: Toast[] = [];
-
-  private lastId = 0;
-
-  public hide(toastId: number): void {
-    const index: number = this.toastsQueue.findIndex(toast => toast.id === toastId);
-    this.toastsQueue.splice(index, 1);
-    this.emitToasts();
-  }
+  private readonly _toasts = signal<Toast[]>([])
+  public readonly toasts = this._toasts.asReadonly()
 
   public show(
-    message: string,
+    body: string,
     options?: {
-      severity?: 'danger' | 'default' | 'success',
-      title?: string
-    }): void {
-    const toast: Toast = {
-      id: ++this.lastId,
-      message: message,
-      severity: options?.severity,
-      title: options?.title
+      severity?: 'danger' | 'default' | 'success'
+    }) {
+    let classname = ''
+    if (options?.severity === 'danger') {
+      classname = 'text-bg-danger'
     }
-    this.toastsQueue.push(toast);
-    this.emitToasts();
-
-    setTimeout(
-      () => this.hide(toast.id),
-      ToastsService.TOAST_DURATION
-    );
+    else if (options?.severity === 'success') {
+      classname = 'text-bg-success'
+    }
+    const toast: Toast = {
+      body: body,
+      classname: classname,
+    }
+    this._toasts.update(value => [...value, toast])
   }
 
-  private emitToasts(): void {
-    const toasts: Toast[] = this.toastsQueue
-      .sort((a, b) => a.id - b.id)
-      .reverse();
-    this._toasts$.next(toasts);
+  public remove(toast: Toast): void {
+    this._toasts.update(value => value.filter(element => element != toast))
   }
+
 }

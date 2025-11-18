@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Translations } from './translations';
+import { Injectable } from '@angular/core'
+import { Translations } from './translations'
 
 @Injectable()
 export class AppTranslations implements Translations {
 
-  public readonly language: string = navigator.language.startsWith('fr') ? 'fr' : 'en';
+  public readonly language: string = navigator.language.startsWith('fr') ? 'fr' : 'en'
 
-  private homeGiftListName = (user: string): string => this.home.giftList.name_user.replace('{{user}}', user);
-  private deleteGift = (gift: string): string => this.home.giftList.deleteGift_gift.replace('{{gift}}', gift);
-  private cartUnoffer = (gift: string): string => this.cart.unoffer_gift.replace('{{gift}}', gift);
+  private readonly homeGiftListName = (user: string): string => this.home.giftList.name_user.replace('{{user}}', user)
+  private readonly deleteGift = (gift: string): string => this.home.giftList.deleteGift_gift.replace('{{gift}}', gift)
+  private readonly cartUnoffer = (gift: string): string => this.cart.unoffer_gift.replace('{{gift}}', gift)
 
-  public $schema = '';
+  public $schema = ''
 
-  public title = '';
+  public title = ''
   public menu = {
     editProfile: '',
     changeUser: '',
@@ -21,7 +21,7 @@ export class AppTranslations implements Translations {
     export: '',
     signOut: '',
     cart: ''
-  };
+  }
   public home = {
     giftLists: '',
     giftList: {
@@ -34,13 +34,13 @@ export class AppTranslations implements Translations {
       deleteGift: this.deleteGift
     },
     getListsError: ''
-  };
+  }
   public cart = {
     title: '',
     noContent: '',
     unoffer_gift: '',
     unoffer: this.cartUnoffer
-  };
+  }
   public signIn = {
     title: '',
     group: '',
@@ -48,7 +48,7 @@ export class AppTranslations implements Translations {
     password: '',
     wrongGroupOrPasswordMessage: '',
     selectUser: ''
-  };
+  }
   public import = {
     title: '',
     downloadTemplateFile: '',
@@ -57,11 +57,11 @@ export class AppTranslations implements Translations {
     import: '',
     errorMessage: '',
     successMessage: ''
-  };
+  }
   public changeUser = {
     currentUser: '',
     users: ''
-  };
+  }
   public user = {
     addTitle: '',
     updateTitle: '',
@@ -69,7 +69,7 @@ export class AppTranslations implements Translations {
     picture: '',
     userAddedMessage: '',
     userUpdatedMessage: ''
-  };
+  }
   public gift = {
     addTitle: '',
     updateTitle: '',
@@ -77,12 +77,12 @@ export class AppTranslations implements Translations {
     link: '',
     giftAddedMessage: '',
     giftUpdatedMessage: ''
-  };
+  }
   public share = {
     title: '',
     copyToClipboard: '',
     successMessage: ''
-  };
+  }
   public misc = {
     cancel: '',
     close: '',
@@ -94,21 +94,21 @@ export class AppTranslations implements Translations {
     save: '',
     yes: '',
     anonymous: ''
-  };
+  }
 
   public async load(): Promise<void> {
     try {
-      const response = await fetch(`${this.language}.json`);
+      const response = await fetch(`${this.language}.json`)
       if (!response.ok) {
-        throw new Error('Request failed.');
+        throw new Error('Request failed.')
       }
-      const translations = await response.json() as Translations;
-      Object.assign(this, translations);
-      this.home.giftList.name = this.homeGiftListName;
-      this.home.giftList.deleteGift = this.deleteGift;
-      this.cart.unoffer = this.cartUnoffer;
+      const translations = await response.json() as Translations
+      Object.assign(this, translations)
+      this.home.giftList.name = this.homeGiftListName
+      this.home.giftList.deleteGift = this.deleteGift
+      this.cart.unoffer = this.cartUnoffer
     } catch (error) {
-      console.error('Failed to load resources.', error);
+      console.error('Failed to load resources.', error)
     }
   }
 }
