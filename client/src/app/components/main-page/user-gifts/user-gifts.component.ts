@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Signal, effect, inject, input, signal, viewChild } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, Signal, effect, inject, signal, viewChild } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Observable, firstValueFrom } from 'rxjs'
-import { ConfirmModalData } from '../../models/confirm-modal-data.model'
-import { Gift } from '../../models/gift.model'
-import { User } from '../../models/user.model'
-import { AuthService } from '../../services/auth.service'
-import { GiftsService } from '../../services/gifts.service'
-import { ToastsService } from '../../services/toasts.service'
-import { AppTranslations } from '../../utils/app-translations'
-import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component'
-import { ShareModalComponent } from '../modals/share-modal/share-modal.component'
+import { ConfirmModalData } from '../../../models/confirm-modal-data.model'
+import { Gift } from '../../../models/gift.model'
+import { User } from '../../../models/user.model'
+import { AuthService } from '../../../services/auth.service'
+import { GiftsService } from '../../../services/gifts.service'
+import { ToastsService } from '../../../services/toasts.service'
+import { AppTranslations } from '../../../utils/app-translations'
+import { ConfirmModalComponent } from '../../modals/confirm-modal/confirm-modal.component'
+import { ShareModalComponent } from '../../modals/share-modal/share-modal.component'
+import { MainPageService } from '../main-page.service'
 
 @Component({
   selector: 'app-user-gifts',
@@ -23,19 +24,19 @@ export class UserGiftsComponent {
   protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly giftsService = inject(GiftsService)
-  private readonly router = inject(Router)
   private readonly modalService = inject(NgbModal)
+  private readonly router = inject(Router)
+  private readonly service = inject(MainPageService)
   private readonly toastsService = inject(ToastsService)
 
   protected readonly connectedUserId: Signal<string | null> = this.authService.connectedUserId
   protected readonly gifts = signal<Gift[]>([])
-  protected readonly offerings = signal<string[]>([])
   protected readonly loading = signal<boolean>(false)
+  protected readonly offerings = signal<string[]>([])
   protected readonly reordering = signal<boolean>(false)
+  protected readonly user = this.service.selectedUser
 
   private readonly backButton = viewChild<ElementRef<HTMLElement>>('back')
-
-  public readonly user = input<User>()
 
   public constructor() {
     effect(() => {

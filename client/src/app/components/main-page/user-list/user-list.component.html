@@ -1,0 +1,99 @@
+<div class="row my-2 top-bar">
+  <div class="col d-flex flex-row align-items-center overflow-hidden">
+    <div class="flex-grow-1 text-truncate">{{ translations.home.giftLists }}</div>
+    @if (!reordering()) {
+      @if (users().length) {
+        <button
+          class="btn btn-link"
+          (click)="toggleReorder()">
+          <i
+            class="bi-sort-alpha-down"
+            aria-label="reorder"></i>
+        </button>
+      }
+      <button
+        class="btn btn-link"
+        (click)="refresh()">
+        <i
+          class="bi-arrow-repeat"
+          aria-label="refresh"></i>
+      </button>
+    } @else {
+      <button
+        class="btn btn-link text-secondary"
+        (click)="toggleReorder()">
+        <i
+          class="bi-x"
+          aria-label="cancel"></i>
+      </button>
+      <button
+        class="btn btn-link text-success"
+        (click)="saveOrder()">
+        <i
+          class="bi-check"
+          aria-label="save order"></i>
+      </button>
+    }
+  </div>
+</div>
+<div class="row page-height">
+  <div class="col h-100 overflow-auto">
+    <div class="list-group mb-6">
+      @if (loading() === false) {
+        @for (user of users(); track user.id; let index = $index) {
+          @if (reordering()) {
+            <div class="list-group-item d-flex">
+              <i
+                class="d-block bi ms-2 me-3 my-2"
+                [class]="user?.picture | picture"></i>
+              <div class="flex-grow-1 my-2">{{ user.name }}</div>
+              <button
+                type="button"
+                class="btn btn-link me-2"
+                (click)="reorder(user.id, 'up')"
+                [disabled]="index === 0">
+                <i
+                  class="bi-caret-up-fill"
+                  aria-label="move up"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-link me-2"
+                (click)="reorder(user.id, 'down')"
+                [disabled]="index === users().length - 1">
+                <i
+                  class="bi-caret-down-fill"
+                  aria-label="move down"></i>
+              </button>
+            </div>
+          } @else {
+            <button
+              class="list-group-item list-group-item-action focus-ring d-flex py-3"
+              (click)="selectUser(user)"
+              [class.active]="user === selectedUser()"
+              [ariaCurrent]="user === selectedUser()"
+              [class.list-group-item-primary]="user.id === connectedUserId()">
+              <i
+                class="d-block bi ms-2 me-3"
+                [class]="user?.picture | picture"></i>
+              <div>{{ user.name }}</div>
+            </button>
+          }
+        }
+      } @else {
+        <div class="list-group-item d-flex py-3 placeholder-glow">
+          <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+          <span class="placeholder col-4 my-1"></span>
+        </div>
+        <div class="list-group-item d-flex py-3 placeholder-glow">
+          <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+          <span class="placeholder col-3 my-1"></span>
+        </div>
+        <div class="list-group-item d-flex py-3 placeholder-glow">
+          <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+          <span class="placeholder col-5 my-1"></span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

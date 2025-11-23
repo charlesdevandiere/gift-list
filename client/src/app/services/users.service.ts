@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Observable, throwError } from 'rxjs'
+import { Observable, of, throwError } from 'rxjs'
+import { UserOrder } from '../models/user-order.model'
 import { User } from '../models/user.model'
 
 @Injectable({
@@ -36,6 +37,18 @@ export class UsersService {
 
     const url = `/api/users/${id}`
     return this.http.delete<void>(url)
+  }
+
+  public reorderUsers(users: User[]): Observable<void> {
+    if (users.length == 0) {
+      return of(void 0)
+    }
+
+    let index = 0
+    const body: UserOrder[] = users.map(user => ({ userId: user.id, order: index++ }))
+
+    const url = `/api/users`
+    return this.http.patch<void>(url, body)
   }
 
 }

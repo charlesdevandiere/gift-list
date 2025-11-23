@@ -31,12 +31,12 @@ export class GiftsService {
   }
 
   public addGift(gift: { name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `/api/users/${this.authService.me()?.id}/gifts`
+    const url = `/api/users/${this.authService.connectedUserId()}/gifts`
     return this.http.post<void>(url, gift)
   }
 
   public updateGift(gift: { id: string, name: string, link1?: string | null, link2?: string | null, link3?: string | null }): Observable<void> {
-    const url = `/api/users/${this.authService.me()?.id}/gifts/${gift.id}`
+    const url = `/api/users/${this.authService.connectedUserId()}/gifts/${gift.id}`
     return this.http.put<void>(url, gift)
   }
 
@@ -55,7 +55,7 @@ export class GiftsService {
       return throwError(() => new Error('Param id is required.'))
     }
 
-    const url = `/api/users/${this.authService.me()?.id}/gifts/${id}`
+    const url = `/api/users/${this.authService.connectedUserId()}/gifts/${id}`
     return this.http.delete<void>(url)
   }
 
@@ -67,7 +67,7 @@ export class GiftsService {
     let index = 0
     const body: GiftOrder[] = gifts.map(gift => ({ giftId: gift.id, order: index++ }))
 
-    const url = `/api/users/${this.authService.me()?.id}/gifts`
+    const url = `/api/users/${this.authService.connectedUserId()}/gifts`
     return this.http.patch<void>(url, body)
   }
 

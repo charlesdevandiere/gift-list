@@ -1,17 +1,12 @@
 <div
   class="container h-100"
-  [class.user-selected]="selectedUser() !== null">
+  [class.user-selected]="!!selectedUser()">
   <div class="row h-100">
     <div class="col-12 col-lg-6 h-100 user-list">
-      <app-user-list
-        [loading]="loading()"
-        [selectedUser]="selectedUser()"
-        (clickRefresh)="refresh()"
-        (selectUser)="selectUser($event)"
-        [users]="users()" />
+      <app-user-list />
     </div>
     <div class="col-12 col-lg-6 h-100 gift-list position-relative">
-      <app-user-gifts [user]="selectedUser()" />
+      <app-user-gifts />
     </div>
   </div>
 </div>

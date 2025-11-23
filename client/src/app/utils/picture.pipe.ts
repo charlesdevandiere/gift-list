@@ -7,7 +7,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PicturePipe implements PipeTransform {
 
   public transform(picture: string | null | undefined): unknown {
-    return `bi-${picture ?? 'person-fill'}`
+    if (picture && picture.length > 0) {
+      return `bi-${picture}`
+    } else {
+      return 'bi-person-fill'
+    }
   }
 
 }
