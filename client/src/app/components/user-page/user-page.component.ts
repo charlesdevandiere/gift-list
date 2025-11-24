@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'
-import { EventBusService } from '../../services/event-bus.service'
 import { ToastsService } from '../../services/toasts.service'
 import { UsersService } from '../../services/users.service'
 import { AppTranslations } from '../../utils/app-translations'
@@ -21,13 +20,8 @@ export class UserPageComponent implements OnInit {
   protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly usersService = inject(UsersService)
-  private readonly eventBus = inject(EventBusService)
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
-
-  public static readonly ADD_USER_EVENT = 'ADD_USER_EVENT'
-
-  public static readonly UPDATE_USER_EVENT = 'UPDATE_USER_EVENT'
 
   public readonly userId: string | null = this.route.snapshot.paramMap.get('id')
 
@@ -114,7 +108,6 @@ export class UserPageComponent implements OnInit {
             picture: this.selectedPicture()
           })
         )
-        this.eventBus.emit(UserPageComponent.ADD_USER_EVENT)
         this.toastsService.show(this.translations.user.userAddedMessage, { severity: 'success' })
         await this.router.navigate(['/'])
       }
@@ -125,7 +118,6 @@ export class UserPageComponent implements OnInit {
           picture: this.selectedPicture()
         }
         await firstValueFrom(this.usersService.updateUser(user))
-        this.eventBus.emit(UserPageComponent.UPDATE_USER_EVENT)
         if (this.authService.me()?.id === this.userId) {
           await this.authService.setCurrentUser(user.id)
         }

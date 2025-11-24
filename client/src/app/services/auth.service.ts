@@ -4,16 +4,11 @@ import { firstValueFrom } from 'rxjs'
 import { Auth } from '../models/auth.model'
 import { Me } from '../models/me.model'
 import { AppStorage } from '../utils/app-storage'
-import { EventBusService } from './event-bus.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly eventBus = inject(EventBusService)
-
-  public static readonly CHANGE_USER_EVENT = 'CHANGE_USER_EVENT'
-
   private static readonly AUTH_STORAGE_KEY = 'auth'
 
   private readonly _auth: Auth = {
@@ -93,7 +88,6 @@ export class AuthService {
       this.cache.clear()
       this._me.set(me)
       this.save()
-      this.eventBus.emit(AuthService.CHANGE_USER_EVENT)
     }
     catch (err) {
       this._auth.userId = oldUserId
@@ -109,7 +103,6 @@ export class AuthService {
     this._auth.userId = userId ?? null
     this._me.set(me)
     this.save()
-    this.eventBus.emit(AuthService.CHANGE_USER_EVENT)
     this.save()
     this._authenticated.set(true)
   }
