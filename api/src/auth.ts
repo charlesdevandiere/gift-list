@@ -1,10 +1,10 @@
 import { compare } from 'bcrypt'
+import { RequestHandler } from 'express'
+import passport from 'passport'
 import { BasicStrategy } from 'passport-http'
 import { db } from './db'
-import { Group } from './generated/client'
+import { Group } from './generated/prisma/client'
 import { logger } from './logger'
-import passport from 'passport'
-import { RequestHandler } from 'express'
 
 export interface AuthenticatedUsed {
   group: string,

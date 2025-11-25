@@ -1,4 +1,4 @@
-FROM node:22-alpine AS build-server
+FROM node:24-alpine AS build-server
 
 WORKDIR /app
 
@@ -11,19 +11,17 @@ COPY ./api ./
 RUN npm run build && \
     npm run lint
 
-FROM node:22-alpine AS migrations
+FROM build-server AS migrations
 
+RUN addgroup --gid 1961 gift-list && \
+    adduser --uid 1969 -D -S -g gift-list gift-list
 WORKDIR /app
+USER gift-list
 
-RUN npm install --global prisma && \
-    npm cache clean --force
-
-COPY ./api/prisma ./prisma
-
-CMD ["prisma", "migrate", "deploy"]
+CMD ["npx", "prisma", "migrate", "deploy"]
 
 
-FROM node:22-alpine AS build-client
+FROM node:24-alpine AS build-client
 
 WORKDIR /app
 
@@ -37,7 +35,7 @@ RUN npm run build && \
     npm run lint
 
 
-FROM node:22-alpine AS app
+FROM node:24-alpine AS app
 
 RUN addgroup --gid 1961 gift-list && \
     adduser --uid 1969 -D -S -g gift-list gift-list
