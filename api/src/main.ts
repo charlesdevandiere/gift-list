@@ -14,6 +14,7 @@ import { groupController } from './controllers/group.controller'
 import { importController } from './controllers/import.controller'
 import { meController } from './controllers/me.controller'
 import { userController } from './controllers/user.controller'
+import { db } from './db'
 import { errorHandler } from './error-handler'
 import { logger } from './logger'
 
@@ -61,6 +62,18 @@ app.use('/api/', userController)
 app.use('/api/', giftController)
 app.use('/api/', exportController)
 app.use('/api/', importController)
+
+// healthcheck
+app.get('/api/healthcheck', async (req, res) => {
+  try {
+    await db.group.count()
+    res.status(204).send()
+  }
+  catch (err) {
+    logger.error('Unable to connect to database.', err)
+    res.status(500).send()
+  }
+})
 
 // client
 app.use(express.static(path.join(process.cwd(), 'www')))

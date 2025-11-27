@@ -13,8 +13,7 @@ import { AppTranslations } from './utils/app-translations'
     NavbarComponent,
     RouterOutlet,
     ToastsComponent,
-  ],
-  standalone: true
+  ]
 })
 export class AppComponent {
 

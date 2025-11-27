@@ -40,7 +40,6 @@ export class AuthService {
   private readonly http: HttpClient
 
   private readonly storage: AppStorage = new AppStorage(localStorage)
-  private readonly cache: AppStorage = new AppStorage(sessionStorage)
 
   public constructor() {
     const httpBackend = inject(HttpBackend)
@@ -72,7 +71,6 @@ export class AuthService {
 
   public signOut(): void {
     this.storage.clear()
-    this.cache.clear()
     this._auth.group = null
     this._auth.userId = null
     this._auth.password = null
@@ -85,7 +83,6 @@ export class AuthService {
     this._auth.userId = userId ?? null
     try {
       const me: Me = await this.getMe()
-      this.cache.clear()
       this._me.set(me)
       this.save()
     }

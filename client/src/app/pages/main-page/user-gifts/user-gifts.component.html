@@ -1,0 +1,202 @@
+@if (user()) {
+  <div class="my-2 flex-shrink-0 d-flex flex-row align-items-center overflow-hidden">
+    <button
+      #back
+      class="btn me-2"
+      [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+      type="button"
+      routerLink="/">
+      <i
+        class="bi-arrow-left"
+        aria-label="back"></i>
+    </button>
+    <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.home.giftList.name(user()!.name) }}</h2>
+    <div
+      class="btn-group me-2"
+      role="group">
+      @if (!reordering()) {
+        @if (user()!.id === connectedUserId() && gifts().length) {
+          <button
+            class="btn"
+            [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+            type="button"
+            (click)="toggleReorder()">
+            <i
+              class="bi-sort-alpha-down"
+              aria-label="reorder"></i>
+          </button>
+        }
+        <button
+          class="btn"
+          [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+          type="button"
+          (click)="refresh()">
+          <i
+            class="bi-arrow-repeat"
+            aria-label="refresh"></i>
+        </button>
+      } @else {
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="toggleReorder()">
+          <i
+            class="bi-x"
+            aria-label="cancel"></i>
+        </button>
+        <button
+          class="btn btn-success"
+          type="button"
+          (click)="saveOrder()">
+          <i
+            class="bi-check"
+            aria-label="save order"></i>
+        </button>
+      }
+    </div>
+    @if (!reordering() && user() && user()!.id === connectedUserId()) {
+      <button
+        class="btn btn-primary text-nowrap"
+        type="button"
+        (click)="addGift()">
+        <i class="bi-plus-lg"></i>
+        <span class="ms-2 d-none d-md-inline-block d-lg-none d-xxl-inline-block">
+          {{ translations.home.giftList.addGift }}
+        </span>
+      </button>
+    }
+  </div>
+}
+
+<div class="flex-grow-1 pb-5 overflow-auto">
+  @if (user()) {
+    <ul class="list-group">
+      @if (!loading()) {
+        @for (gift of gifts(); track gift.id; let index = $index) {
+          <li
+            class="list-group-item"
+            [class.list-group-item-primary]="gift.offeredByUserId === connectedUserId()"
+            [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()">
+            <div class="d-flex flex-row align-items-center">
+              <div class="flex-grow-1 py-2">{{ gift.name }}</div>
+              <div
+                class="btn-group"
+                role="group">
+                @if (!reordering()) {
+                  <button
+                    type="button"
+                    class="btn"
+                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    (click)="share(gift)">
+                    <i
+                      class="bi-share-fill"
+                      aria-label="share"></i>
+                  </button>
+                  @if (user()!.id === connectedUserId()) {
+                    <button
+                      type="button"
+                      class="btn"
+                      [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                      (click)="updateGift(gift)">
+                      <i
+                        class="bi-pencil-fill"
+                        aria-label="update"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="deleteGift(gift)">
+                      <i
+                        class="bi-trash3-fill"
+                        aria-label="delete"></i>
+                    </button>
+                  } @else if (connectedUserId()) {
+                    <button
+                      type="button"
+                      class="btn"
+                      [class]="
+                        gift.offeredByUserId === connectedUserId()
+                          ? 'btn-primary'
+                          : colorMode() === 'light'
+                            ? 'btn-light'
+                            : 'btn-dark'
+                      "
+                      (click)="toggleOffer(gift)"
+                      [disabled]="
+                        (gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()) ||
+                        offerings().indexOf(gift.id) >= 0
+                      ">
+                      @if (offerings().indexOf(gift.id) >= 0) {
+                        <span
+                          class="spinner-border spinner-border-sm"
+                          aria-hidden="true"></span>
+                        <output class="visually-hidden">Loading...</output>
+                      } @else {
+                        <i
+                          [class]="gift.offeredByUserId ? 'bi-gift-fill' : 'bi-gift'"
+                          aria-label="offer"></i>
+                      }
+                    </button>
+                  }
+                } @else {
+                  <button
+                    type="button"
+                    class="btn"
+                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    (click)="reorder(gift.id, 'up')"
+                    [disabled]="index === 0">
+                    <i
+                      class="bi-caret-up-fill"
+                      aria-label="move up"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn"
+                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    (click)="reorder(gift.id, 'down')"
+                    [disabled]="index === gifts().length - 1">
+                    <i
+                      class="bi-caret-down-fill"
+                      aria-label="move down"></i>
+                  </button>
+                }
+              </div>
+            </div>
+            @if (gift.link1) {
+              <div class="mt-2 text-truncate">
+                <app-gift-link [link]="gift.link1" />
+              </div>
+            }
+            @if (gift.link2) {
+              <div class="mt-2 text-truncate">
+                <app-gift-link [link]="gift.link2" />
+              </div>
+            }
+            @if (gift.link3) {
+              <div class="mt-2 text-truncate">
+                <app-gift-link [link]="gift.link3" />
+              </div>
+            }
+          </li>
+        }
+      } @else {
+        <li class="list-group-item d-flex py-3 placeholder-glow">
+          <span class="placeholder col-4 my-1"></span>
+        </li>
+        <li class="list-group-item d-flex py-3 placeholder-glow">
+          <span class="placeholder col-3 my-1"></span>
+        </li>
+        <li class="list-group-item d-flex py-3 placeholder-glow">
+          <span class="placeholder col-5 my-1"></span>
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="text-center my-5">
+      <div>
+        <i class="bi bi-gift display-3"></i>
+      </div>
+      <div>{{ translations.home.giftList.noUser }}</div>
+    </div>
+  }
+</div>

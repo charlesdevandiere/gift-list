@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, inject } from '@angular/core'
-import { Observable, of, throwError } from 'rxjs'
+import { Observable, of, tap, throwError } from 'rxjs'
 import { GiftOrder } from '../models/gift-order.model'
 import { Gift } from '../models/gift.model'
 import { AuthService } from './auth.service'
+import { MeService } from './me.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class GiftsService {
   private readonly authService = inject(AuthService)
+  private readonly meService = inject(MeService)
   private readonly http = inject(HttpClient)
 
   public getUserGifts(userId: string): Observable<Gift[]> {
@@ -43,11 +45,17 @@ export class GiftsService {
   public offerGift(gift: Gift): Observable<void> {
     const url = `/api/users/${gift.userId}/gifts/${gift.id}/offer`
     return this.http.post<void>(url, null)
+      .pipe(
+        tap(() => this.meService.refreshCart())
+      )
   }
 
   public unofferGift(gift: Gift): Observable<void> {
     const url = `/api/users/${gift.userId}/gifts/${gift.id}/unoffer`
     return this.http.post<void>(url, null)
+      .pipe(
+        tap(() => this.meService.refreshCart())
+      )
   }
 
   public deleteGift(id: string): Observable<void> {

@@ -1,0 +1,14 @@
+<div class="container h-100">
+  <div class="row h-100">
+    <div
+      class="col-12 col-lg-6 h-100 d-lg-block"
+      [class.d-none]="selectedUser()">
+      <app-user-list />
+    </div>
+    <div
+      class="col-12 col-lg-6 h-100 d-lg-block"
+      [class.d-none]="!selectedUser()">
+      <app-user-gifts />
+    </div>
+  </div>
+</div>

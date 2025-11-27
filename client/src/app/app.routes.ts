@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router'
-import { CartPageComponent } from './components/cart-page/cart-page.component'
-import { GiftPageComponent } from './components/gift-page/gift-page.component'
-import { ImportPageComponent } from './components/import-page/import-page.component'
-import { MainPageComponent } from './components/main-page/main-page.component'
-import { SignInPageComponent } from './components/sign-in-page/sign-in-page.component'
-import { UserPageComponent } from './components/user-page/user-page.component'
+import { CartPageComponent } from './pages/cart-page/cart-page.component'
+import { GiftPageComponent } from './pages/gift-page/gift-page.component'
+import { ImportPageComponent } from './pages/import-page/import-page.component'
+import { MainPageComponent } from './pages/main-page/main-page.component'
+import { SignInPageComponent } from './pages/sign-in-page/sign-in-page.component'
+import { UserPageComponent } from './pages/user-page/user-page.component'
 import { authGuard } from './utils/auth.guard'
 
 export const routes: Routes = [

@@ -1,0 +1,91 @@
+<div class="container h-100 d-flex flex-column overflow-hidden">
+  <div class="row">
+    <div class="col my-2 d-flex flex-row align-items-center">
+      <button
+        type="button"
+        class="btn me-2"
+        [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+        routerLink="/">
+        <i
+          class="bi-arrow-left"
+          aria-label="back"></i>
+      </button>
+      <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.cart.title }}</h2>
+    </div>
+  </div>
+  <div class="row flex-grow-1 pb-5 overflow-auto">
+    @if (loading() === false) {
+      @if (cart().length > 0) {
+        <div class="col">
+          <div class="row">
+            @for (group of cart(); track $index) {
+              <div class="col-12 col-lg-6">
+                <h3 class="fs-6 my-2">{{ group.name }}</h3>
+                <ul class="list-group my-2">
+                  @for (gift of group.gifts; track gift.id) {
+                    <li class="list-group-item">
+                      <div class="d-flex flex-row align-items-center">
+                        <div class="flex-grow-1 py-2">{{ gift.name }}</div>
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          (click)="unoffer(gift)">
+                          <i
+                            class="bi-trash3-fill"
+                            aria-label="delete"></i>
+                        </button>
+                      </div>
+                      @if (gift.link1) {
+                        <div class="mt-2 text-truncate">
+                          <app-gift-link [link]="gift.link1" />
+                        </div>
+                      }
+                      @if (gift.link2) {
+                        <div class="mt-2 text-truncate">
+                          <app-gift-link [link]="gift.link2" />
+                        </div>
+                      }
+                      @if (gift.link3) {
+                        <div class="mt-2 text-truncate">
+                          <app-gift-link [link]="gift.link3" />
+                        </div>
+                      }
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <!-- no content -->
+        <div class="col text-center my-5">
+          <div>
+            <i class="bi bi-cart display-3"></i>
+          </div>
+          <div>{{ translations.cart.noContent }}</div>
+        </div>
+      }
+    } @else {
+      <!-- loader -->
+      <div class="col">
+        <div class="row">
+          <div class="col-12 col-lg-6 placeholder-glow">
+            <span class="placeholder col-2"></span>
+            <ul class="list-group">
+              <li class="list-group-item d-flex py-3 placeholder-glow">
+                <span class="placeholder col-4 my-1"></span>
+              </li>
+              <li class="list-group-item d-flex py-3 placeholder-glow">
+                <span class="placeholder col-3 my-1"></span>
+              </li>
+              <li class="list-group-item d-flex py-3 placeholder-glow">
+                <span class="placeholder col-5 my-1"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

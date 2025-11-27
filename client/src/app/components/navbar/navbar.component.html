@@ -1,36 +1,45 @@
 <nav class="navbar bg-body border-bottom">
   <div class="container">
     <a
-      class="navbar-brand d-flex focus-ring focus-ring-light align-items-center p-2 rounded"
+      class="navbar-brand d-flex focus-ring focus-ring-light align-items-center px-2 py-1 rounded"
       routerLink="/">
-      <i class="bi bi-gift-fill text-primary me-2 fs-2"></i>
+      <i class="bi bi-gift-fill text-primary me-3 fs-2 lh-1"></i>
       <div>
-        <div class="lh-1">{{ translations.title }}</div>
-        <div class="group text-body-secondary lh-1">{{ group() }}</div>
+        <h1 class="fs-5 lh-1 m-0">{{ translations.title }}</h1>
+        <div class="text-body-secondary fs-6 lh-1">
+          <small>{{ group() }}</small>
+        </div>
       </div>
     </a>
     @if (authenticated()) {
-      <div class="d-flex align-items-center">
+      <div class="row align-items-center">
         @if (id()) {
+          <div class="col pe-0">
+            <button
+              type="button"
+              class="btn btn-outline-primary position-relative"
+              [routerLink]="['cart']">
+              <i
+                class="bi-cart"
+                aria-label="cart"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cartCount() }}
+                <span class="visually-hidden">gifts</span>
+              </span>
+            </button>
+          </div>
+        }
+        <div class="col">
           <button
             type="button"
-            class="btn btn-link me-1 text-body"
-            [routerLink]="['cart']">
-            <i
-              class="bi-cart"
-              aria-label="cart"></i>
+            class="btn btn-primary d-flex align-items-center text-decoration-none"
+            (click)="openMenu()">
+            <i class="bi bi-{{ picture() || 'person-fill' }}"></i>
+            @if (name()) {
+              <span class="d-none d-sm-inline ms-2 text-nowrap">{{ name() }}</span>
+            }
           </button>
-          <div class="border-end separator"></div>
-        }
-        <button
-          type="button"
-          class="btn btn-link d-flex ms-1 align-items-center text-body text-decoration-none"
-          (click)="openMenu()">
-          <i class="bi bi-{{ picture() || 'person-fill' }}"></i>
-          @if (name()) {
-            <span class="d-none d-sm-inline ms-2">{{ name() }}</span>
-          }
-        </button>
+        </div>
       </div>
     }
   </div>

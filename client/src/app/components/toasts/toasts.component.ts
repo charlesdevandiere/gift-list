@@ -8,7 +8,6 @@ import { ToastsService } from '../../services/toasts.service'
   templateUrl: './toasts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgbToastModule],
-  standalone: true,
   host: {
     class: 'toast-container bottom-0 w-100 p-3',
     style: 'z-index: 1200'

@@ -1,0 +1,109 @@
+<div class="my-2 flex-shrink-0 d-flex flex-row align-items-center overflow-hidden">
+  <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.home.giftLists }}</h2>
+  <div
+    class="btn-group"
+    role="group">
+    @if (!reordering()) {
+      @if (users().length) {
+        <button
+          class="btn"
+          [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+          (click)="toggleReorder()">
+          <i
+            class="bi-sort-alpha-down"
+            aria-label="reorder"></i>
+        </button>
+      }
+      <button
+        class="btn"
+        [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+        (click)="refresh()">
+        <i
+          class="bi-arrow-repeat"
+          aria-label="refresh"></i>
+      </button>
+    } @else {
+      <button
+        class="btn btn-outline-secondary"
+        (click)="toggleReorder()">
+        <i
+          class="bi-x"
+          aria-label="cancel"></i>
+      </button>
+      <button
+        class="btn btn-outline-success"
+        (click)="saveOrder()">
+        <i
+          class="bi-check"
+          aria-label="save order"></i>
+      </button>
+    }
+  </div>
+</div>
+<div class="flex-grow-1 pb-5 overflow-auto">
+  <div class="list-group">
+    @if (loading() === false) {
+      @for (user of users(); track user.id; let index = $index) {
+        @if (reordering()) {
+          <div class="list-group-item d-flex">
+            <i
+              class="d-block bi ms-2 me-3 my-2"
+              [class]="user?.picture | picture"></i>
+            <div class="flex-grow-1 my-2">{{ user.name }}</div>
+            <div
+              class="btn-group"
+              role="group">
+              <button
+                type="button"
+                class="btn"
+                [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                (click)="reorder(user.id, 'up')"
+                [disabled]="index === 0">
+                <i
+                  class="bi-caret-up-fill"
+                  aria-label="move up"></i>
+              </button>
+              <button
+                type="button"
+                class="btn"
+                [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                (click)="reorder(user.id, 'down')"
+                [disabled]="index === users().length - 1">
+                <i
+                  class="bi-caret-down-fill"
+                  aria-label="move down"></i>
+              </button>
+            </div>
+          </div>
+        } @else {
+          <button
+            class="list-group-item list-group-item-action focus-ring d-flex py-3"
+            (click)="selectUser(user)"
+            [class.active]="user === selectedUser()"
+            [ariaCurrent]="user === selectedUser()"
+            [class.list-group-item-primary]="user.id === connectedUserId()">
+            <i
+              class="d-block bi ms-2 me-3"
+              [class]="user?.picture | picture"></i>
+            <div>
+              {{ user.name }}
+            </div>
+          </button>
+        }
+      }
+    } @else {
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-4 my-1"></span>
+      </div>
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-3 my-1"></span>
+      </div>
+      <div class="list-group-item d-flex py-3 placeholder-glow">
+        <i class="d-block bi bi-person-fill ms-2 me-3"></i>
+        <span class="placeholder col-5 my-1"></span>
+      </div>
+    }
+  </div>
+</div>

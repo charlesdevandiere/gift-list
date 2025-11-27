@@ -80,7 +80,7 @@ export const AdminStrategy = new BasicStrategy({ realm: 'admin' }, authenticateA
 
 export function authenticate(strategy: string): RequestHandler {
   return (req, res, next) => {
-    return (passport.authenticate(strategy, { session: false }, (err: unknown, user?: Express.User | false | null) => {
+    return (passport.authenticate(strategy, { session: false }, (err: unknown, user?: Express.User | null) => {
       if (!user) {
         const info = err instanceof Error ? { message: err.message } : null
         // send 401 without www-authenticate header to prevent browser auth dialog

@@ -3,6 +3,9 @@
 @import "bootstrap/scss/functions";
 
 $font-family-sans-serif: Luciole, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$badge-font-size: .6em;
+$badge-padding-y: .5em .65em; // top | right
+$badge-padding-x: .35em .65em; // bottom | left
 
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
@@ -26,13 +29,13 @@ $font-family-sans-serif: Luciole, system-ui, -apple-system, "Segoe UI", Roboto, 
 // @import "bootstrap/scss/transitions";
 // @import "bootstrap/scss/dropdown";
 @import "bootstrap/scss/button-group";
-@import "bootstrap/scss/nav";
+// @import "bootstrap/scss/nav";
 @import "bootstrap/scss/navbar";
 @import "bootstrap/scss/card";
 // @import "bootstrap/scss/accordion";
 // @import "bootstrap/scss/breadcrumb";
 // @import "bootstrap/scss/pagination";
-// @import "bootstrap/scss/badge";
+@import "bootstrap/scss/badge";
 @import "bootstrap/scss/alert";
 @import "bootstrap/scss/progress";
 @import "bootstrap/scss/list-group";
@@ -42,29 +45,9 @@ $font-family-sans-serif: Luciole, system-ui, -apple-system, "Segoe UI", Roboto, 
 // @import "bootstrap/scss/tooltip";
 // @import "bootstrap/scss/popover";
 // @import "bootstrap/scss/carousel";
-// @import "bootstrap/scss/spinners";
+@import "bootstrap/scss/spinners";
 // @import "bootstrap/scss/offcanvas";
 @import "bootstrap/scss/placeholders";
 
 // Utilities
 @import "bootstrap/scss/utilities/api";
-
-.top-bar {
-  height: 38px;
-}
-
-.btn-link {
-  --bs-btn-hover-bg: #80808020;
-}
-
-.navbar-brand:hover {
-  background-color: #80808020;
-}
-
-.mb-6 {
-  margin-bottom: 5rem !important;
-}
-
-.page-height {
-  height: calc(100% - 54px);
-}

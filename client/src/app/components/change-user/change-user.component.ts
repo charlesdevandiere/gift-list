@@ -7,8 +7,7 @@ import { PicturePipe } from '../../utils/picture.pipe'
   selector: 'app-change-user',
   templateUrl: './change-user.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PicturePipe],
-  standalone: true
+  imports: [PicturePipe]
 })
 export class ChangeUserComponent {
   protected readonly translations = inject(AppTranslations)
