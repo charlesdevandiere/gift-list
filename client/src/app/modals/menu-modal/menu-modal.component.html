@@ -2,15 +2,20 @@
   @if (page() === 'main') {
     <h5 class="modal-title d-flex align-items-center">
       <i
-        class="bi fs-3 mx-2"
+        class="bi fs-3 mx-2 me-2"
         [class]="user()?.picture | picture"></i>
-      <span class="ms-2">{{ user()?.name ?? translations.misc.anonymous }}</span>
+      @if (user()?.name; as name) {
+        <span>{{ name }}</span>
+      } @else {
+        <span i18n="@@menuModal.anonymous">Anonymous</span>
+      }
     </h5>
     <button
       type="button"
       class="btn-close"
       (click)="modal.dismiss()"
-      aria-label="Close"></button>
+      aria-label="Close"
+      i18n-aria-label="@@menuModal.close"></button>
   } @else if (page() === 'change-user') {
     <button
       type="button"
@@ -19,9 +24,14 @@
       (click)="move('main')">
       <i
         class="bi-arrow-left"
-        aria-label="back"></i>
+        aria-label="Back"
+        i18n-aria-label="@@menuModal.back"></i>
     </button>
-    <h5 class="modal-title">{{ translations.menu.changeUser }}</h5>
+    <h5
+      class="modal-title"
+      i18n="@@menuModal.changeUser">
+      Change user
+    </h5>
   }
 </div>
 <div class="modal-body">

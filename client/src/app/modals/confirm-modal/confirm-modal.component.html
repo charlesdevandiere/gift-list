@@ -1,17 +1,25 @@
-<div class="modal-body">
-  {{ data()?.message }}
-</div>
-<div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-{{ data()?.noButton?.color || 'secondary' }}"
-    (click)="modal.dismiss()">
-    {{ data()?.noButton?.value || translations.misc.cancel }}
-  </button>
-  <button
-    type="button"
-    class="btn btn-{{ data()?.yesButton?.color }}"
-    (click)="modal.close()">
-    {{ data()?.yesButton?.value }}
-  </button>
-</div>
+@if (data(); as data) {
+  <div class="modal-body">
+    {{ data.message }}
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn"
+      [class]="'btn-' + (data.noButton?.color || 'secondary')"
+      (click)="modal.dismiss()">
+      @if (data.noButton; as noButton) {
+        {{ noButton.value }}
+      } @else {
+        <span i18n="@@confirmModal.cancel">Cancel</span>
+      }
+    </button>
+    <button
+      type="button"
+      class="btn"
+      [class]="'btn-' + data.yesButton.color"
+      (click)="modal.close()">
+      {{ data.yesButton.value }}
+    </button>
+  </div>
+}

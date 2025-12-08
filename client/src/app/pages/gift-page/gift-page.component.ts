@@ -7,7 +7,6 @@ import { AuthService } from '../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../services/color-modes.service'
 import { GiftsService } from '../../services/gifts.service'
 import { ToastsService } from '../../services/toasts.service'
-import { AppTranslations } from '../../utils/app-translations'
 
 @Component({
   selector: 'app-gift-page',
@@ -16,7 +15,6 @@ import { AppTranslations } from '../../utils/app-translations'
   imports: [ReactiveFormsModule]
 })
 export class GiftPageComponent implements OnInit {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly route = inject(ActivatedRoute)
@@ -75,7 +73,7 @@ export class GiftPageComponent implements OnInit {
             link3: this.form.value.link3
           })
         )
-        this.toastsService.show(this.translations.gift.giftAddedMessage, { severity: 'success' })
+        this.toastsService.show($localize`:@@giftPage.giftAddedMessage:Gift added.`, { severity: 'success' })
         await this.back()
       } else if (this.action === 'update' && this.form.value.id && this.form.value.name) {
         await firstValueFrom(this.giftsService
@@ -87,13 +85,13 @@ export class GiftPageComponent implements OnInit {
             link3: this.form.value.link3
           })
         )
-        this.toastsService.show(this.translations.gift.giftUpdatedMessage, { severity: 'success' })
+        this.toastsService.show($localize`:@@giftPage.giftUpdatedMessage:Gift updated.`, { severity: 'success' })
         await this.back()
       }
     }
     catch (err) {
       console.error(err)
-      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+      this.toastsService.show($localize`:@@giftPage.saveError:A error occurred while saving gift.`, { severity: 'danger' })
     }
   }
 

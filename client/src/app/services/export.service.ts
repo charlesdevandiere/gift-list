@@ -1,7 +1,6 @@
 import { formatDate } from '@angular/common'
 import { HttpClient, HttpResponse } from '@angular/common/http'
 import { Injectable, LOCALE_ID, inject } from '@angular/core'
-import { AppTranslations } from '../utils/app-translations'
 import { AuthService } from './auth.service'
 import { ToastsService } from './toasts.service'
 
@@ -12,7 +11,6 @@ export class ExportService {
   private readonly authService = inject(AuthService)
   private readonly http = inject(HttpClient)
   private readonly toastsService = inject(ToastsService)
-  private readonly translations = inject(AppTranslations)
   private readonly locale = inject(LOCALE_ID)
 
   public export(): void {
@@ -27,7 +25,10 @@ export class ExportService {
         },
         error: (err) => {
           console.error(err)
-          this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+          this.toastsService.show(
+            $localize`:@@export.error:A error occurred while exporting gift list.`,
+            { severity: 'danger' }
+          )
         }
       })
   }

@@ -5,16 +5,13 @@ import { provideServiceWorker } from '@angular/service-worker'
 import { routes } from './app.routes'
 import { AuthService } from './services/auth.service'
 import { ColorModesService } from './services/color-modes.service'
-import { AppTranslations } from './utils/app-translations'
 import { AuthInterceptor } from './utils/auth.interceptor'
 
 async function initializeApp(): Promise<void> {
   const colorModesService: ColorModesService = inject(ColorModesService)
-  const translation: AppTranslations = inject(AppTranslations)
   const auth: AuthService = inject(AuthService)
 
   colorModesService.init()
-  await translation.load()
   await auth.load()
 }
 
@@ -23,7 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withHashLocation()),
-    AppTranslations,
     provideAppInitializer(initializeApp),
     {
       provide: HTTP_INTERCEPTORS,

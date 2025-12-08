@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "eslint .",
-    "generate-json-schema": "ts-json-schema-generator --path src/app/utils/translations.ts --type Translations --out src/translations.schema.json"
+    "i18n": "ng extract-i18n --format=json --output-path src/locale && node translate.mjs"
   },
   "prettier": {
     "printWidth": 120,
@@ -49,7 +49,6 @@
     "angular-eslint": "^20.7.0",
     "eslint": "^9.28.0",
     "prettier": "^3.6.2",
-    "ts-json-schema-generator": "^2.4.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.33.1"
   }

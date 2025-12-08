@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { User } from '../../../models/user.model'
 import { AuthService } from '../../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../../services/color-modes.service'
-import { AppTranslations } from '../../../utils/app-translations'
 import { PicturePipe } from '../../../utils/picture.pipe'
 import { MainPageService } from '../main-page.service'
 
@@ -17,7 +16,6 @@ import { MainPageService } from '../main-page.service'
   }
 })
 export class UserListComponent {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly route = inject(ActivatedRoute)

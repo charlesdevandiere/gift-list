@@ -4,18 +4,18 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { MenuModalComponent } from '../../modals/menu-modal/menu-modal.component'
 import { AuthService } from '../../services/auth.service'
 import { MeService } from '../../services/me.service'
-import { AppTranslations } from '../../utils/app-translations'
+import { PicturePipe } from '../../utils/picture.pipe'
 
 @Component({
   selector: 'app-navbar',
   imports: [
+    PicturePipe,
     RouterLink
   ],
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavbarComponent {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly meService = inject(MeService)
   private readonly modalService = inject(NgbModal)

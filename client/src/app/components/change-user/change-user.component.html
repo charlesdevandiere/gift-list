@@ -1,6 +1,10 @@
 @if (currentUser()) {
   <div class="row">
-    <div class="col my-2 text-body-secondary">{{ translations.changeUser.currentUser }}</div>
+    <div
+      class="col my-2 text-body-secondary"
+      i18n="@@changeUser.currentUser">
+      Current user:
+    </div>
   </div>
   <div class="list-group">
     <button
@@ -17,7 +21,11 @@
   <hr class="my-2" />
 }
 <div class="row">
-  <div class="col my-2 text-body-secondary">{{ translations.changeUser.users }}</div>
+  <div
+    class="col my-2 text-body-secondary"
+    i18n="@@changeUser.user">
+    Users:
+  </div>
 </div>
 <div class="list-group">
   @for (user of users(); track user.id) {
@@ -42,6 +50,6 @@
     aria-current="true"
     (click)="selectUser()">
     <i class="d-block bi bi-question ms-2 me-3"></i>
-    <div>{{ translations.misc.anonymous }}</div>
+    <span i18n="@@changeUser.anonymous">Anonymous</span>
   </button>
 </div>

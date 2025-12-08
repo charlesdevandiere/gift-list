@@ -2,7 +2,11 @@
   <div class="row h-100">
     <div class="col-12 offset-md-2 col-md-8 offset-lg-3 col-lg-6 offset-xl-4 col-xl-4 mt-3 h-100">
       <div class="d-flex flex-column h-100">
-        <h4 class="text-center">{{ translations.signIn.title }}</h4>
+        <h4
+          class="text-center"
+          i18n="@@signInPage.title">
+          Sign in to Gift list
+        </h4>
         <div class="card overflow-auto mb-5">
           @if (step() === 'sign-in') {
             <form
@@ -13,8 +17,9 @@
                 <label
                   for="group"
                   class="form-label"
-                  >{{ translations.signIn.group }}</label
-                >
+                  i18n="@@signInPage.group">
+                  Group
+                </label>
                 <input
                   type="text"
                   class="form-control"
@@ -25,8 +30,9 @@
                 <label
                   for="password"
                   class="form-label"
-                  >{{ translations.signIn.password }}</label
-                >
+                  i18n="@@signInPage.password">
+                  Password
+                </label>
                 <input
                   type="password"
                   class="form-control"
@@ -37,14 +43,15 @@
                 <button
                   type="submit"
                   class="btn btn-primary"
-                  [disabled]="!form.valid">
-                  {{ translations.signIn.signIn }}
+                  [disabled]="!form.valid"
+                  i18n="@@signInPage.signIn">
+                  Sign in
                 </button>
               </div>
             </form>
           } @else {
             <div class="card-body">
-              <div>{{ translations.signIn.selectUser }}</div>
+              <div i18n="@@signInPage.selectUser">Choose a profile</div>
               <app-change-user
                 [users]="users()"
                 (selectedUser)="selectUser($event)" />

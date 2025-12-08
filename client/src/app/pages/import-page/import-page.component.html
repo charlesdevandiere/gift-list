@@ -10,14 +10,18 @@
           class="bi-arrow-left"
           aria-label="back"></i>
       </button>
-      <div class="flex-grow-1 text-truncate">{{ translations.import.title }}</div>
+      <div
+        class="flex-grow-1 text-truncate"
+        i18n="@@importPage.title">
+        Import gift lists
+      </div>
     </div>
   </div>
   <div class="row flex-grow-1 pb-5 overflow-auto">
     <div class="col">
       <div class="mb-3">
         <i class="bi-upload me-2"></i>
-        {{ translations.import.import }}
+        <span i18n="@@importPage.import">Import</span>
       </div>
       @if (step() === 'select-file') {
         <div class="row">
@@ -26,17 +30,18 @@
               <input
                 type="text"
                 class="form-control"
-                [placeholder]="translations.import.csvFile"
+                placeholder="CSV file"
+                i18n-placeholder="@@importPage.csvFilePlaceholder"
                 readonly
                 [value]="file()?.name"
-                [attr.aria-label]="translations.import.csvFile"
                 aria-describedby="browse-btn" />
               <button
                 type="button"
                 class="btn btn-primary"
                 id="browse-btn"
-                (click)="filepicker.click()">
-                {{ translations.import.browse }}
+                (click)="filepicker.click()"
+                i18n="@@importPage.browse">
+                Browse
               </button>
             </div>
             <input
@@ -46,6 +51,7 @@
               class="d-none"
               (change)="selectFile($any($event))"
               aria-label="File"
+              i18n-aria-label="@@importPage.file"
               accept="text/csv" />
           </div>
           <div class="col-auto">
@@ -53,15 +59,18 @@
               type="button"
               class="btn btn-success"
               (click)="import()"
-              [disabled]="!file()">
-              {{ translations.import.import }}
+              [disabled]="!file()"
+              i18n="@@importPage.importButton">
+              Import
             </button>
           </div>
         </div>
         <div class="row">
           <div class="col mt-1">
-            <a href="import-{{ translations.language }}.csv">
-              {{ translations.import.downloadTemplateFile }}
+            <a
+              href="import.{{ locale }}.csv"
+              i18n="@@importPage.downloadTemplateFile">
+              Download template file
             </a>
           </div>
         </div>
@@ -88,7 +97,7 @@
               <div
                 class="alert alert-danger"
                 role="alert">
-                <div>{{ translations.import.errorMessage }}</div>
+                <div i18n="@@importPage.error">An error occurred while importing gift lists.</div>
                 <div class="font-monospace">
                   {{ result()?.error }}
                 </div>
@@ -101,7 +110,7 @@
               <div
                 class="alert alert-success"
                 role="alert">
-                <div>{{ translations.import.successMessage }}</div>
+                <div i18n="@@importPage.success">Gift lists are successfuly imported.</div>
                 <div class="font-monospace">
                   <div>Imported users:</div>
                   @for (user of result()?.success?.importedUsers | keyvalue; track user.key) {

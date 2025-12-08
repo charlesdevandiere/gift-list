@@ -8,9 +8,14 @@
         routerLink="/">
         <i
           class="bi-arrow-left"
-          aria-label="back"></i>
+          aria-label="Back"
+          i18n-aria-label="@@cartPage.backButtonLabel"></i>
       </button>
-      <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.cart.title }}</h2>
+      <h2
+        class="fs-6 m-0 flex-grow-1 text-truncate"
+        i18n="@@cartPage.title">
+        Cart
+      </h2>
     </div>
   </div>
   <div class="row flex-grow-1 pb-5 overflow-auto">
@@ -32,7 +37,8 @@
                           (click)="unoffer(gift)">
                           <i
                             class="bi-trash3-fill"
-                            aria-label="delete"></i>
+                            aria-label="Unoffer"
+                            i18n-aria-label="@@cartPage.unofferButtonLabel"></i>
                         </button>
                       </div>
                       @if (gift.link1) {
@@ -63,7 +69,7 @@
           <div>
             <i class="bi bi-cart display-3"></i>
           </div>
-          <div>{{ translations.cart.noContent }}</div>
+          <div i18n="@@cartPage.emptyCart">Your cart is empty.</div>
         </div>
       }
     } @else {

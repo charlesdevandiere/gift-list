@@ -49,10 +49,19 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "fr-FR": {
+            "translation": "src/locale/messages.fr-FR.json"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "localize": true,
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js",

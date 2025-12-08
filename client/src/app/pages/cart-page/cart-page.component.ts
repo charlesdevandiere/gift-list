@@ -11,7 +11,6 @@ import { ColorMode, ColorModesService } from '../../services/color-modes.service
 import { GiftsService } from '../../services/gifts.service'
 import { MeService } from '../../services/me.service'
 import { ToastsService } from '../../services/toasts.service'
-import { AppTranslations } from '../../utils/app-translations'
 
 @Component({
   selector: 'app-cart-page',
@@ -20,7 +19,6 @@ import { AppTranslations } from '../../utils/app-translations'
   imports: [GiftLinkComponent, RouterLink]
 })
 export class CartPageComponent implements OnInit {
-  protected readonly translations = inject(AppTranslations)
   private readonly colorModeService = inject(ColorModesService)
   private readonly giftsService = inject(GiftsService)
   private readonly meService = inject(MeService)
@@ -37,13 +35,13 @@ export class CartPageComponent implements OnInit {
 
   public async unoffer(gift: Gift): Promise<void> {
     const data: ConfirmModalData = {
-      message: this.translations.cart.unoffer(gift.name),
+      message: $localize`:@@cartPage.confirmUnofferGift:Are you sure you no longer want to offer the "${gift.name}" gift?`,
       yesButton: {
         color: 'primary',
-        value: this.translations.misc.yes
+        value: $localize`:@@cartPage.yes:Yes`
       },
       noButton: {
-        value: this.translations.misc.no
+        value: $localize`:@@cartPage.no:No`
       }
     }
     const modal = this.modalService.open(ConfirmModalComponent)
@@ -58,7 +56,10 @@ export class CartPageComponent implements OnInit {
       }
       catch (err) {
         console.error(err)
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+        this.toastsService.show(
+          $localize`:@@cartPage.unofferError:A error occurred while removing gift "${gift.name}" from cart.`,
+          { severity: 'danger' }
+        )
       }
     }
     catch (err) {
@@ -73,7 +74,10 @@ export class CartPageComponent implements OnInit {
       this.cart.set(cart.map(item => ({ name: item.name, gifts: item.gifts ?? [] })))
     } catch (err) {
       console.error(err)
-      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+      this.toastsService.show(
+        $localize`:@@cartPage.loadError:A error occurred while loading cart.`,
+        { severity: 'danger' }
+      )
     }
     this.loading.set(false)
   }

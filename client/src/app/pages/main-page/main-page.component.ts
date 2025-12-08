@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Params } from '@angular/router'
-import { AppTranslations } from '../../utils/app-translations'
 import { MainPageService } from './main-page.service'
 import { UserGiftsComponent } from './user-gifts/user-gifts.component'
 import { UserListComponent } from './user-list/user-list.component'
@@ -14,7 +13,6 @@ import { UserListComponent } from './user-list/user-list.component'
   providers: [MainPageService]
 })
 export class MainPageComponent implements OnInit {
-  protected readonly translations = inject(AppTranslations)
   private readonly route = inject(ActivatedRoute)
   private readonly service = inject(MainPageService)
 

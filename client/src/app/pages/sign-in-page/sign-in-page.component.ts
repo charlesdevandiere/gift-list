@@ -7,7 +7,6 @@ import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'
 import { ToastsService } from '../../services/toasts.service'
 import { UsersService } from '../../services/users.service'
-import { AppTranslations } from '../../utils/app-translations'
 
 @Component({
   selector: 'app-sign-in-page',
@@ -16,7 +15,6 @@ import { AppTranslations } from '../../utils/app-translations'
   imports: [ChangeUserComponent, ReactiveFormsModule]
 })
 export class SignInPageComponent implements OnInit {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly router = inject(Router)
   private readonly toastsService = inject(ToastsService)
@@ -53,7 +51,10 @@ export class SignInPageComponent implements OnInit {
     try {
       await this.authService.signIn(group, password)
     } catch (error: unknown) {
-      this.toastsService.show(this.translations.signIn.wrongGroupOrPasswordMessage, { severity: 'danger' })
+      this.toastsService.show(
+        $localize`:@@signInPage.wrongGroupOrPasswordMessage:Incorrect group or password.`,
+        { severity: 'danger' }
+      )
       console.error(error)
       throw new Error('wrong group or password.')
     }

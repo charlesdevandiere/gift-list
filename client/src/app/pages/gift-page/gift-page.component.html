@@ -8,10 +8,15 @@
         (click)="back()">
         <i
           class="bi-arrow-left"
-          aria-label="back"></i>
+          aria-label="Back"
+          i18n-aria-label="@@giftPage.backButtonLabel"></i>
       </button>
       <div class="flex-grow-1 text-truncate">
-        {{ action === 'add' ? translations.gift.addTitle : translations.gift.updateTitle }}
+        @if (action === 'add') {
+          <span i18n="@@giftPage.addTitle">Add gift</span>
+        } @else {
+          <span i18n="@@giftPage.updateTitle">Update gift</span>
+        }
       </div>
       <button
         type="submit"
@@ -19,9 +24,9 @@
         class="btn btn-success text-nowrap"
         [disabled]="!form.valid">
         <i
-          class="bi-floppy"
+          class="bi-floppy me-2"
           aria-hidden="true"></i>
-        <span class="ms-2">{{ translations.misc.save }}</span>
+        <span i18n="@@giftPage.save">Save</span>
       </button>
     </div>
   </div>
@@ -36,7 +41,8 @@
           <label
             for="name"
             class="form-label">
-            {{ translations.gift.name }} *
+            <span i18n="@@giftPage.name">Name</span>
+            <span> *</span>
           </label>
         </div>
       </div>
@@ -55,7 +61,7 @@
           <label
             for="link1"
             class="form-label">
-            {{ translations.gift.link }}
+            <span i18n="@@giftPage.link1">Link</span>
           </label>
         </div>
       </div>
@@ -74,7 +80,7 @@
           <label
             for="link2"
             class="form-label">
-            {{ translations.gift.link }}
+            <span i18n="@@giftPage.link2">Link</span>
           </label>
         </div>
       </div>
@@ -93,7 +99,7 @@
           <label
             for="link3"
             class="form-label">
-            {{ translations.gift.link }}
+            <span i18n="@@giftPage.link3">Link</span>
           </label>
         </div>
       </div>

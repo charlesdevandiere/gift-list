@@ -1,9 +1,12 @@
 <a
   [href]="link()"
+  class="icon-link"
   target="_blank">
   <i
-    class="bi-box-arrow-up-right me-2"
+    class="bi-box-arrow-up-right"
     aria-hidden="true"></i>
-  <span class="fw-bold">{{ host() }}</span>
-  <span>{{ route() }}</span>
+  <div>
+    <span class="fw-bold">{{ host() }}</span>
+    <span>{{ route() }}</span>
+  </div>
 </a>

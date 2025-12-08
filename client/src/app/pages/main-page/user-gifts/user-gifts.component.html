@@ -10,7 +10,11 @@
         class="bi-arrow-left"
         aria-label="back"></i>
     </button>
-    <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.home.giftList.name(user()!.name) }}</h2>
+    <h2
+      class="fs-6 m-0 flex-grow-1 text-truncate"
+      i18n="@@mainPage.userGift.listTitle">
+      {{ user()!.name }}'s gift list
+    </h2>
     <div
       class="btn-group me-2"
       role="group">
@@ -23,7 +27,8 @@
             (click)="toggleReorder()">
             <i
               class="bi-sort-alpha-down"
-              aria-label="reorder"></i>
+              aria-label="Reorder"
+              i18n-aria-label="@@mainPage.userGift.reorder"></i>
           </button>
         }
         <button
@@ -33,7 +38,8 @@
           (click)="refresh()">
           <i
             class="bi-arrow-repeat"
-            aria-label="refresh"></i>
+            aria-label="Refresh"
+            i18n-aria-label="@@mainPage.userGift.refresh"></i>
         </button>
       } @else {
         <button
@@ -42,7 +48,8 @@
           (click)="toggleReorder()">
           <i
             class="bi-x"
-            aria-label="cancel"></i>
+            aria-label="Cancel"
+            i18n-aria-label="@@mainPage.userGift.cancel"></i>
         </button>
         <button
           class="btn btn-success"
@@ -50,7 +57,8 @@
           (click)="saveOrder()">
           <i
             class="bi-check"
-            aria-label="save order"></i>
+            aria-label="Save order"
+            i18n-aria-label="@@mainPage.userGift.saveOrder"></i>
         </button>
       }
     </div>
@@ -60,8 +68,10 @@
         type="button"
         (click)="addGift()">
         <i class="bi-plus-lg"></i>
-        <span class="ms-2 d-none d-md-inline-block d-lg-none d-xxl-inline-block">
-          {{ translations.home.giftList.addGift }}
+        <span
+          class="ms-2 d-none d-md-inline-block d-lg-none d-xxl-inline-block"
+          i18n="@@mainPage.userGift.addGift">
+          Add gift
         </span>
       </button>
     }
@@ -90,7 +100,8 @@
                     (click)="share(gift)">
                     <i
                       class="bi-share-fill"
-                      aria-label="share"></i>
+                      aria-label="Share"
+                      i18n-aria-label="@@mainPage.userGift.share"></i>
                   </button>
                   @if (user()!.id === connectedUserId()) {
                     <button
@@ -100,7 +111,8 @@
                       (click)="updateGift(gift)">
                       <i
                         class="bi-pencil-fill"
-                        aria-label="update"></i>
+                        aria-label="Update"
+                        i18n-aria-label="@@mainPage.userGift.update"></i>
                     </button>
                     <button
                       type="button"
@@ -108,7 +120,8 @@
                       (click)="deleteGift(gift)">
                       <i
                         class="bi-trash3-fill"
-                        aria-label="delete"></i>
+                        aria-label="Delete"
+                        i18n-aria-label="@@mainPage.userGift.delete"></i>
                     </button>
                   } @else if (connectedUserId()) {
                     <button
@@ -130,11 +143,16 @@
                         <span
                           class="spinner-border spinner-border-sm"
                           aria-hidden="true"></span>
-                        <output class="visually-hidden">Loading...</output>
+                        <output
+                          class="visually-hidden"
+                          i18n="@@mainPage.userGift.loading">
+                          Loading...
+                        </output>
                       } @else {
                         <i
                           [class]="gift.offeredByUserId ? 'bi-gift-fill' : 'bi-gift'"
-                          aria-label="offer"></i>
+                          aria-label="Offer"
+                          i18n-aria-label="@@mainPage.userGift.offer"></i>
                       }
                     </button>
                   }
@@ -147,7 +165,8 @@
                     [disabled]="index === 0">
                     <i
                       class="bi-caret-up-fill"
-                      aria-label="move up"></i>
+                      aria-label="Move up"
+                      i18n-aria-label="@@mainPage.userGift.moveUp"></i>
                   </button>
                   <button
                     type="button"
@@ -157,7 +176,8 @@
                     [disabled]="index === gifts().length - 1">
                     <i
                       class="bi-caret-down-fill"
-                      aria-label="move down"></i>
+                      aria-label="Move down"
+                      i18n-aria-label="@@mainPage.userGift.moveDown"></i>
                   </button>
                 }
               </div>
@@ -196,7 +216,7 @@
       <div>
         <i class="bi bi-gift display-3"></i>
       </div>
-      <div>{{ translations.home.giftList.noUser }}</div>
+      <div i18n="@@mainPage.userGift.noUser">Select a list</div>
     </div>
   }
 </div>

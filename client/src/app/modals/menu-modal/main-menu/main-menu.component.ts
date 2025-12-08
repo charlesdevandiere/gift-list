@@ -4,7 +4,6 @@ import { User } from '../../../models/user.model'
 import { AuthService } from '../../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../../services/color-modes.service'
 import { ExportService } from '../../../services/export.service'
-import { AppTranslations } from '../../../utils/app-translations'
 import { MenuPage } from '../menu-page'
 
 @Component({
@@ -14,7 +13,6 @@ import { MenuPage } from '../menu-page'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainMenuComponent {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModesService = inject(ColorModesService)
   private readonly exportService = inject(ExportService)

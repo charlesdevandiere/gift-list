@@ -11,15 +11,19 @@
           aria-label="back"></i>
       </button>
       <div class="flex-grow-1 text-truncate">
-        {{ action === 'add' ? translations.user.addTitle : translations.user.updateTitle }}
+        @if (action === 'add') {
+          <span i18n="@@userPage.addTitle">Add user</span>
+        } @else {
+          <span i18n="@@userPage.updateTitle">Edit user</span>
+        }
       </div>
       <button
         type="submit"
         form="userForm"
         class="btn btn-success text-nowrap"
         [disabled]="!form.valid">
-        <i class="bi-floppy"></i>
-        <span class="ms-2">{{ translations.misc.save }}</span>
+        <i class="bi-floppy me-2"></i>
+        <span i18n="@@userPage.save">Save</span>
       </button>
     </div>
   </div>
@@ -34,7 +38,8 @@
           <label
             for="name"
             class="form-label">
-            {{ translations.user.name }} *
+            <span i18n="@@userPage.name">Name</span>
+            <span> *</span>
           </label>
         </div>
       </div>
@@ -49,7 +54,9 @@
         </div>
       </div>
       <div class="row mb-2">
-        <div class="col">{{ translations.user.picture }}</div>
+        <div class="col">
+          <span i18n="@@userPage.picture">Picture</span>
+        </div>
       </div>
       <div class="row g-4 mb-5">
         @for (picture of pictures; track picture) {
@@ -59,7 +66,7 @@
               class="btn w-100 border text-center fs-1 py-3"
               [class.btn-primary]="picture === selectedPicture()"
               (click)="selectPicture(picture)">
-              <i class="bi-{{ picture }}"></i>
+              <i [class]="picture | picture"></i>
             </button>
           </div>
         }

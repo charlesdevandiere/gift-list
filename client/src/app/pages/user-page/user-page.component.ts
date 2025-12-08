@@ -7,17 +7,16 @@ import { AuthService } from '../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../services/color-modes.service'
 import { ToastsService } from '../../services/toasts.service'
 import { UsersService } from '../../services/users.service'
-import { AppTranslations } from '../../utils/app-translations'
+import { PicturePipe } from '../../utils/picture.pipe'
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RouterLink]
+  imports: [PicturePipe, ReactiveFormsModule, RouterLink]
 })
 export class UserPageComponent implements OnInit {
   protected readonly toastsService = inject(ToastsService)
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly usersService = inject(UsersService)
@@ -110,7 +109,7 @@ export class UserPageComponent implements OnInit {
             picture: this.selectedPicture()
           })
         )
-        this.toastsService.show(this.translations.user.userAddedMessage, { severity: 'success' })
+        this.toastsService.show($localize`:@@userPage.userAddedMessage:User added.`, { severity: 'success' })
         await this.router.navigate(['/'])
       }
       else if (this.action === 'update' && this.form.value.id && this.form.value.name) {
@@ -123,13 +122,16 @@ export class UserPageComponent implements OnInit {
         if (this.authService.me()?.id === this.userId) {
           await this.authService.setCurrentUser(user.id)
         }
-        this.toastsService.show(this.translations.user.userUpdatedMessage, { severity: 'success' })
+        this.toastsService.show($localize`:@@userPage.userUpdatedMessage:User updated.`, { severity: 'success' })
         await this.router.navigate(['/'])
       }
     }
     catch (err) {
       console.error(err)
-      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+      this.toastsService.show(
+        $localize`:@@userPage.saveError:A error occurred while saving user.`,
+        { severity: 'danger' }
+      )
     }
   }
 

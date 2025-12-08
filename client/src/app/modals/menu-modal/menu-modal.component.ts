@@ -7,7 +7,6 @@ import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../services/color-modes.service'
 import { UsersService } from '../../services/users.service'
-import { AppTranslations } from '../../utils/app-translations'
 import { PicturePipe } from '../../utils/picture.pipe'
 import { MainMenuComponent } from './main-menu/main-menu.component'
 import { MenuPage } from './menu-page'
@@ -20,7 +19,6 @@ import { MenuPage } from './menu-page'
 })
 export class MenuModalComponent {
   protected readonly modal = inject(NgbActiveModal)
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly usersService = inject(UsersService)

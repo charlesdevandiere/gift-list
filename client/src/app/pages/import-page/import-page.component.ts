@@ -1,10 +1,9 @@
 import { KeyValuePipe } from '@angular/common'
 import { HttpClient } from '@angular/common/http'
-import { ChangeDetectionStrategy, Component, inject, Signal, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, LOCALE_ID, Signal, signal } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { ImportResult } from '../../models/import-result.model'
 import { ColorMode, ColorModesService } from '../../services/color-modes.service'
-import { AppTranslations } from '../../utils/app-translations'
 
 type Step = 'select-file' | 'importing' | 'finished'
 
@@ -15,7 +14,7 @@ type Step = 'select-file' | 'importing' | 'finished'
   imports: [KeyValuePipe, RouterModule]
 })
 export class ImportPageComponent {
-  protected readonly translations = inject(AppTranslations)
+  protected readonly locale = inject(LOCALE_ID)
   private readonly colorModeService = inject(ColorModesService)
   private readonly http = inject(HttpClient)
 

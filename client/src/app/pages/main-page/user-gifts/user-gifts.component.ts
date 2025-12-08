@@ -12,7 +12,6 @@ import { AuthService } from '../../../services/auth.service'
 import { ColorMode, ColorModesService } from '../../../services/color-modes.service'
 import { GiftsService } from '../../../services/gifts.service'
 import { ToastsService } from '../../../services/toasts.service'
-import { AppTranslations } from '../../../utils/app-translations'
 import { MainPageService } from '../main-page.service'
 
 @Component({
@@ -25,7 +24,6 @@ import { MainPageService } from '../main-page.service'
   }
 })
 export class UserGiftsComponent {
-  protected readonly translations = inject(AppTranslations)
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly giftsService = inject(GiftsService)
@@ -60,10 +58,10 @@ export class UserGiftsComponent {
   protected async deleteGift(gift: Gift): Promise<void> {
     try {
       const data: ConfirmModalData = {
-        message: this.translations.home.giftList.deleteGift(gift.name),
+        message: $localize`:@@mainPage.userGift.deleteGift:Do you want to delete the "${gift.name}" gift?`,
         yesButton: {
           color: 'danger',
-          value: this.translations.misc.delete
+          value: $localize`:@@mainPage.userGift.delete:Delete`
         }
       }
       const modal = this.modalService.open(ConfirmModalComponent)
@@ -144,12 +142,16 @@ export class UserGiftsComponent {
 
       try {
         await firstValueFrom(action)
-        await this.getUserGifts({ noLoader: true })
       }
       catch (err) {
         console.error(err)
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+        this.toastsService.show(
+          $localize`:@@mainPage.userGift.actionError:A error occurred while saving your action.`,
+          { severity: 'danger' }
+        )
       }
+
+      await this.getUserGifts({ noLoader: true })
 
       this.offerings.update(offerings => {
         const index: number = offerings.indexOf(gift.id)
@@ -183,7 +185,10 @@ export class UserGiftsComponent {
       }
       catch (err) {
         console.error(err)
-        this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+        this.toastsService.show(
+          $localize`:@@mainPage.userGift.loadError:A error occurred while loading gifts.`,
+          { severity: 'danger' }
+        )
       }
 
       if (displayLoader) {

@@ -3,12 +3,10 @@ import { firstValueFrom } from 'rxjs';
 import { User } from '../../models/user.model';
 import { ToastsService } from '../../services/toasts.service';
 import { UsersService } from '../../services/users.service';
-import { AppTranslations } from '../../utils/app-translations';
 
 @Injectable()
 export class MainPageService {
   private readonly toastsService = inject(ToastsService)
-  private readonly translations = inject(AppTranslations)
   private readonly usersService = inject(UsersService)
 
   public readonly loadingUsers = signal<boolean>(false)
@@ -24,7 +22,10 @@ export class MainPageService {
       this.users.set(await firstValueFrom(this.usersService.getUsers()))
     } catch (err) {
       console.error(err)
-      this.toastsService.show(this.translations.misc.error, { severity: 'danger' })
+      this.toastsService.show(
+        $localize`:@@mainPage.loadError:A error occurred while loading users.`,
+        { severity: 'danger' }
+      )
     }
     this.loadingUsers.set(false)
   }

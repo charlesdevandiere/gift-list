@@ -1,5 +1,9 @@
 <div class="my-2 flex-shrink-0 d-flex flex-row align-items-center overflow-hidden">
-  <h2 class="fs-6 m-0 flex-grow-1 text-truncate">{{ translations.home.giftLists }}</h2>
+  <h2
+    class="fs-6 m-0 flex-grow-1 text-truncate"
+    i18n="@@mainPage.userList.title">
+    Lists
+  </h2>
   <div
     class="btn-group"
     role="group">
@@ -11,7 +15,8 @@
           (click)="toggleReorder()">
           <i
             class="bi-sort-alpha-down"
-            aria-label="reorder"></i>
+            aria-label="Reorder"
+            i18n-aria-label="@@mainPage.userList.reorder"></i>
         </button>
       }
       <button
@@ -20,7 +25,8 @@
         (click)="refresh()">
         <i
           class="bi-arrow-repeat"
-          aria-label="refresh"></i>
+          aria-label="Refresh"
+          i18n-aria-label="@@mainPage.userList.refresh"></i>
       </button>
     } @else {
       <button
@@ -28,14 +34,16 @@
         (click)="toggleReorder()">
         <i
           class="bi-x"
-          aria-label="cancel"></i>
+          aria-label="Cancel"
+          i18n-aria-label="@@mainPage.userList.cancel"></i>
       </button>
       <button
         class="btn btn-outline-success"
         (click)="saveOrder()">
         <i
           class="bi-check"
-          aria-label="save order"></i>
+          aria-label="Save order"
+          i18n-aria-label="@@mainPage.userList.saveOrder"></i>
       </button>
     }
   </div>
@@ -61,7 +69,8 @@
                 [disabled]="index === 0">
                 <i
                   class="bi-caret-up-fill"
-                  aria-label="move up"></i>
+                  aria-label="Move up"
+                  i18n-aria-label="@@mainPage.userList.moveUp"></i>
               </button>
               <button
                 type="button"
@@ -71,7 +80,8 @@
                 [disabled]="index === users().length - 1">
                 <i
                   class="bi-caret-down-fill"
-                  aria-label="move down"></i>
+                  aria-label="Move down"
+                  i18n-aria-label="@@mainPage.userList.moveDown"></i>
               </button>
             </div>
           </div>
