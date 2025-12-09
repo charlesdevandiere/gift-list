@@ -3,12 +3,19 @@
     "name": "Gift list",
     "short_name": "Gift list",
     "start_url": ".",
+    "id": "/",
     "display": "standalone",
     "theme_color": "#0d6efd",
     "background_color": "#ffffff",
     "description": "Share your gift list with your family!",
     "categories": [
         "lifestyle"
+    ],
+    "shortcuts": [
+        {
+            "name": "Cart",
+            "url": "./#/cart"
+        }
     ],
     "icons": [
         {

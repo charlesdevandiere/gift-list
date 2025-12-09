@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && node translate-webmanifest.mjs",
     "watch": "ng build --watch --configuration development",
     "lint": "eslint .",
-    "i18n": "ng extract-i18n --format=json --output-path src/locale && node translate.mjs"
+    "i18n": "ng extract-i18n --format=json --output-path src/locale && node prepare-translation.mjs"
   },
   "prettier": {
     "printWidth": 120,
