@@ -5,7 +5,7 @@
 api/www/*
 api/logs
 api/out-tsc
-api/src/generated/prisma/client
+api/src/generated/client
 client/.angular
 client/dist
 client/public/images/icons/icon.svg

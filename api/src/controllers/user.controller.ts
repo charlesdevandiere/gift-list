@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { authenticate, AuthenticatedUsed } from '../auth'
 import { db } from '../db'
-import { User } from '../generated/prisma/client'
+import { User } from '../generated/client'
 import { logger } from '../logger'
 
 export const userController = Router()

@@ -2,7 +2,7 @@ import { genSalt, hash } from 'bcrypt'
 import { Router } from 'express'
 import { authenticate } from '../auth'
 import { db } from '../db'
-import { Group } from '../generated/prisma/client'
+import { Group } from '../generated/client'
 import { logger } from '../logger'
 
 export const groupController = Router()
