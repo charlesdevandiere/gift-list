@@ -14,7 +14,13 @@
     "shortcuts": [
         {
             "name": "Cart",
-            "url": "./#/cart"
+            "url": "./#/cart",
+            "icons": [
+                {
+                    "src": "images/icons/cart.png",
+                    "sizes": "96x96"
+                }
+            ]
         }
     ],
     "icons": [
