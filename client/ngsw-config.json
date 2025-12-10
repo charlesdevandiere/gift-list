@@ -7,10 +7,8 @@
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/fonts/*",
+          "/media/**",
           "/index.html",
-          "/en.json",
-          "/fr.json",
           "/gift-list.webmanifest",
           "/*.css",
           "/*.js",
@@ -26,9 +24,7 @@
         "files": [
           "/images/**",
           "/favicon.ico",
-          "/apple-touch-icon.png",
-          "/favicon*.png",
-          "/*.(jpg|jpeg|png|apng|webp|avif|gif)"
+          "/*.png"
         ]
       }
     }
