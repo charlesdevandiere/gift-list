@@ -1,8 +1,8 @@
 import { effect, Injectable, signal } from '@angular/core'
 import { AppStorage } from '../utils/app-storage'
 
-type Theme = 'dark' | 'light'
-export type ColorMode = 'dark' | 'light' | 'auto'
+export type Theme = 'dark' | 'light'
+export type ColorMode = Theme | 'auto'
 
 @Injectable({
   providedIn: 'root'
@@ -17,22 +17,24 @@ export class ColorModesService {
 
   public readonly colorMode = signal<ColorMode>('auto')
 
+  private readonly _theme = signal<Theme>('light')
+  public readonly theme = this._theme.asReadonly()
+
   public constructor() {
     effect(() => {
       const value = this.colorMode()
-      let theme: Theme
 
       if (value === 'auto') {
         this._storage.removeItem(ColorModesService.COLOR_MODE)
-        theme = this._darkThemeMatchMedia.matches ? 'dark' : 'light'
+        this._theme.set(this._darkThemeMatchMedia.matches ? 'dark' : 'light')
       }
       else {
         this._storage.setItem<ColorMode>(ColorModesService.COLOR_MODE, value)
-        theme = value
+        this._theme.set(value)
       }
 
-      this.setTheme(theme)
     })
+    effect(() => document.documentElement.dataset['bsTheme'] = this._theme())
   }
 
   public init(): void {
@@ -40,14 +42,9 @@ export class ColorModesService {
 
     this._darkThemeMatchMedia.addEventListener('change', () => {
       if (this.colorMode() === 'auto') {
-        const theme: Theme = this._darkThemeMatchMedia.matches ? 'dark' : 'light'
-        this.setTheme(theme)
+        this._theme.set(this._darkThemeMatchMedia.matches ? 'dark' : 'light')
       }
     })
-  }
-
-  private setTheme(theme: Theme): void {
-    document.documentElement.dataset['bsTheme'] = theme
   }
 
 }

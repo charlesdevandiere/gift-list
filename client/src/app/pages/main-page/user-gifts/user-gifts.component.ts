@@ -9,7 +9,7 @@ import { ConfirmModalData } from '../../../models/confirm-modal-data.model'
 import { Gift } from '../../../models/gift.model'
 import { User } from '../../../models/user.model'
 import { AuthService } from '../../../services/auth.service'
-import { ColorMode, ColorModesService } from '../../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../../services/color-modes.service'
 import { GiftsService } from '../../../services/gifts.service'
 import { ToastsService } from '../../../services/toasts.service'
 import { MainPageService } from '../main-page.service'
@@ -32,7 +32,7 @@ export class UserGiftsComponent {
   private readonly service = inject(MainPageService)
   private readonly toastsService = inject(ToastsService)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly connectedUserId: Signal<string | null> = this.authService.connectedUserId
   protected readonly gifts = signal<Gift[]>([])
   protected readonly loading = signal<boolean>(false)

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, Signal, signal } from '@ang
 import { ActivatedRoute, Router } from '@angular/router'
 import { User } from '../../../models/user.model'
 import { AuthService } from '../../../services/auth.service'
-import { ColorMode, ColorModesService } from '../../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../../services/color-modes.service'
 import { PicturePipe } from '../../../utils/picture.pipe'
 import { MainPageService } from '../main-page.service'
 
@@ -22,7 +22,7 @@ export class UserListComponent {
   private readonly router = inject(Router)
   private readonly service = inject(MainPageService)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly connectedUserId: Signal<string | null> = this.authService.connectedUserId
   protected readonly loading = this.service.loadingUsers
   protected readonly reordering = signal<boolean>(false)

@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ChangeUserComponent } from '../../components/change-user/change-user.component'
 import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'
-import { ColorMode, ColorModesService } from '../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../services/color-modes.service'
 import { UsersService } from '../../services/users.service'
 import { PicturePipe } from '../../utils/picture.pipe'
 import { MainMenuComponent } from './main-menu/main-menu.component'
@@ -24,7 +24,7 @@ export class MenuModalComponent {
   private readonly usersService = inject(UsersService)
   private readonly router = inject(Router)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly page = signal<MenuPage>('main')
   protected readonly users: Signal<User[]> = toSignal(this.usersService.getUsers(), { initialValue: [] })
   protected readonly user: Signal<User | null> = computed(

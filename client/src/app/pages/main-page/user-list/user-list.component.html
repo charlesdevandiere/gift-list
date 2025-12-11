@@ -11,7 +11,7 @@
       @if (users().length) {
         <button
           class="btn"
-          [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+          [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
           (click)="toggleReorder()">
           <i
             class="bi-sort-alpha-down"
@@ -21,7 +21,7 @@
       }
       <button
         class="btn"
-        [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
         (click)="refresh()">
         <i
           class="bi-arrow-repeat"
@@ -64,7 +64,7 @@
               <button
                 type="button"
                 class="btn"
-                [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                 (click)="reorder(user.id, 'up')"
                 [disabled]="index === 0">
                 <i
@@ -75,7 +75,7 @@
               <button
                 type="button"
                 class="btn"
-                [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                 (click)="reorder(user.id, 'down')"
                 [disabled]="index === users().length - 1">
                 <i

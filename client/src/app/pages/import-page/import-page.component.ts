@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, inject, LOCALE_ID, Signal, signal } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { ImportResult } from '../../models/import-result.model'
-import { ColorMode, ColorModesService } from '../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../services/color-modes.service'
 
 type Step = 'select-file' | 'importing' | 'finished'
 
@@ -18,7 +18,7 @@ export class ImportPageComponent {
   private readonly colorModeService = inject(ColorModesService)
   private readonly http = inject(HttpClient)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly file = signal<File | undefined>(undefined)
   protected readonly step = signal<Step>('select-file')
   protected readonly result = signal<ImportResult | null>(null)

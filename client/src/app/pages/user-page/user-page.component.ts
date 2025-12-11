@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'
-import { ColorMode, ColorModesService } from '../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../services/color-modes.service'
 import { ToastsService } from '../../services/toasts.service'
 import { UsersService } from '../../services/users.service'
 import { PicturePipe } from '../../utils/picture.pipe'
@@ -23,7 +23,7 @@ export class UserPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly userId: string | null = this.route.snapshot.paramMap.get('id')
 
   protected action: 'add' | 'update' = 'add'

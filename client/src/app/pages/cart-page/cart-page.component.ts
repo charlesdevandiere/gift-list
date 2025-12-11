@@ -7,7 +7,7 @@ import { ConfirmModalComponent } from '../../modals/confirm-modal/confirm-modal.
 import { ConfirmModalData } from '../../models/confirm-modal-data.model'
 import { Gift } from '../../models/gift.model'
 import { UserWithGifts } from '../../models/user-with-gifts.model'
-import { ColorMode, ColorModesService } from '../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../services/color-modes.service'
 import { GiftsService } from '../../services/gifts.service'
 import { MeService } from '../../services/me.service'
 import { ToastsService } from '../../services/toasts.service'
@@ -26,7 +26,7 @@ export class CartPageComponent implements OnInit {
   private readonly toastsService = inject(ToastsService)
 
   protected readonly cart = signal<{ name: string, gifts: Gift[] }[]>([])
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected readonly loading = signal<boolean>(false)
 
   public ngOnInit(): void {

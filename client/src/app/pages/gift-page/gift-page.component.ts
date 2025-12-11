@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { Gift } from '../../models/gift.model'
 import { AuthService } from '../../services/auth.service'
-import { ColorMode, ColorModesService } from '../../services/color-modes.service'
+import { ColorModesService, Theme } from '../../services/color-modes.service'
 import { GiftsService } from '../../services/gifts.service'
 import { ToastsService } from '../../services/toasts.service'
 
@@ -22,7 +22,7 @@ export class GiftPageComponent implements OnInit {
   private readonly giftsService = inject(GiftsService)
   private readonly toastsService = inject(ToastsService)
 
-  protected readonly colorMode: Signal<ColorMode> = this.colorModeService.colorMode.asReadonly()
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
   protected action: 'add' | 'update' = 'add'
 
   protected readonly form: FormGroup<{

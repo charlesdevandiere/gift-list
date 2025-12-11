@@ -3,7 +3,7 @@
     <button
       #back
       class="btn me-2"
-      [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+      [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
       type="button"
       routerLink="/">
       <i
@@ -22,7 +22,7 @@
         @if (user()!.id === connectedUserId() && gifts().length) {
           <button
             class="btn"
-            [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+            [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
             type="button"
             (click)="toggleReorder()">
             <i
@@ -33,7 +33,7 @@
         }
         <button
           class="btn"
-          [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+          [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
           type="button"
           (click)="refresh()">
           <i
@@ -96,7 +96,7 @@
                   <button
                     type="button"
                     class="btn"
-                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                     (click)="share(gift)">
                     <i
                       class="bi-share-fill"
@@ -107,7 +107,7 @@
                     <button
                       type="button"
                       class="btn"
-                      [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                      [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                       (click)="updateGift(gift)">
                       <i
                         class="bi-pencil-fill"
@@ -130,7 +130,7 @@
                       [class]="
                         gift.offeredByUserId === connectedUserId()
                           ? 'btn-primary'
-                          : colorMode() === 'light'
+                          : theme() === 'light'
                             ? 'btn-light'
                             : 'btn-dark'
                       "
@@ -160,7 +160,7 @@
                   <button
                     type="button"
                     class="btn"
-                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                     (click)="reorder(gift.id, 'up')"
                     [disabled]="index === 0">
                     <i
@@ -171,7 +171,7 @@
                   <button
                     type="button"
                     class="btn"
-                    [class]="colorMode() === 'light' ? 'btn-light' : 'btn-dark'"
+                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
                     (click)="reorder(gift.id, 'down')"
                     [disabled]="index === gifts().length - 1">
                     <i
