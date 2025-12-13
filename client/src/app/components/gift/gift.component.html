@@ -1,0 +1,133 @@
+<div class="d-flex flex-row align-items-center">
+  <div class="flex-grow-1 py-2">{{ gift().name }}</div>
+  <fieldset class="btn-group">
+    @if (!reordering()) {
+      @if (gift().link1 || gift().link2 || gift().link3) {
+        <button
+          type="button"
+          class="btn position-relative"
+          [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+          (click)="linksCollapse.toggle()">
+          <i
+            class="bi-box-arrow-up-right"
+            aria-label="Toggle links"
+            i18n-aria-label="@@mainPage.userGift.toggleLinks"></i>
+          @if (linksCount() > 1) {
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger"
+              style="z-index: 2">
+              {{ linksCount() }}
+              <span
+                class="visually-hidden"
+                i18n="@@gift.linksUnit"
+                >links</span
+              >
+            </span>
+          }
+        </button>
+      }
+      <button
+        type="button"
+        class="btn"
+        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+        (click)="share()">
+        <i
+          class="bi-share-fill"
+          aria-label="Share"
+          i18n-aria-label="@@mainPage.userGift.share"></i>
+      </button>
+      @if (updatable()) {
+        <button
+          type="button"
+          class="btn"
+          [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+          (click)="updateGift()">
+          <i
+            class="bi-pencil-fill"
+            aria-label="Update"
+            i18n-aria-label="@@mainPage.userGift.update"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteGift()">
+          <i
+            class="bi-trash3-fill"
+            aria-label="Delete"
+            i18n-aria-label="@@mainPage.userGift.delete"></i>
+        </button>
+      } @else if (connectedUserId()) {
+        <button
+          type="button"
+          class="btn"
+          [class]="
+            gift().offeredByUserId === connectedUserId()
+              ? 'btn-primary'
+              : theme() === 'light'
+                ? 'btn-light'
+                : 'btn-dark'
+          "
+          (click)="toggleOffer()"
+          [disabled]="(gift().offeredByUserId && gift().offeredByUserId !== connectedUserId()) || offering()">
+          @if (offering()) {
+            <span
+              class="spinner-border spinner-border-sm"
+              aria-hidden="true"></span>
+            <output
+              class="visually-hidden"
+              i18n="@@mainPage.userGift.loading">
+              Loading...
+            </output>
+          } @else {
+            <i
+              [class]="gift().offeredByUserId ? 'bi-gift-fill' : 'bi-gift'"
+              aria-label="Offer"
+              i18n-aria-label="@@mainPage.userGift.offer"></i>
+          }
+        </button>
+      }
+    } @else {
+      <button
+        type="button"
+        class="btn"
+        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+        (click)="moveUp.emit()"
+        [disabled]="isFirst()">
+        <i
+          class="bi-caret-up-fill"
+          aria-label="Move up"
+          i18n-aria-label="@@mainPage.userGift.moveUp"></i>
+      </button>
+      <button
+        type="button"
+        class="btn"
+        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+        (click)="moveDown.emit()"
+        [disabled]="isLast()">
+        <i
+          class="bi-caret-down-fill"
+          aria-label="Move down"
+          i18n-aria-label="@@mainPage.userGift.moveDown"></i>
+      </button>
+    }
+  </fieldset>
+</div>
+<div
+  #linksCollapse="ngbCollapse"
+  [ngbCollapse]="true">
+  @if (gift().link1; as link) {
+    <div class="mt-2 text-truncate">
+      <app-gift-link [link]="link" />
+    </div>
+  }
+  @if (gift().link2; as link) {
+    <div class="mt-2 text-truncate">
+      <app-gift-link [link]="link" />
+    </div>
+  }
+  @if (gift().link3; as link) {
+    <div class="mt-2 text-truncate">
+      <app-gift-link [link]="link" />
+    </div>
+  }
+</div>

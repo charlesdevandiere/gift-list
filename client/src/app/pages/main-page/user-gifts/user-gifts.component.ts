@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Signal, effect, inject, signal, viewChild } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { Observable, firstValueFrom } from 'rxjs'
-import { GiftLinkComponent } from '../../../components/gift-link/gift-link.component'
-import { ConfirmModalComponent } from '../../../modals/confirm-modal/confirm-modal.component'
-import { ShareModalComponent } from '../../../modals/share-modal/share-modal.component'
-import { ConfirmModalData } from '../../../models/confirm-modal-data.model'
+import { GiftComponent } from '../../../components/gift/gift.component'
 import { Gift } from '../../../models/gift.model'
 import { User } from '../../../models/user.model'
 import { AuthService } from '../../../services/auth.service'
@@ -18,7 +14,7 @@ import { MainPageService } from '../main-page.service'
   selector: 'app-user-gifts',
   templateUrl: './user-gifts.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GiftLinkComponent, RouterLink],
+  imports: [GiftComponent, RouterLink],
   host: {
     class: 'h-100 d-flex flex-column overflow-hidden'
   }
@@ -27,7 +23,6 @@ export class UserGiftsComponent {
   private readonly authService = inject(AuthService)
   private readonly colorModeService = inject(ColorModesService)
   private readonly giftsService = inject(GiftsService)
-  private readonly modalService = inject(NgbModal)
   private readonly router = inject(Router)
   private readonly service = inject(MainPageService)
   private readonly toastsService = inject(ToastsService)
@@ -55,29 +50,8 @@ export class UserGiftsComponent {
     await this.router.navigate(['/new-gift'])
   }
 
-  protected async deleteGift(gift: Gift): Promise<void> {
-    try {
-      const data: ConfirmModalData = {
-        message: $localize`:@@mainPage.userGift.deleteGift:Do you want to delete the "${gift.name}" gift?`,
-        yesButton: {
-          color: 'danger',
-          value: $localize`:@@mainPage.userGift.delete:Delete`
-        }
-      }
-      const modal = this.modalService.open(ConfirmModalComponent)
-      const component: ConfirmModalComponent = modal.componentInstance as ConfirmModalComponent
-      component.data.set(data)
-      await modal.result
-      await firstValueFrom(this.giftsService.deleteGift(gift.id))
-      await this.getUserGifts({ noLoader: true })
-    }
-    catch (err) {
-      console.error(err)
-    }
-  }
-
-  protected async refresh(): Promise<void> {
-    await this.getUserGifts({ noCache: true })
+  protected async refresh(options?: { noLoader?: boolean }): Promise<void> {
+    await this.getUserGifts(options)
   }
 
   protected reorder(id: string, direction: 'up' | 'down'): void {
@@ -97,22 +71,6 @@ export class UserGiftsComponent {
     this.reordering.set(false)
     await firstValueFrom(this.giftsService.reorderGifts(this.gifts()))
     await this.getUserGifts()
-  }
-
-  protected async share(gift: Gift): Promise<void> {
-    const data: ShareData = {
-      title: gift.name,
-      text: [gift.name, gift.link1, gift.link2, gift.link3].filter(link => link?.length).join(' ')
-    }
-
-    if (!!navigator.canShare && navigator.canShare(data)) {
-      await navigator.share(data)
-    }
-    else {
-      const modal = this.modalService.open(ShareModalComponent)
-      const component: ShareModalComponent = modal.componentInstance as ShareModalComponent
-      component.data.set(data)
-    }
   }
 
   public async toggleOffer(gift: Gift): Promise<void> {
@@ -167,11 +125,7 @@ export class UserGiftsComponent {
     this.reordering.update(value => !value)
   }
 
-  public async updateGift(gift: Gift): Promise<void> {
-    await this.router.navigate(['/gift', gift.id])
-  }
-
-  private async getUserGifts(options?: { noCache?: boolean, noLoader?: boolean }): Promise<void> {
+  private async getUserGifts(options?: { noLoader?: boolean }): Promise<void> {
     const displayLoader = !options?.noLoader
     const user: User | undefined = this.user()
     this.reordering.set(false)

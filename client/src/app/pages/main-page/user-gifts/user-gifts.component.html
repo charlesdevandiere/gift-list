@@ -15,9 +15,7 @@
       i18n="@@mainPage.userGift.listTitle">
       {{ user()!.name }}'s gift list
     </h2>
-    <div
-      class="btn-group me-2"
-      role="group">
+    <fieldset class="btn-group me-2">
       @if (!reordering()) {
         @if (user()!.id === connectedUserId() && gifts().length) {
           <button
@@ -61,7 +59,7 @@
             i18n-aria-label="@@mainPage.userGift.saveOrder"></i>
         </button>
       }
-    </div>
+    </fieldset>
     @if (!reordering() && user() && user()!.id === connectedUserId()) {
       <button
         class="btn btn-primary text-nowrap"
@@ -79,7 +77,7 @@
 }
 
 <div class="flex-grow-1 pb-5 overflow-auto">
-  @if (user()) {
+  @if (user(); as user) {
     <ul class="list-group">
       @if (!loading()) {
         @for (gift of gifts(); track gift.id; let index = $index) {
@@ -87,116 +85,15 @@
             class="list-group-item"
             [class.list-group-item-primary]="gift.offeredByUserId === connectedUserId()"
             [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()">
-            <div class="d-flex flex-row align-items-center">
-              <div class="flex-grow-1 py-2">{{ gift.name }}</div>
-              <div
-                class="btn-group"
-                role="group">
-                @if (!reordering()) {
-                  <button
-                    type="button"
-                    class="btn"
-                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-                    (click)="share(gift)">
-                    <i
-                      class="bi-share-fill"
-                      aria-label="Share"
-                      i18n-aria-label="@@mainPage.userGift.share"></i>
-                  </button>
-                  @if (user()!.id === connectedUserId()) {
-                    <button
-                      type="button"
-                      class="btn"
-                      [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-                      (click)="updateGift(gift)">
-                      <i
-                        class="bi-pencil-fill"
-                        aria-label="Update"
-                        i18n-aria-label="@@mainPage.userGift.update"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="deleteGift(gift)">
-                      <i
-                        class="bi-trash3-fill"
-                        aria-label="Delete"
-                        i18n-aria-label="@@mainPage.userGift.delete"></i>
-                    </button>
-                  } @else if (connectedUserId()) {
-                    <button
-                      type="button"
-                      class="btn"
-                      [class]="
-                        gift.offeredByUserId === connectedUserId()
-                          ? 'btn-primary'
-                          : theme() === 'light'
-                            ? 'btn-light'
-                            : 'btn-dark'
-                      "
-                      (click)="toggleOffer(gift)"
-                      [disabled]="
-                        (gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()) ||
-                        offerings().indexOf(gift.id) >= 0
-                      ">
-                      @if (offerings().indexOf(gift.id) >= 0) {
-                        <span
-                          class="spinner-border spinner-border-sm"
-                          aria-hidden="true"></span>
-                        <output
-                          class="visually-hidden"
-                          i18n="@@mainPage.userGift.loading">
-                          Loading...
-                        </output>
-                      } @else {
-                        <i
-                          [class]="gift.offeredByUserId ? 'bi-gift-fill' : 'bi-gift'"
-                          aria-label="Offer"
-                          i18n-aria-label="@@mainPage.userGift.offer"></i>
-                      }
-                    </button>
-                  }
-                } @else {
-                  <button
-                    type="button"
-                    class="btn"
-                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-                    (click)="reorder(gift.id, 'up')"
-                    [disabled]="index === 0">
-                    <i
-                      class="bi-caret-up-fill"
-                      aria-label="Move up"
-                      i18n-aria-label="@@mainPage.userGift.moveUp"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn"
-                    [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-                    (click)="reorder(gift.id, 'down')"
-                    [disabled]="index === gifts().length - 1">
-                    <i
-                      class="bi-caret-down-fill"
-                      aria-label="Move down"
-                      i18n-aria-label="@@mainPage.userGift.moveDown"></i>
-                  </button>
-                }
-              </div>
-            </div>
-            @if (gift.link1) {
-              <div class="mt-2 text-truncate">
-                <app-gift-link [link]="gift.link1" />
-              </div>
-            }
-            @if (gift.link2) {
-              <div class="mt-2 text-truncate">
-                <app-gift-link [link]="gift.link2" />
-              </div>
-            }
-            @if (gift.link3) {
-              <div class="mt-2 text-truncate">
-                <app-gift-link [link]="gift.link3" />
-              </div>
-            }
+            <app-gift
+              [gift]="gift"
+              [reordering]="reordering()"
+              [updatable]="user.id === connectedUserId()"
+              [isFirst]="index === 0"
+              [isLast]="index === gifts.length - 1"
+              (giftChange)="refresh({ noLoader: true })"
+              (moveUp)="reorder(gift.id, 'up')"
+              (moveDown)="reorder(gift.id, 'down')" />
           </li>
         }
       } @else {
