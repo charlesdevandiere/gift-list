@@ -27,8 +27,7 @@ export class GiftComponent {
   private readonly toastsService = inject(ToastsService)
 
   protected readonly connectedUserId: Signal<string | null> = this.authService.connectedUserId
-  protected readonly theme: Signal<Theme> = this.colorModeService.theme
-  protected readonly offering = signal<boolean>(false)
+  protected readonly isLinksExpanded = signal<boolean>(false)
   protected readonly linksCount = computed(() => {
     let count = 0
     if (this.gift().link1) count++
@@ -36,6 +35,8 @@ export class GiftComponent {
     if (this.gift().link3) count++
     return count
   })
+  protected readonly offering = signal<boolean>(false)
+  protected readonly theme: Signal<Theme> = this.colorModeService.theme
 
   public readonly gift = input.required<Gift>()
   public readonly reordering = input<boolean>(false)
@@ -51,10 +52,10 @@ export class GiftComponent {
   protected async deleteGift(): Promise<void> {
     try {
       const data: ConfirmModalData = {
-        message: $localize`:@@mainPage.userGift.deleteGift:Do you want to delete the "${this.gift().name}" gift?`,
+        message: $localize`:@@gift.confirmDelete:Do you want to delete the "${this.gift().name}" gift?`,
         yesButton: {
           color: 'danger',
-          value: $localize`:@@mainPage.userGift.delete:Delete`
+          value: $localize`:@@gift.delete:Delete`
         }
       }
       const modal = this.modalService.open(ConfirmModalComponent)
@@ -103,7 +104,7 @@ export class GiftComponent {
     catch (err) {
       console.error(err)
       this.toastsService.show(
-        $localize`:@@mainPage.userGift.actionError:A error occurred while saving your action.`,
+        $localize`:@@gift.actionError:A error occurred while saving your action.`,
         { severity: 'danger' }
       )
     }

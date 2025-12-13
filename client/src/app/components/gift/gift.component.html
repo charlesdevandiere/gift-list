@@ -7,11 +7,11 @@
           type="button"
           class="btn position-relative"
           [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-          (click)="linksCollapse.toggle()">
+          (click)="isLinksExpanded.set(!isLinksExpanded())">
           <i
             class="bi-box-arrow-up-right"
             aria-label="Toggle links"
-            i18n-aria-label="@@mainPage.userGift.toggleLinks"></i>
+            i18n-aria-label="@@gift.toggleLinks"></i>
           @if (linksCount() > 1) {
             <span
               class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger"
@@ -19,9 +19,9 @@
               {{ linksCount() }}
               <span
                 class="visually-hidden"
-                i18n="@@gift.linksUnit"
-                >links</span
-              >
+                i18n="@@gift.linksBadgeUnit">
+                links
+              </span>
             </span>
           }
         </button>
@@ -34,7 +34,7 @@
         <i
           class="bi-share-fill"
           aria-label="Share"
-          i18n-aria-label="@@mainPage.userGift.share"></i>
+          i18n-aria-label="@@gift.share"></i>
       </button>
       @if (updatable()) {
         <button
@@ -45,7 +45,7 @@
           <i
             class="bi-pencil-fill"
             aria-label="Update"
-            i18n-aria-label="@@mainPage.userGift.update"></i>
+            i18n-aria-label="@@gift.update"></i>
         </button>
         <button
           type="button"
@@ -54,7 +54,7 @@
           <i
             class="bi-trash3-fill"
             aria-label="Delete"
-            i18n-aria-label="@@mainPage.userGift.delete"></i>
+            i18n-aria-label="@@gift.delete"></i>
         </button>
       } @else if (connectedUserId()) {
         <button
@@ -75,14 +75,14 @@
               aria-hidden="true"></span>
             <output
               class="visually-hidden"
-              i18n="@@mainPage.userGift.loading">
+              i18n="@@gift.loading">
               Loading...
             </output>
           } @else {
             <i
               [class]="gift().offeredByUserId ? 'bi-gift-fill' : 'bi-gift'"
               aria-label="Offer"
-              i18n-aria-label="@@mainPage.userGift.offer"></i>
+              i18n-aria-label="@@gift.offer"></i>
           }
         </button>
       }
@@ -96,7 +96,7 @@
         <i
           class="bi-caret-up-fill"
           aria-label="Move up"
-          i18n-aria-label="@@mainPage.userGift.moveUp"></i>
+          i18n-aria-label="@@gift.moveUp"></i>
       </button>
       <button
         type="button"
@@ -107,14 +107,15 @@
         <i
           class="bi-caret-down-fill"
           aria-label="Move down"
-          i18n-aria-label="@@mainPage.userGift.moveDown"></i>
+          i18n-aria-label="@@gift.moveDown"></i>
       </button>
     }
   </fieldset>
 </div>
 <div
   #linksCollapse="ngbCollapse"
-  [ngbCollapse]="true">
+  [ngbCollapse]="!isLinksExpanded()"
+  [ariaExpanded]="isLinksExpanded()">
   @if (gift().link1; as link) {
     <div class="mt-2 text-truncate">
       <app-gift-link [link]="link" />

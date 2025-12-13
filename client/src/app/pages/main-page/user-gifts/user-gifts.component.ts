@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Signal, effect, inject, signal, viewChild } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
-import { Observable, firstValueFrom } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
 import { GiftComponent } from '../../../components/gift/gift.component'
 import { Gift } from '../../../models/gift.model'
 import { User } from '../../../models/user.model'
@@ -71,54 +71,6 @@ export class UserGiftsComponent {
     this.reordering.set(false)
     await firstValueFrom(this.giftsService.reorderGifts(this.gifts()))
     await this.getUserGifts()
-  }
-
-  public async toggleOffer(gift: Gift): Promise<void> {
-    const connectedUserId: string | null = this.authService.connectedUserId()
-    if (!connectedUserId) {
-      throw new Error('no connected user')
-    }
-
-    const userId: string | undefined = this.user()?.id
-    if (!userId) {
-      throw new Error('userId cannot be null.')
-    }
-    if (userId === connectedUserId) {
-      throw new Error('forbidden')
-    }
-
-    let action: Observable<void> | null = null
-
-    if (!gift.offeredByUserId) {
-      action = this.giftsService.offerGift(gift)
-    } else if (gift.offeredByUserId === connectedUserId) {
-      action = this.giftsService.unofferGift(gift)
-    }
-
-    if (action) {
-      this.offerings.update(value => [...value, gift.id])
-
-      try {
-        await firstValueFrom(action)
-      }
-      catch (err) {
-        console.error(err)
-        this.toastsService.show(
-          $localize`:@@mainPage.userGift.actionError:A error occurred while saving your action.`,
-          { severity: 'danger' }
-        )
-      }
-
-      await this.getUserGifts({ noLoader: true })
-
-      this.offerings.update(offerings => {
-        const index: number = offerings.indexOf(gift.id)
-        if (index >= 0) {
-          offerings.splice(index, 1)
-        }
-        return offerings
-      })
-    }
   }
 
   public toggleReorder(): void {
