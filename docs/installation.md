@@ -78,3 +78,12 @@
    ```shell
    sudo systemctl restart nginx.service
    ```
+
+## nginx configuration
+
+```nginx
+location / {
+    proxy_pass              http://localhost:3000/;
+    proxy_set_header        Host $host;
+}
+```

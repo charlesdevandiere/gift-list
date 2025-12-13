@@ -40,7 +40,8 @@ RUN npm run build && \
 FROM node:24-alpine AS app
 
 RUN addgroup --gid 1961 gift-list && \
-    adduser --uid 1969 -D -S -g gift-list gift-list
+    adduser --uid 1969 -D -S -g gift-list gift-list && \
+    apk --no-cache add curl
 WORKDIR /home/gift-list/app
 
 ARG NODE_ENV=production
