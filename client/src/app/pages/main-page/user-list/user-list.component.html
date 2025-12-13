@@ -4,8 +4,8 @@
     i18n="@@mainPage.userList.title">
     Lists
   </h2>
-  <div
-    class="btn-group"
+  <fieldset
+    class="btn-group flex-shrink-0"
     role="group">
     @if (!reordering()) {
       @if (users().length) {
@@ -46,20 +46,20 @@
           i18n-aria-label="@@mainPage.userList.saveOrder"></i>
       </button>
     }
-  </div>
+  </fieldset>
 </div>
 <div class="flex-grow-1 pb-5 overflow-auto">
   <div class="list-group">
     @if (loading() === false) {
       @for (user of users(); track user.id; let index = $index) {
         @if (reordering()) {
-          <div class="list-group-item d-flex">
+          <div class="list-group-item d-flex align-items-center">
             <i
               class="d-block bi ms-2 me-3 my-2"
               [class]="user?.picture | picture"></i>
             <div class="flex-grow-1 my-2">{{ user.name }}</div>
-            <div
-              class="btn-group"
+            <fieldset
+              class="btn-group flex-shrink-0"
               role="group">
               <button
                 type="button"
@@ -83,11 +83,11 @@
                   aria-label="Move down"
                   i18n-aria-label="@@mainPage.userList.moveDown"></i>
               </button>
-            </div>
+            </fieldset>
           </div>
         } @else {
           <button
-            class="list-group-item list-group-item-action focus-ring d-flex py-3"
+            class="list-group-item list-group-item-action focus-ring d-flex align-items-center py-3"
             (click)="selectUser(user)"
             [class.active]="user === selectedUser()"
             [ariaCurrent]="user === selectedUser()"

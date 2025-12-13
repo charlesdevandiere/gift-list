@@ -15,7 +15,7 @@
       i18n="@@mainPage.userGift.listTitle">
       {{ user()!.name }}'s gift list
     </h2>
-    <fieldset class="btn-group me-2">
+    <fieldset class="btn-group flex-shrink-0 ms-2">
       @if (!reordering()) {
         @if (user()!.id === connectedUserId() && gifts().length) {
           <button
@@ -62,7 +62,7 @@
     </fieldset>
     @if (!reordering() && user() && user()!.id === connectedUserId()) {
       <button
-        class="btn btn-primary text-nowrap"
+        class="btn btn-primary text-nowrap ms-2"
         type="button"
         (click)="addGift()">
         <i class="bi-plus-lg"></i>
