@@ -58,5 +58,5 @@ COPY --from=build-client /app/dist/gift-list/browser ./www/
 USER gift-list
 EXPOSE 3000
 
-HEALTHCHECK --interval=5s CMD curl -f http://localhost:3000/api/healthcheck || exit 1
+HEALTHCHECK --interval=15m CMD curl -f http://localhost:3000/api/healthcheck || exit 1
 CMD ["node", "--env-file=.env", "./main.js"]
