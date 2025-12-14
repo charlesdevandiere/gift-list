@@ -60,4 +60,8 @@ export class MainMenuComponent {
     await this.router.navigate(['/sign-in'])
   }
 
+  protected reload(): void {
+    document.location.reload()
+  }
+
 }

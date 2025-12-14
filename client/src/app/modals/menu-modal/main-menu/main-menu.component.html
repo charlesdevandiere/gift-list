@@ -116,13 +116,20 @@
 
 <hr class="my-2" />
 
-<!-- sign out -->
-<div class="list-group">
+<!-- sign out & reload -->
+<div class="list-group list-group-horizontal mt-2">
   <button
     type="button"
-    class="list-group-item list-group-item-action list-group-item-danger focus-ring border-0 d-flex py-3"
+    class="list-group-item list-group-item-action list-group-item-danger focus-ring text-center text-nowrap text-truncate py-3"
     (click)="signOut()">
     <i class="bi-arrow-bar-right me-3"></i>
     <span i18n="@@mainMenu.signOut">Sign out</span>
+  </button>
+  <button
+    type="button"
+    class="list-group-item list-group-item-action focus-ring text-center py-3"
+    (click)="reload()">
+    <i class="bi-arrow-repeat me-3"></i>
+    <span i18n="@@mainMenu.reload">Reload</span>
   </button>
 </div>

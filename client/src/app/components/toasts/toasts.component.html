@@ -2,8 +2,21 @@
   <ngb-toast
     class="mx-auto"
     [class]="toast.classname"
-    [delay]="5000"
+    [delay]="toast.delay"
     (hidden)="hide(toast)">
-    {{ toast.body }}
+    <div class="d-flex align-items-center">
+      <span class="flex-grow-1">{{ toast.body }}</span>
+      @if (toast.callback) {
+        <button
+          class="btn btn-link text-decoration-none flex-shrink-0"
+          (click)="callback(toast)">
+          @if (toast.button) {
+            <span>{{ toast.button }}</span>
+          } @else {
+            <span i18n="@@toast.defaultButton">OK</span>
+          }
+        </button>
+      }
+    </div>
   </ngb-toast>
 }

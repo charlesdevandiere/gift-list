@@ -18,6 +18,12 @@ export class ToastsComponent {
 
   protected readonly toasts: Signal<Toast[]> = this.toastsService.toasts
 
+  protected callback(toast: Toast): void {
+    if (toast.callback) {
+      toast.callback()
+    }
+  }
+
   protected hide(toast: Toast): void {
     this.toastsService.remove(toast)
   }

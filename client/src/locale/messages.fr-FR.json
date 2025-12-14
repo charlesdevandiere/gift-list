@@ -50,6 +50,7 @@
     "header.applicationTitle": " Liste de cadeaux ",
     "header.cartButtonLabel": "panier",
     "header.cartBadgeUnit": " cadeaux ",
+    "toast.defaultButton": "OK",
     "confirmModal.cancel": "Annuler",
     "mainMenu.editProfile": "Modifier le profil",
     "mainMenu.changeUser": "Changer d'utilisateur",
@@ -62,6 +63,7 @@
     "mainMenu.darkMode": "mode sombre",
     "mainMenu.autoMode": "mode automatique",
     "mainMenu.signOut": "Se déconnecter",
+    "mainMenu.reload": "Recharger",
     "menuModal.anonymous": "Anonyme",
     "menuModal.close": "Fermer",
     "menuModal.back": "Retour",
@@ -129,6 +131,10 @@
     "userPage.userAddedMessage": "Utilisateur ajouté.",
     "userPage.userUpdatedMessage": "Utilisateur mis à jour.",
     "userPage.saveError": "Une erreur s'est produite lors de l'enregistrement de l'utilisateur.",
-    "export.error": "Une erreur s'est produite lors de l'exportation de la liste de cadeaux."
+    "export.error": "Une erreur s'est produite lors de l'exportation de la liste de cadeaux.",
+    "handleUnrecoverableState.error": "Une erreur s'est produite. Merci de recharger la page.",
+    "handleUnrecoverableState.reload": "Recharger",
+    "promptUpdate.update": "Mettre à jour vers la dernière version ?",
+    "promptUpdate.install": "Installer"
   }
 }

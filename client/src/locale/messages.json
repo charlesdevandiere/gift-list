@@ -50,6 +50,7 @@
     "header.applicationTitle": " Gift list ",
     "header.cartButtonLabel": "cart",
     "header.cartBadgeUnit": " gifts ",
+    "toast.defaultButton": "OK",
     "confirmModal.cancel": "Cancel",
     "mainMenu.editProfile": "Edit profile",
     "mainMenu.changeUser": "Change user",
@@ -61,7 +62,8 @@
     "mainMenu.lightMode": "light mode",
     "mainMenu.darkMode": "dark mode",
     "mainMenu.autoMode": "auto mode",
-    "mainMenu.signOut": "Sign out",
+    "mainMenu.signOut": "Sign out ###### ######",
+    "mainMenu.reload": "Reload",
     "menuModal.anonymous": "Anonymous",
     "menuModal.close": "Close",
     "menuModal.back": "Back",
@@ -129,6 +131,10 @@
     "userPage.userAddedMessage": "User added.",
     "userPage.userUpdatedMessage": "User updated.",
     "userPage.saveError": "A error occurred while saving user.",
-    "export.error": "A error occurred while exporting gift list."
+    "export.error": "A error occurred while exporting gift list.",
+    "handleUnrecoverableState.error": "An error occurred. Please reload the page.",
+    "handleUnrecoverableState.reload": "Reload",
+    "promptUpdate.update": "Update to the latest version?",
+    "promptUpdate.install": "Install"
   }
 }

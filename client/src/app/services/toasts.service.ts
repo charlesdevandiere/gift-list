@@ -11,7 +11,10 @@ export class ToastsService {
   public show(
     body: string,
     options?: {
-      severity?: 'danger' | 'default' | 'success'
+      severity?: 'danger' | 'default' | 'success',
+      delay?: number,
+      callback?: () => void,
+      button?: string
     }) {
     let classname = ''
     if (options?.severity === 'danger') {
@@ -23,6 +26,9 @@ export class ToastsService {
     const toast: Toast = {
       body: body,
       classname: classname,
+      delay: options?.delay ?? 5000,
+      callback: options?.callback,
+      button: options?.button
     }
     this._toasts.update(value => [...value, toast])
   }
