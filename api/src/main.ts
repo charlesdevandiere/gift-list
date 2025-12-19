@@ -77,13 +77,7 @@ app.get('/api/healthcheck', async (req, res) => {
 
 // client
 app.use(express.static(path.join(process.cwd(), 'www')))
-app.use(/^en-US\/(.*)$/, (_req, res) => {
-  res.sendFile(path.join(process.cwd(), 'www', 'en-US', 'index.html'))
-})
-app.use(/^fr-FR\/(.*)$/, (_req, res) => {
-  res.sendFile(path.join(process.cwd(), 'www', 'fr-FR', 'index.html'))
-})
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   const lang = req.acceptsLanguages('fr', 'fr-FR')
   if (lang) {
     res.redirect('/fr-FR/');
