@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, Signal, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal'
 import { firstValueFrom } from 'rxjs'
 import { GiftLinkComponent } from '../../components/gift-link/gift-link.component'
 import { ConfirmModalComponent } from '../../modals/confirm-modal/confirm-modal.component'
