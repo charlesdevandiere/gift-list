@@ -56,7 +56,7 @@ export class SignInPageComponent implements OnInit {
         { severity: 'danger' }
       )
       console.error(error)
-      throw new Error('wrong group or password.')
+      throw new Error('wrong group or password.', { cause: error })
     }
 
     const users: User[] = await firstValueFrom(this.usersService.getUsers())

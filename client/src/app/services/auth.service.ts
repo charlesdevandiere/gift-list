@@ -89,7 +89,7 @@ export class AuthService {
     catch (err) {
       this._auth.userId = oldUserId
       console.error(err)
-      throw new Error('Invalid user')
+      throw new Error('Invalid user', { cause: err })
     }
   }
 
