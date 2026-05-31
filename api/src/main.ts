@@ -96,6 +96,13 @@ app.use((_req, res, next) => {
 })
 
 const port: number = +(process.env.PORT ?? 0)
-app.listen(port, () => {
+const server = app.listen(port, () => {
   logger.info(`⚡️[server]: Server is running at http://localhost:${port}`)
+})
+
+process.on('SIGTERM', () => {
+  logger.debug('SIGTERM signal received: closing HTTP server')
+  server.close(() => {
+    logger.debug('HTTP server closed')
+  })
 })
