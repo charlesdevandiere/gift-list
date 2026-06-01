@@ -9,20 +9,6 @@
     "lint": "eslint .",
     "i18n": "ng extract-i18n --format=json --output-path src/locale && node prepare-translation.mjs"
   },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular",
-          "bracketSameLine": true,
-          "singleAttributePerLine": true
-        }
-      }
-    ]
-  },
   "private": true,
   "dependencies": {
     "@angular/common": "^21.2.15",
@@ -47,7 +33,6 @@
     "@eslint/js": "^10.0.1",
     "angular-eslint": "^21.4.0",
     "eslint": "^10.4.1",
-    "prettier": "^3.8.3",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.60.0"
   }

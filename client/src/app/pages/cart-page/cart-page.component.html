@@ -1,19 +1,16 @@
 <div class="container h-100 d-flex flex-column overflow-hidden">
   <div class="row">
     <div class="col my-2 d-flex flex-row align-items-center">
-      <button
-        type="button"
-        class="btn me-2"
-        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-        routerLink="/">
-        <i
-          class="bi-arrow-left"
-          aria-label="Back"
-          i18n-aria-label="@@cartPage.backButtonLabel"></i>
+      <button type="button"
+              class="btn me-2"
+              [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="Back"
+           i18n-aria-label="@@cartPage.backButtonLabel"></i>
       </button>
-      <h2
-        class="fs-6 m-0 flex-grow-1 text-truncate"
-        i18n="@@cartPage.title">
+      <h2 class="fs-6 m-0 flex-grow-1 text-truncate"
+          i18n="@@cartPage.title">
         Cart
       </h2>
     </div>
@@ -31,14 +28,12 @@
                     <li class="list-group-item">
                       <div class="d-flex flex-row align-items-center">
                         <div class="flex-grow-1 py-2">{{ gift.name }}</div>
-                        <button
-                          type="button"
-                          class="btn btn-danger flex-shrink-0"
-                          (click)="unoffer(gift)">
-                          <i
-                            class="bi-trash3-fill"
-                            aria-label="Unoffer"
-                            i18n-aria-label="@@cartPage.unofferButtonLabel"></i>
+                        <button type="button"
+                                class="btn btn-danger flex-shrink-0"
+                                (click)="unoffer(gift)">
+                          <i class="bi-trash3-fill"
+                             aria-label="Unoffer"
+                             i18n-aria-label="@@cartPage.unofferButtonLabel"></i>
                         </button>
                       </div>
                       @if (gift.link1) {

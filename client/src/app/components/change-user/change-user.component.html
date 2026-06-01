@@ -1,42 +1,36 @@
 @if (currentUser()) {
   <div class="row">
-    <div
-      class="col my-2 text-body-secondary"
-      i18n="@@changeUser.currentUser">
+    <div class="col my-2 text-body-secondary"
+         i18n="@@changeUser.currentUser">
       Current user:
     </div>
   </div>
   <div class="list-group">
-    <button
-      type="button"
-      class="list-group-item list-group-item-action list-group-item-primary border-0 d-flex py-3"
-      aria-current="true"
-      (click)="selectUser(currentUser())">
-      <i
-        class="d-block bi ms-2 me-3"
-        [class]="currentUser()!.picture | picture"></i>
+    <button type="button"
+            class="list-group-item list-group-item-action list-group-item-primary border-0 d-flex py-3"
+            aria-current="true"
+            (click)="selectUser(currentUser())">
+      <i class="d-block bi ms-2 me-3"
+         [class]="currentUser()!.picture | picture"></i>
       <div>{{ currentUser()!.name }}</div>
     </button>
   </div>
   <hr class="my-2" />
 }
 <div class="row">
-  <div
-    class="col my-2 text-body-secondary"
-    i18n="@@changeUser.user">
+  <div class="col my-2 text-body-secondary"
+       i18n="@@changeUser.user">
     Users:
   </div>
 </div>
 <div class="list-group">
   @for (user of users(); track user.id) {
     @if (user.id !== currentUser()?.id) {
-      <button
-        type="button"
-        class="list-group-item list-group-item-action border-0 d-flex py-3"
-        (click)="selectUser(user)">
-        <i
-          class="d-block bi ms-2 me-3"
-          [class]="user.picture | picture"></i>
+      <button type="button"
+              class="list-group-item list-group-item-action border-0 d-flex py-3"
+              (click)="selectUser(user)">
+        <i class="d-block bi ms-2 me-3"
+           [class]="user.picture | picture"></i>
         <div>{{ user.name }}</div>
       </button>
     }
@@ -44,11 +38,10 @@
 </div>
 <hr class="my-2" />
 <div class="list-group">
-  <button
-    type="button"
-    class="list-group-item list-group-item-action list-group-item-warning border-0 d-flex py-3"
-    aria-current="true"
-    (click)="selectUser()">
+  <button type="button"
+          class="list-group-item list-group-item-action list-group-item-warning border-0 d-flex py-3"
+          aria-current="true"
+          (click)="selectUser()">
     <i class="d-block bi bi-question ms-2 me-3"></i>
     <span i18n="@@changeUser.anonymous">Anonymous</span>
   </button>

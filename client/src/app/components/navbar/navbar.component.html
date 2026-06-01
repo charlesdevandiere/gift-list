@@ -1,13 +1,11 @@
 <nav class="navbar bg-body border-bottom">
   <div class="container">
-    <a
-      class="navbar-brand d-flex focus-ring focus-ring-light align-items-center px-2 py-1 rounded"
-      routerLink="/">
+    <a class="navbar-brand d-flex focus-ring focus-ring-light align-items-center px-2 py-1 rounded"
+       routerLink="/">
       <i class="bi bi-gift-fill text-primary me-3 fs-2 lh-1"></i>
       <div>
-        <h1
-          class="fs-5 lh-1 m-0"
-          i18n="@@header.applicationTitle">
+        <h1 class="fs-5 lh-1 m-0"
+            i18n="@@header.applicationTitle">
           Gift list
         </h1>
         <div class="text-body-secondary fs-6 lh-1">
@@ -19,20 +17,17 @@
       <div class="row align-items-center">
         @if (id()) {
           <div class="col pe-0">
-            <button
-              type="button"
-              class="btn btn-outline-primary position-relative"
-              [routerLink]="['cart']">
-              <i
-                class="bi-cart"
-                i18n-aria-label="@@header.cartButtonLabel"
-                aria-label="cart"></i>
+            <button type="button"
+                    class="btn btn-outline-primary position-relative"
+                    [routerLink]="['cart']">
+              <i class="bi-cart"
+                 i18n-aria-label="@@header.cartButtonLabel"
+                 aria-label="cart"></i>
               @if (cartCount()) {
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {{ cartCount() }}
-                  <span
-                    class="visually-hidden"
-                    i18n="@@header.cartBadgeUnit">
+                  <span class="visually-hidden"
+                        i18n="@@header.cartBadgeUnit">
                     gifts
                   </span>
                 </span>
@@ -41,10 +36,9 @@
           </div>
         }
         <div class="col">
-          <button
-            type="button"
-            class="btn btn-primary d-flex align-items-center text-decoration-none"
-            (click)="openMenu()">
+          <button type="button"
+                  class="btn btn-primary d-flex align-items-center text-decoration-none"
+                  (click)="openMenu()">
             <i [class]="picture() | picture"></i>
             @if (name()) {
               <span class="d-none d-sm-inline ms-2 text-nowrap">{{ name() }}</span>

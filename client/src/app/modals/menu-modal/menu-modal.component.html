@@ -1,49 +1,42 @@
 <div class="modal-header">
   @if (page() === 'main') {
     <h5 class="modal-title d-flex align-items-center">
-      <i
-        class="bi fs-3 mx-2 me-2"
-        [class]="user()?.picture | picture"></i>
+      <i class="bi fs-3 mx-2 me-2"
+         [class]="user()?.picture | picture"></i>
       @if (user()?.name; as name) {
         <span>{{ name }}</span>
       } @else {
         <span i18n="@@menuModal.anonymous">Anonymous</span>
       }
     </h5>
-    <button
-      type="button"
-      class="btn-close"
-      (click)="modal.dismiss()"
-      aria-label="Close"
-      i18n-aria-label="@@menuModal.close"></button>
+    <button type="button"
+            class="btn-close"
+            (click)="modal.dismiss()"
+            aria-label="Close"
+            i18n-aria-label="@@menuModal.close"></button>
   } @else if (page() === 'change-user') {
-    <button
-      type="button"
-      class="btn me-2"
-      [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-      (click)="move('main')">
-      <i
-        class="bi-arrow-left"
-        aria-label="Back"
-        i18n-aria-label="@@menuModal.back"></i>
+    <button type="button"
+            class="btn me-2"
+            [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+            (click)="move('main')">
+      <i class="bi-arrow-left"
+         aria-label="Back"
+         i18n-aria-label="@@menuModal.back"></i>
     </button>
-    <h5
-      class="modal-title"
-      i18n="@@menuModal.changeUser">
+    <h5 class="modal-title"
+        i18n="@@menuModal.changeUser">
       Change user
     </h5>
   }
 </div>
 <div class="modal-body">
   @if (page() === 'main') {
-    <app-main-menu
-      [user]="user()"
-      (dismiss)="dismiss()"
-      (move)="move($event)" />
+    <app-main-menu [user]="user()"
+                   (dismiss)="dismiss()"
+                   (move)="move($event)" />
   } @else if (page() === 'change-user') {
-    <app-change-user
-      [currentUser]="user()"
-      [users]="users()"
-      (selectedUser)="changeUser($event)" />
+    <app-change-user [currentUser]="user()"
+                     [users]="users()"
+                     (selectedUser)="changeUser($event)" />
   }
 </div>

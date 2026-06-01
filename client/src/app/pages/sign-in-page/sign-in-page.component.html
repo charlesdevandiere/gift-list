@@ -2,49 +2,42 @@
   <div class="row h-100">
     <div class="col-12 offset-md-2 col-md-8 offset-lg-3 col-lg-6 offset-xl-4 col-xl-4 mt-3 h-100">
       <div class="d-flex flex-column h-100">
-        <h4
-          class="text-center"
-          i18n="@@signInPage.title">
+        <h4 class="text-center"
+            i18n="@@signInPage.title">
           Sign in to Gift list
         </h4>
         <div class="card overflow-auto mb-5">
           @if (step() === 'sign-in') {
-            <form
-              class="card-body"
-              [formGroup]="form"
-              (ngSubmit)="onSubmit()">
+            <form class="card-body"
+                  [formGroup]="form"
+                  (ngSubmit)="onSubmit()">
               <div class="mb-3">
-                <label
-                  for="group"
-                  class="form-label"
-                  i18n="@@signInPage.group">
+                <label for="group"
+                       class="form-label"
+                       i18n="@@signInPage.group">
                   Group
                 </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="group"
-                  formControlName="group" />
+                <input type="text"
+                       class="form-control"
+                       id="group"
+                       formControlName="group" />
               </div>
               <div class="mb-3">
-                <label
-                  for="password"
-                  class="form-label"
-                  i18n="@@signInPage.password">
+                <label for="password"
+                       class="form-label"
+                       i18n="@@signInPage.password">
                   Password
                 </label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  formControlName="password" />
+                <input type="password"
+                       class="form-control"
+                       id="password"
+                       formControlName="password" />
               </div>
               <div class="text-end">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  [disabled]="!form.valid"
-                  i18n="@@signInPage.signIn">
+                <button type="submit"
+                        class="btn btn-primary"
+                        [disabled]="!form.valid"
+                        i18n="@@signInPage.signIn">
                   Sign in
                 </button>
               </div>
@@ -52,9 +45,8 @@
           } @else {
             <div class="card-body">
               <div i18n="@@signInPage.selectUser">Choose a profile</div>
-              <app-change-user
-                [users]="users()"
-                (selectedUser)="selectUser($event)" />
+              <app-change-user [users]="users()"
+                               (selectedUser)="selectUser($event)" />
             </div>
           }
         </div>

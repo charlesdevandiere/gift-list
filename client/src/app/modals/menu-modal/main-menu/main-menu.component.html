@@ -1,37 +1,30 @@
 <!-- users -->
 <div class="list-group">
   @if (user()) {
-    <button
-      type="button"
-      class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
-      (click)="editProfile()">
-      <i
-        class="bi-person-lines-fill me-3"
-        aria-hidden="true"></i>
+    <button type="button"
+            class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+            (click)="editProfile()">
+      <i class="bi-person-lines-fill me-3"
+         aria-hidden="true"></i>
       <span i18n="@@mainMenu.editProfile">Edit profile</span>
     </button>
   }
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
-    (click)="changeUser()">
-    <i
-      class="bi-people-fill me-3"
-      aria-hidden="true"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="changeUser()">
+    <i class="bi-people-fill me-3"
+       aria-hidden="true"></i>
     <div class="flex-grow-1">
       <span i18n="@@mainMenu.changeUser">Change user</span>
     </div>
-    <i
-      class="bi-chevron-right"
-      aria-hidden="true"></i>
+    <i class="bi-chevron-right"
+       aria-hidden="true"></i>
   </button>
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
-    (click)="addUser()">
-    <i
-      class="bi-person-fill-add me-3"
-      aria-hidden="true"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring border-0 d-flex py-3"
+          (click)="addUser()">
+    <i class="bi-person-fill-add me-3"
+       aria-hidden="true"></i>
     <span i18n="@@mainMenu.addUser">Add user</span>
   </button>
 </div>
@@ -40,77 +33,63 @@
 
 <!-- import / export -->
 <div class="list-group list-group-horizontal mt-2">
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    (click)="import()">
-    <i
-      class="bi-upload me-3"
-      aria-hidden="true"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          (click)="import()">
+    <i class="bi-upload me-3"
+       aria-hidden="true"></i>
     <span i18n="@@mainMenu.import">Import</span>
   </button>
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    (click)="export()">
-    <i
-      class="bi-download me-3"
-      aria-hidden="true"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          (click)="export()">
+    <i class="bi-download me-3"
+       aria-hidden="true"></i>
     <span i18n="@@mainMenu.export">Export</span>
   </button>
 </div>
 
 <!-- language -->
 <div class="list-group list-group-horizontal mt-2">
-  <a
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    href="/en-US">
-    <i
-      class="bi-translate me-3"
-      aria-hidden="true"></i>
+  <a class="list-group-item list-group-item-action focus-ring text-center py-3"
+     href="/en-US">
+    <i class="bi-translate me-3"
+       aria-hidden="true"></i>
     <span i18n="@@mainMenu.english">English</span>
   </a>
-  <a
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    href="/fr-FR">
-    <i
-      class="bi-translate me-3"
-      aria-hidden="true"></i>
+  <a class="list-group-item list-group-item-action focus-ring text-center py-3"
+     href="/fr-FR">
+    <i class="bi-translate me-3"
+       aria-hidden="true"></i>
     <span i18n="@@mainMenu.french">French</span>
   </a>
 </div>
 
 <!-- theme -->
 <div class="list-group list-group-horizontal mt-2">
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    [class.active]="colorMode() === 'light'"
-    (click)="setColorMode('light')">
-    <i
-      class="bi-sun-fill"
-      aria-label="light mode"
-      i18n-aria-label="@@mainMenu.lightMode"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorMode() === 'light'"
+          (click)="setColorMode('light')">
+    <i class="bi-sun-fill"
+       aria-label="light mode"
+       i18n-aria-label="@@mainMenu.lightMode"></i>
   </button>
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    [class.active]="colorMode() === 'dark'"
-    (click)="setColorMode('dark')">
-    <i
-      class="bi-moon-stars-fill"
-      aria-label="dark mode"
-      i18n-aria-label="@@mainMenu.darkMode"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorMode() === 'dark'"
+          (click)="setColorMode('dark')">
+    <i class="bi-moon-stars-fill"
+       aria-label="dark mode"
+       i18n-aria-label="@@mainMenu.darkMode"></i>
   </button>
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    [class.active]="colorMode() === 'auto'"
-    (click)="setColorMode('auto')">
-    <i
-      class="bi-circle-half"
-      aria-label="auto mode"
-      i18n-aria-label="@@mainMenu.autoMode"></i>
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          [class.active]="colorMode() === 'auto'"
+          (click)="setColorMode('auto')">
+    <i class="bi-circle-half"
+       aria-label="auto mode"
+       i18n-aria-label="@@mainMenu.autoMode"></i>
   </button>
 </div>
 
@@ -118,17 +97,15 @@
 
 <!-- sign out & reload -->
 <div class="list-group list-group-horizontal mt-2">
-  <button
-    type="button"
-    class="list-group-item list-group-item-action list-group-item-danger focus-ring text-center text-nowrap text-truncate py-3"
-    (click)="signOut()">
+  <button type="button"
+          class="list-group-item list-group-item-action list-group-item-danger focus-ring text-center text-nowrap text-truncate py-3"
+          (click)="signOut()">
     <i class="bi-arrow-bar-right me-3"></i>
     <span i18n="@@mainMenu.signOut">Sign out</span>
   </button>
-  <button
-    type="button"
-    class="list-group-item list-group-item-action focus-ring text-center py-3"
-    (click)="reload()">
+  <button type="button"
+          class="list-group-item list-group-item-action focus-ring text-center py-3"
+          (click)="reload()">
     <i class="bi-arrow-repeat me-3"></i>
     <span i18n="@@mainMenu.reload">Reload</span>
   </button>

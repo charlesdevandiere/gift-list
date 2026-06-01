@@ -1,74 +1,61 @@
 @if (user()) {
   <div class="my-2 flex-shrink-0 d-flex flex-row align-items-center overflow-hidden">
-    <button
-      #back
-      class="btn me-2"
-      [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-      type="button"
-      routerLink="/">
-      <i
-        class="bi-arrow-left"
-        aria-label="back"></i>
+    <button #back
+            class="btn me-2"
+            [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+            type="button"
+            routerLink="/">
+      <i class="bi-arrow-left"
+         aria-label="back"></i>
     </button>
-    <h2
-      class="fs-6 m-0 flex-grow-1 text-truncate"
-      i18n="@@mainPage.userGift.listTitle">
+    <h2 class="fs-6 m-0 flex-grow-1 text-truncate"
+        i18n="@@mainPage.userGift.listTitle">
       {{ user()!.name }}'s gift list
     </h2>
     <fieldset class="btn-group flex-shrink-0 ms-2">
       @if (!reordering()) {
         @if (user()!.id === connectedUserId() && gifts().length) {
-          <button
-            class="btn"
-            [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-            type="button"
-            (click)="toggleReorder()">
-            <i
-              class="bi-sort-alpha-down"
-              aria-label="Reorder"
-              i18n-aria-label="@@mainPage.userGift.reorder"></i>
+          <button class="btn"
+                  [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+                  type="button"
+                  (click)="toggleReorder()">
+            <i class="bi-sort-alpha-down"
+               aria-label="Reorder"
+               i18n-aria-label="@@mainPage.userGift.reorder"></i>
           </button>
         }
-        <button
-          class="btn"
-          [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-          type="button"
-          (click)="refresh()">
-          <i
-            class="bi-arrow-repeat"
-            aria-label="Refresh"
-            i18n-aria-label="@@mainPage.userGift.refresh"></i>
+        <button class="btn"
+                [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+                type="button"
+                (click)="refresh()">
+          <i class="bi-arrow-repeat"
+             aria-label="Refresh"
+             i18n-aria-label="@@mainPage.userGift.refresh"></i>
         </button>
       } @else {
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          (click)="toggleReorder()">
-          <i
-            class="bi-x"
-            aria-label="Cancel"
-            i18n-aria-label="@@mainPage.userGift.cancel"></i>
+        <button class="btn btn-outline-secondary"
+                type="button"
+                (click)="toggleReorder()">
+          <i class="bi-x"
+             aria-label="Cancel"
+             i18n-aria-label="@@mainPage.userGift.cancel"></i>
         </button>
-        <button
-          class="btn btn-success"
-          type="button"
-          (click)="saveOrder()">
-          <i
-            class="bi-check"
-            aria-label="Save order"
-            i18n-aria-label="@@mainPage.userGift.saveOrder"></i>
+        <button class="btn btn-success"
+                type="button"
+                (click)="saveOrder()">
+          <i class="bi-check"
+             aria-label="Save order"
+             i18n-aria-label="@@mainPage.userGift.saveOrder"></i>
         </button>
       }
     </fieldset>
     @if (!reordering() && user() && user()!.id === connectedUserId()) {
-      <button
-        class="btn btn-primary text-nowrap ms-2"
-        type="button"
-        (click)="addGift()">
+      <button class="btn btn-primary text-nowrap ms-2"
+              type="button"
+              (click)="addGift()">
         <i class="bi-plus-lg"></i>
-        <span
-          class="ms-2 d-none d-md-inline-block d-lg-none d-xxl-inline-block"
-          i18n="@@mainPage.userGift.addGift">
+        <span class="ms-2 d-none d-md-inline-block d-lg-none d-xxl-inline-block"
+              i18n="@@mainPage.userGift.addGift">
           Add gift
         </span>
       </button>
@@ -81,19 +68,17 @@
     <ul class="list-group">
       @if (!loading()) {
         @for (gift of gifts(); track gift.id; let index = $index) {
-          <li
-            class="list-group-item"
-            [class.list-group-item-primary]="gift.offeredByUserId === connectedUserId()"
-            [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()">
-            <app-gift
-              [gift]="gift"
-              [reordering]="reordering()"
-              [updatable]="user.id === connectedUserId()"
-              [isFirst]="index === 0"
-              [isLast]="index === gifts.length - 1"
-              (giftChange)="refresh({ noLoader: true })"
-              (moveUp)="reorder(gift.id, 'up')"
-              (moveDown)="reorder(gift.id, 'down')" />
+          <li class="list-group-item"
+              [class.list-group-item-primary]="gift.offeredByUserId === connectedUserId()"
+              [class.list-group-item-secondary]="gift.offeredByUserId && gift.offeredByUserId !== connectedUserId()">
+            <app-gift [gift]="gift"
+                      [reordering]="reordering()"
+                      [updatable]="user.id === connectedUserId()"
+                      [isFirst]="index === 0"
+                      [isLast]="index === gifts.length - 1"
+                      (giftChange)="refresh({ noLoader: true })"
+                      (moveUp)="reorder(gift.id, 'up')"
+                      (moveDown)="reorder(gift.id, 'down')" />
           </li>
         }
       } @else {

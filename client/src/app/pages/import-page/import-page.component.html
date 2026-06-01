@@ -1,18 +1,15 @@
 <div class="container h-100 d-flex flex-column overflow-hidden">
   <div class="row">
     <div class="col my-2 d-flex flex-row align-items-center overflow-hidden">
-      <button
-        type="button"
-        class="btn me-2"
-        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-        routerLink="/">
-        <i
-          class="bi-arrow-left"
-          aria-label="back"></i>
+      <button type="button"
+              class="btn me-2"
+              [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
       </button>
-      <div
-        class="flex-grow-1 text-truncate"
-        i18n="@@importPage.title">
+      <div class="flex-grow-1 text-truncate"
+           i18n="@@importPage.title">
         Import gift lists
       </div>
     </div>
@@ -27,49 +24,44 @@
         <div class="row">
           <div class="col">
             <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="CSV file"
-                i18n-placeholder="@@importPage.csvFilePlaceholder"
-                readonly
-                [value]="file()?.name"
-                aria-describedby="browse-btn" />
-              <button
-                type="button"
-                class="btn btn-primary"
-                id="browse-btn"
-                (click)="filepicker.click()"
-                i18n="@@importPage.browse">
+              <input type="text"
+                     class="form-control"
+                     placeholder="CSV file"
+                     i18n-placeholder="@@importPage.csvFilePlaceholder"
+                     readonly
+                     [value]="file()?.name"
+                     aria-describedby="browse-btn" />
+              <button type="button"
+                      class="btn btn-primary"
+                      id="browse-btn"
+                      (click)="filepicker.click()"
+                      i18n="@@importPage.browse">
                 Browse
               </button>
             </div>
-            <input
-              #filepicker
-              id="filepicker"
-              type="file"
-              class="d-none"
-              (change)="selectFile($any($event))"
-              aria-label="File"
-              i18n-aria-label="@@importPage.file"
-              accept="text/csv" />
+            <input #filepicker
+                   id="filepicker"
+                   type="file"
+                   class="d-none"
+                   (change)="selectFile($any($event))"
+                   aria-label="File"
+                   i18n-aria-label="@@importPage.file"
+                   accept="text/csv" />
           </div>
           <div class="col-auto">
-            <button
-              type="button"
-              class="btn btn-success"
-              (click)="import()"
-              [disabled]="!file()"
-              i18n="@@importPage.importButton">
+            <button type="button"
+                    class="btn btn-success"
+                    (click)="import()"
+                    [disabled]="!file()"
+                    i18n="@@importPage.importButton">
               Import
             </button>
           </div>
         </div>
         <div class="row">
           <div class="col mt-1">
-            <a
-              href="import.{{ locale }}.csv"
-              i18n="@@importPage.downloadTemplateFile">
+            <a href="import.{{ locale }}.csv"
+               i18n="@@importPage.downloadTemplateFile">
               Download template file
             </a>
           </div>
@@ -77,26 +69,23 @@
       } @else {
         <div class="row">
           <div class="col">
-            <div
-              class="progress mb-3"
-              role="progressbar"
-              aria-label="Progress"
-              [attr.aria-valuenow]="step() === 'importing' ? 0 : 100"
-              aria-valuemin="0"
-              aria-valuemax="100">
-              <div
-                class="progress-bar w-100"
-                [class.progress-bar-striped]="step() === 'importing'"
-                [class.progress-bar-animated]="step() === 'importing'"></div>
+            <div class="progress mb-3"
+                 role="progressbar"
+                 aria-label="Progress"
+                 [attr.aria-valuenow]="step() === 'importing' ? 0 : 100"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+              <div class="progress-bar w-100"
+                   [class.progress-bar-striped]="step() === 'importing'"
+                   [class.progress-bar-animated]="step() === 'importing'"></div>
             </div>
           </div>
         </div>
         @if (result()?.error) {
           <div class="row">
             <div class="col">
-              <div
-                class="alert alert-danger"
-                role="alert">
+              <div class="alert alert-danger"
+                   role="alert">
                 <div i18n="@@importPage.error">An error occurred while importing gift lists.</div>
                 <div class="font-monospace">
                   {{ result()?.error }}
@@ -107,9 +96,8 @@
         } @else if (result()?.success) {
           <div class="row">
             <div class="col">
-              <div
-                class="alert alert-success"
-                role="alert">
+              <div class="alert alert-success"
+                   role="alert">
                 <div i18n="@@importPage.success">Gift lists are successfuly imported.</div>
                 <div class="font-monospace">
                   <div>Imported users:</div>

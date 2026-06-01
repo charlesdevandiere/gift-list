@@ -1,15 +1,13 @@
 <div class="container h-100 d-flex flex-column position-relative">
   <div class="row">
     <div class="col my-2 d-flex flex-row align-items-center overflow-hidden">
-      <button
-        type="button"
-        class="btn me-2"
-        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-        (click)="back()">
-        <i
-          class="bi-arrow-left"
-          aria-label="Back"
-          i18n-aria-label="@@giftPage.backButtonLabel"></i>
+      <button type="button"
+              class="btn me-2"
+              [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+              (click)="back()">
+        <i class="bi-arrow-left"
+           aria-label="Back"
+           i18n-aria-label="@@giftPage.backButtonLabel"></i>
       </button>
       <div class="flex-grow-1 text-truncate">
         @if (action === 'add') {
@@ -18,29 +16,25 @@
           <span i18n="@@giftPage.updateTitle">Update gift</span>
         }
       </div>
-      <button
-        type="submit"
-        form="userForm"
-        class="btn btn-success text-nowrap"
-        [disabled]="!form.valid">
-        <i
-          class="bi-floppy me-2"
-          aria-hidden="true"></i>
+      <button type="submit"
+              form="userForm"
+              class="btn btn-success text-nowrap"
+              [disabled]="!form.valid">
+        <i class="bi-floppy me-2"
+           aria-hidden="true"></i>
         <span i18n="@@giftPage.save">Save</span>
       </button>
     </div>
   </div>
   <div class="row flex-grow-1 pb-5 overflow-auto">
-    <form
-      id="userForm"
-      class="col"
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()">
+    <form id="userForm"
+          class="col"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col">
-          <label
-            for="name"
-            class="form-label">
+          <label for="name"
+                 class="form-label">
             <span i18n="@@giftPage.name">Name</span>
             <span> *</span>
           </label>
@@ -48,69 +42,62 @@
       </div>
       <div class="row mb-3">
         <div class="col">
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            formControlName="name"
-            [class.border-danger]="!form.controls.name.valid && form.controls.name.touched" />
+          <input type="text"
+                 class="form-control"
+                 id="name"
+                 formControlName="name"
+                 [class.border-danger]="!form.controls.name.valid && form.controls.name.touched" />
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <label
-            for="link1"
-            class="form-label">
+          <label for="link1"
+                 class="form-label">
             <span i18n="@@giftPage.link1">Link</span>
           </label>
         </div>
       </div>
       <div class="row mb-3">
         <div class="col">
-          <input
-            type="url"
-            id="link1"
-            class="form-control"
-            formControlName="link1"
-            [class.border-danger]="!form.controls.link1.valid && form.controls.link1.touched" />
+          <input type="url"
+                 id="link1"
+                 class="form-control"
+                 formControlName="link1"
+                 [class.border-danger]="!form.controls.link1.valid && form.controls.link1.touched" />
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <label
-            for="link2"
-            class="form-label">
+          <label for="link2"
+                 class="form-label">
             <span i18n="@@giftPage.link2">Link</span>
           </label>
         </div>
       </div>
       <div class="row">
         <div class="col mb-3">
-          <input
-            type="url"
-            id="link2"
-            class="form-control"
-            formControlName="link2"
-            [class.border-danger]="!form.controls.link2.valid && form.controls.link2.touched" />
+          <input type="url"
+                 id="link2"
+                 class="form-control"
+                 formControlName="link2"
+                 [class.border-danger]="!form.controls.link2.valid && form.controls.link2.touched" />
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <label
-            for="link3"
-            class="form-label">
+          <label for="link3"
+                 class="form-label">
             <span i18n="@@giftPage.link3">Link</span>
           </label>
         </div>
       </div>
       <div class="row">
         <div class="col mb-3">
-          <input
-            type="url"
-            id="link3"
-            class="form-control"
-            formControlName="link3"
-            [class.border-danger]="!form.controls.link3.valid && form.controls.link3.touched" />
+          <input type="url"
+                 id="link3"
+                 class="form-control"
+                 formControlName="link3"
+                 [class.border-danger]="!form.controls.link3.valid && form.controls.link3.touched" />
         </div>
       </div>
     </form>

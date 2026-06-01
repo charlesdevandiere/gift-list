@@ -3,7 +3,7 @@
     "editor.defaultFormatter": "vscode.css-language-features"
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -20,6 +20,9 @@
   "editor.formatOnSave": true,
   "files.autoSave": "off",
   "html.format.wrapAttributes": "force-aligned",
+  "html.format.templating": [
+    "angular"
+  ],
   "sonarlint.connectedMode.project": {
     "connectionId": "charlesdevandiere",
     "projectKey": "charlesdevandiere_gift-list"

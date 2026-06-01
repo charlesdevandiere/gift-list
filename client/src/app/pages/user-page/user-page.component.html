@@ -1,14 +1,12 @@
 <div class="container h-100 d-flex flex-column position-relative">
   <div class="row">
     <div class="col my-2 d-flex flex-row align-items-center overflow-hidden">
-      <button
-        type="button"
-        class="btn me-2"
-        [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
-        routerLink="/">
-        <i
-          class="bi-arrow-left"
-          aria-label="back"></i>
+      <button type="button"
+              class="btn me-2"
+              [class]="theme() === 'light' ? 'btn-light' : 'btn-dark'"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
       </button>
       <div class="flex-grow-1 text-truncate">
         @if (action === 'add') {
@@ -17,27 +15,24 @@
           <span i18n="@@userPage.updateTitle">Edit user</span>
         }
       </div>
-      <button
-        type="submit"
-        form="userForm"
-        class="btn btn-success text-nowrap"
-        [disabled]="!form.valid">
+      <button type="submit"
+              form="userForm"
+              class="btn btn-success text-nowrap"
+              [disabled]="!form.valid">
         <i class="bi-floppy me-2"></i>
         <span i18n="@@userPage.save">Save</span>
       </button>
     </div>
   </div>
   <div class="row flex-grow-1 pb-5 overflow-auto">
-    <form
-      id="userForm"
-      class="col"
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()">
+    <form id="userForm"
+          class="col"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col">
-          <label
-            for="name"
-            class="form-label">
+          <label for="name"
+                 class="form-label">
             <span i18n="@@userPage.name">Name</span>
             <span> *</span>
           </label>
@@ -45,12 +40,11 @@
       </div>
       <div class="row mb-3">
         <div class="col">
-          <input
-            type="text"
-            id="name"
-            class="form-control"
-            [class.border-danger]="!form.controls.name.valid && form.controls.name.touched"
-            formControlName="name" />
+          <input type="text"
+                 id="name"
+                 class="form-control"
+                 [class.border-danger]="!form.controls.name.valid && form.controls.name.touched"
+                 formControlName="name" />
         </div>
       </div>
       <div class="row mb-2">
@@ -61,11 +55,10 @@
       <div class="row g-4 mb-5">
         @for (picture of pictures; track picture) {
           <div class="col-4 col-sm-3 col-md-2 col-xxl-1">
-            <button
-              type="button"
-              class="btn w-100 border text-center fs-1 py-3"
-              [class.btn-primary]="picture === selectedPicture()"
-              (click)="selectPicture(picture)">
+            <button type="button"
+                    class="btn w-100 border text-center fs-1 py-3"
+                    [class.btn-primary]="picture === selectedPicture()"
+                    (click)="selectPicture(picture)">
               <i [class]="picture | picture"></i>
             </button>
           </div>
