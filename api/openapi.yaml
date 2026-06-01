@@ -5,7 +5,6 @@ info:
   version: 1.0.0
 
 paths:
-
   # groups
 
   /api/groups:
@@ -16,14 +15,14 @@ paths:
       security:
         - adminAuth: []
       responses:
-        '200':
+        "200":
           description: The list of the groups
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Group'
+                  $ref: "#/components/schemas/Group"
     post:
       summary: Create a new group
       tags:
@@ -35,15 +34,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateGroup'
+              $ref: "#/components/schemas/CreateGroup"
       responses:
-        '201':
+        "201":
           description: The created group.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Group'
-        '500':
+                $ref: "#/components/schemas/Group"
+        "500":
           description: Some server error
 
   /api/groups/{name}:
@@ -61,13 +60,13 @@ paths:
           required: true
           description: The group name
       responses:
-        '200':
+        "200":
           description: The group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Group'
-        '404':
+                $ref: "#/components/schemas/Group"
+        "404":
           description: The group was not found
     put:
       summary: Update the group by the id
@@ -87,13 +86,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateGroup'
+              $ref: "#/components/schemas/UpdateGroup"
       responses:
-        '204':
+        "204":
           description: The group was updated
-        '404':
+        "404":
           description: The group was not found
-        '500':
+        "500":
           description: Some error happened
     delete:
       summary: Remove the group by name
@@ -109,9 +108,9 @@ paths:
           required: true
           description: The group name
       responses:
-        '204':
+        "204":
           description: The group was deleted
-        '404':
+        "404":
           description: The group was not found
 
   # me
@@ -124,15 +123,15 @@ paths:
       security:
         - userAuth: []
       responses:
-        '200':
+        "200":
           description: Me
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Me'
-        '401':
+                $ref: "#/components/schemas/Me"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: User not found in the group
 
   /api/me/cart:
@@ -150,15 +149,15 @@ paths:
           required: true
           description: The user id
       responses:
-        '200':
+        "200":
           description: The list of the gifts offered by the user
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CartListItem'
-        '404':
+                  $ref: "#/components/schemas/CartListItem"
+        "404":
           description: Cart not available for anonymous user
 
   # users
@@ -171,14 +170,14 @@ paths:
       security:
         - userAuth: []
       responses:
-        '200':
+        "200":
           description: The list of the user
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserListItem'
+                  $ref: "#/components/schemas/UserListItem"
     patch:
       summary: Order users
       tags:
@@ -192,11 +191,11 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/OrderUser'
+                $ref: "#/components/schemas/OrderUser"
       responses:
-        '204':
+        "204":
           description: Order for group updated.
-        '500':
+        "500":
           description: Some server error
     post:
       summary: Create a new user
@@ -209,15 +208,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUser'
+              $ref: "#/components/schemas/CreateUser"
       responses:
-        '201':
+        "201":
           description: The created user.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '500':
+                $ref: "#/components/schemas/User"
+        "500":
           description: Some server error
   /api/users/{id}:
     put:
@@ -238,11 +237,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUser'
+              $ref: "#/components/schemas/UpdateUser"
       responses:
-        '204':
+        "204":
           description: The user has updated
-        '500':
+        "500":
           description: Some server error
     delete:
       summary: Remove the user by id
@@ -258,9 +257,9 @@ paths:
           required: true
           description: The user id
       responses:
-        '204':
+        "204":
           description: The user was deleted
-        '404':
+        "404":
           description: The user was not found
 
   # gifts
@@ -280,14 +279,14 @@ paths:
           required: true
           description: The user id
       responses:
-        '200':
+        "200":
           description: The list of the user's gifts
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GiftListItem'
+                  $ref: "#/components/schemas/GiftListItem"
     patch:
       summary: Order user's gifts
       tags:
@@ -308,15 +307,15 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/OrderGift'
+                $ref: "#/components/schemas/OrderGift"
       responses:
-        '204':
+        "204":
           description: Gifts ordered for the user.
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Gift not found
-        '500':
+        "500":
           description: Some server error
     post:
       summary: Create a new gift
@@ -336,15 +335,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateGift'
+              $ref: "#/components/schemas/CreateGift"
       responses:
-        '201':
+        "201":
           description: The created gift.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Gift'
-        '500':
+                $ref: "#/components/schemas/Gift"
+        "500":
           description: Some server error
   /api/users/{userId}/gifts/{giftId}:
     put:
@@ -371,11 +370,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateGift'
+              $ref: "#/components/schemas/UpdateGift"
       responses:
-        '204':
+        "204":
           description: The gift has updated
-        '500':
+        "500":
           description: Some server error
     delete:
       summary: Remove the gift by id
@@ -397,9 +396,9 @@ paths:
           required: true
           description: The gift id
       responses:
-        '204':
+        "204":
           description: The gift was deleted
-        '404':
+        "404":
           description: The gift was not found
   /api/users/{userId}/gifts/{giftId}/offer:
     post:
@@ -422,11 +421,11 @@ paths:
           required: true
           description: The gift id
       responses:
-        '204':
+        "204":
           description: The gift was offered
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: The gift was not found
   /api/users/{userId}/gifts/{giftId}/unoffer:
     post:
@@ -449,11 +448,11 @@ paths:
           required: true
           description: The gift id
       responses:
-        '204':
+        "204":
           description: The gift was unoffered
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: The gift was not found
 
   # export
@@ -466,7 +465,7 @@ paths:
       security:
         - userAuth: []
       responses:
-        '200':
+        "200":
           description: A CSV file
           content:
             text/csv:
@@ -497,17 +496,16 @@ paths:
               file:
                 contentType: text/csv
       responses:
-        '201':
+        "201":
           description: The gift lists have been imported
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ImportResult'
+                $ref: "#/components/schemas/ImportResult"
 
 # components
 
 components:
-
   # security
 
   securitySchemes:
@@ -519,7 +517,6 @@ components:
       scheme: basic
 
   schemas:
-
     # auth
 
     Me:
@@ -842,7 +839,7 @@ components:
         gifts:
           type: array
           items:
-            $ref: '#/components/schemas/GiftListItem'
+            $ref: "#/components/schemas/GiftListItem"
       example:
         id: 840eec48-5c81-4b93-9343-11d3026f244d
         name: Obiwan
@@ -887,10 +884,7 @@ components:
             Obiwan: 5
             Anakin: 3
 
-
 tags:
-  - name: Auth
-    description: Authentication
   - name: Groups
     description: The groups
   - name: Users
