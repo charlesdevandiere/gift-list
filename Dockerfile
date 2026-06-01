@@ -15,7 +15,7 @@ FROM node:24-alpine AS migrations
 
 WORKDIR /app
 
-RUN npm install --global prisma && \
+RUN npm install --ignore-scripts --global prisma@6.19.3 && \
     npm cache clean --force
 
 COPY ./api/prisma ./prisma
