@@ -1,8 +1,7 @@
 # Compiled output
-api/out-tsc
+**/dist
+**/out-tsc
 api/www/*
-!api/www/.gitkeep
-client/dist
 
 # Node
 **/node_modules
@@ -16,14 +15,16 @@ client/dist
 **/.history/*
 
 # Angular cache
-client/.angular/cache
+**/.angular/cache
 
 # Prisma client
 api/src/generated/client
 
 # env files
-.env
+**/.env
 
 # logs
-api/logs/*
-!api/logs/.gitkeep
+**/logs/*
+
+# gitkeep
+!**/.gitkeep
