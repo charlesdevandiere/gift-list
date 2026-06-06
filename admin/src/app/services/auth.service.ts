@@ -2,7 +2,6 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { Auth } from '../models/auth';
-import { Group } from '../models/group';
 
 @Injectable({
   providedIn: 'root',
@@ -34,15 +33,13 @@ export class AuthService {
     const token: string = this.buildToken(username, password)
     const authorization = `Basic ${token}`
 
-    try {
-      await firstValueFrom(
-        this.http.get<Group[]>('/api/groups', { headers: { 'Authorization': authorization } })
+    await firstValueFrom(
+      this.http.get(
+        '/api/groups',
+        { headers: { 'Authorization': authorization } }
       )
-      this._auth.set({ username, password })
-    }
-    catch (err) {
-      throw new Error('wrong username or password.', { cause: err })
-    }
+    )
+    this._auth.set({ username, password })
   }
 
   public signOut(): void {
