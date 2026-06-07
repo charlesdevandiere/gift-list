@@ -1,1 +1,36 @@
-<p>main-page works!</p>
+<div class="container h-100">
+  <div class="my-2 flex-shrink-0 d-flex flex-row align-items-center overflow-hidden">
+    <h2 class="fs-6 m-0 flex-grow-1 text-truncate"
+        i18n="@@mainPage.groupList.title">
+      Groups
+    </h2>
+  </div>
+  <div class="flex-grow-1 pb-5 overflow-auto">
+    <div class="list-group">
+      @for (group of groups(); track group.name) {
+        <div class="list-group-item d-flex align-items-center">
+          <div class="flex-grow-1 my-2">{{ group.name }}</div>
+          <fieldset class="btn-group flex-shrink-0"
+                    role="group">
+            <button type="button"
+                    class="btn btn-dark"
+                    (click)="openChangePasswordModal(group)">
+              <i class="bi bi-input-cursor-text"
+                 aria-hidden="true"></i>
+              <span class="ms-2"
+                    i18n="@@mainPage.groupList.changePassword">Change password</span>
+            </button>
+            <button type="button"
+                    class="btn btn-danger"
+                    (click)="deleteGroup(group)">
+              <i class="bi bi-trash"
+                 aria-hidden="true"></i>
+              <span class="ms-2"
+                    i18n="@@mainPage.groupList.changePassword">Delete</span>
+            </button>
+          </fieldset>
+        </div>
+      }
+    </div>
+  </div>
+</div>
