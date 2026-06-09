@@ -1,7 +1,7 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
-import { Auth } from '../models/auth';
+import { Auth } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',

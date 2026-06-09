@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import { Group } from '../models/group';
+import { Group } from '../models/group.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,17 +20,17 @@ export class GroupsService {
     return this.http.get<Group>(url)
   }
 
-  public addUser(group: Group & { password: string }): Observable<Group> {
+  public addGroup(group: Group & { password: string }): Observable<Group> {
     const url = '/api/groups'
     return this.http.post<Group>(url, group)
   }
 
-  public updateUser(group: Group & { password: string }): Observable<void> {
+  public updateGroup(group: Group & { password: string }): Observable<void> {
     const url = `/api/groups/${group.name}`
     return this.http.put<void>(url, group)
   }
 
-  public deleteUser(name: string): Observable<void> {
+  public deleteGroup(name: string): Observable<void> {
     if (!name) {
       return throwError(() => new Error('Param name is required.'))
     }

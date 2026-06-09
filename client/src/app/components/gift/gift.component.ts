@@ -51,23 +51,32 @@ export class GiftComponent {
   public readonly moveDown = output()
 
   protected async deleteGift(): Promise<void> {
-    try {
-      const data: ConfirmModalData = {
-        message: $localize`:@@gift.confirmDelete:Do you want to delete the "${this.gift().name}" gift?`,
-        yesButton: {
-          color: 'danger',
-          value: $localize`:@@gift.delete:Delete`
-        }
+    const data: ConfirmModalData = {
+      message: $localize`:@@gift.confirmDelete:Do you want to delete the "${this.gift().name}:name:" gift?`,
+      yesButton: {
+        color: 'danger',
+        value: $localize`:@@gift.delete:Delete`
       }
-      const modal = this.modalService.open(ConfirmModalComponent)
-      const component: ConfirmModalComponent = modal.componentInstance as ConfirmModalComponent
-      component.data.set(data)
-      await modal.result
-      await firstValueFrom(this.giftsService.deleteGift(this.gift().id))
-      this.giftChange.emit()
     }
-    catch (err) {
-      console.error(err)
+    const modal = this.modalService.open(ConfirmModalComponent)
+    const component: ConfirmModalComponent = modal.componentInstance as ConfirmModalComponent
+    component.data.set(data)
+    try {
+      await modal.result
+      try {
+        await firstValueFrom(this.giftsService.deleteGift(this.gift().id))
+        this.giftChange.emit()
+      }
+      catch (err) {
+        console.error(err)
+        this.toastsService.show(
+          $localize`:@@gift.deleteError:A error occurred while deleting group.`,
+          { severity: 'danger' }
+        )
+      }
+    }
+    catch {
+      console.log('deletion canceled')
     }
   }
 
