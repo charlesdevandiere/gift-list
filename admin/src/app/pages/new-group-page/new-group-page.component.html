@@ -1,0 +1,77 @@
+<div class="container h-100 d-flex flex-column position-relative">
+  <div class="row">
+    <div class="col my-2 d-flex flex-row align-items-center overflow-hidden">
+      <button type="button"
+              class="btn btn-dark me-2"
+              routerLink="/">
+        <i class="bi-arrow-left"
+           aria-label="back"></i>
+      </button>
+      <div class="flex-grow-1 text-truncate">
+        <span i18n="@@newGroupPage.title">Add group</span>
+      </div>
+      <button type="submit"
+              form="groupForm"
+              class="btn btn-success text-nowrap"
+              [disabled]="form.invalid">
+        <i class="bi-floppy me-2"></i>
+        <span i18n="@@newGroupPage.save">Save</span>
+      </button>
+    </div>
+  </div>
+  <div class="row flex-grow-1 pb-5 overflow-auto">
+    <form id="groupForm"
+          class="col"
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col">
+          <label for="name"
+                 class="form-label">
+            <span i18n="@@newGroupPage.name">Name</span>
+            <span> *</span>
+          </label>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text"
+                 id="name"
+                 class="form-control"
+                 [class.border-danger]="form.controls.name.invalid && form.controls.name.touched"
+                 formControlName="name" />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col">
+          <span i18n="@@newGroupPage.password">Password</span>
+          <span> *</span>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="password"
+                 id="password"
+                 class="form-control"
+                 [class.border-danger]="form.controls.password.invalid && form.controls.password.touched"
+                 formControlName="password" />
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col">
+          <span i18n="@@newGroupPage.confirmPassword">Confirm password</span>
+          <span> *</span>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <input type="password"
+                 id="confirmPassword"
+                 class="form-control"
+                 [class.border-danger]="form.controls.confirmPassword.invalid && form.controls.confirmPassword.touched"
+                 formControlName="confirmPassword" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

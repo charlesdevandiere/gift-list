@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { ChangePasswordModalComponent } from '../../modals/change-password-modal/change-password-modal.component';
@@ -18,11 +19,16 @@ export class MainPageComponent {
   private readonly groupsService = inject(GroupsService)
   private readonly modalService = inject(NgbModal)
   private readonly toastsService = inject(ToastsService)
+  private readonly router = inject(Router)
 
   protected readonly groups = signal<Group[]>([])
 
   public constructor() {
     this.groupsService.getGroups().subscribe(groups => this.groups.set(groups))
+  }
+
+  protected async addGroup(): Promise<void> {
+    await this.router.navigate(['/new-group'])
   }
 
   protected openChangePasswordModal(group: Group): void {
@@ -48,6 +54,10 @@ export class MainPageComponent {
         await firstValueFrom(
           this.groupsService.deleteGroup(group.name)
         )
+        const groups = await firstValueFrom(
+          this.groupsService.getGroups()
+        )
+        this.groups.set(groups)
       }
       catch (err) {
         console.error(err)

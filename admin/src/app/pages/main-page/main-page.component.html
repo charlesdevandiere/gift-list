@@ -4,12 +4,21 @@
         i18n="@@mainPage.groupList.title">
       Groups
     </h2>
+    <button class="btn btn-primary text-nowrap flex-shrink-0 ms-2"
+            type="button"
+            (click)="addGroup()">
+      <i class="bi-plus-lg"></i>
+      <span class="ms-2 d-none d-sm-inline-block"
+            i18n="@@mainPage.groupList.addGroup">
+        Add group
+      </span>
+    </button>
   </div>
   <div class="flex-grow-1 pb-5 overflow-auto">
     <div class="list-group">
       @for (group of groups(); track group.name) {
         <div class="list-group-item d-flex align-items-center">
-          <div class="flex-grow-1 my-2">{{ group.name }}</div>
+          <div class="flex-grow-1 my-2 text-truncate">{{ group.name }}</div>
           <fieldset class="btn-group flex-shrink-0"
                     role="group">
             <button type="button"
@@ -17,7 +26,7 @@
                     (click)="openChangePasswordModal(group)">
               <i class="bi bi-input-cursor-text"
                  aria-hidden="true"></i>
-              <span class="ms-2"
+              <span class="ms-2 d-none d-sm-inline-block"
                     i18n="@@mainPage.groupList.changePassword">Change password</span>
             </button>
             <button type="button"
@@ -25,7 +34,7 @@
                     (click)="deleteGroup(group)">
               <i class="bi bi-trash"
                  aria-hidden="true"></i>
-              <span class="ms-2"
+              <span class="ms-2 d-none d-sm-inline-block"
                     i18n="@@mainPage.groupList.changePassword">Delete</span>
             </button>
           </fieldset>

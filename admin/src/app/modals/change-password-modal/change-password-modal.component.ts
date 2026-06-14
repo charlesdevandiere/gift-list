@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { Group } from '../../models/group.model';
 import { GroupsService } from '../../services/groups.service';
 import { ToastsService } from '../../services/toasts.service';
+import { passwordsMatchValidator } from '../../utils/validators';
 
 interface ChangePasswordForm {
   newPassword: FormControl<string | null>
@@ -18,7 +19,6 @@ interface ChangePasswordForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordModalComponent {
-  private readonly formBuilder = inject(FormBuilder)
   private readonly groupsService = inject(GroupsService)
   private readonly toastsService = inject(ToastsService)
   protected readonly modal = inject(NgbActiveModal)
@@ -28,9 +28,11 @@ export class ChangePasswordModalComponent {
   protected readonly form: FormGroup<ChangePasswordForm>
 
   public constructor() {
-    this.form = this.formBuilder.group<ChangePasswordForm>({
-      newPassword: this.formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
-      confirmPassword: this.formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)])
+    const formBuilder = inject(FormBuilder)
+
+    this.form = formBuilder.group<ChangePasswordForm>({
+      newPassword: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
+      confirmPassword: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)])
     })
     this.form.controls.confirmPassword.addValidators(
       passwordsMatchValidator(this.form.controls.newPassword)
@@ -68,14 +70,4 @@ export class ChangePasswordModalComponent {
     }
   }
 
-}
-
-function passwordsMatchValidator(newPasswordControl: AbstractControl): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (control.value === newPasswordControl.value) {
-      return null
-    } else {
-      return { passwordsMatch: false }
-    }
-  }
 }
