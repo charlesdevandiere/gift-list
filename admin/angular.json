@@ -68,6 +68,8 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "localize": true,
+            "baseHref": "/admin",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",

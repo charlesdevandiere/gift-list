@@ -64,7 +64,7 @@ export class ChangePasswordModalComponent {
     catch (err) {
       console.error(err)
       this.toastsService.show(
-        $localize`:@@changePasswordModal.saveError:A error occurred while saving user.`,
+        $localize`:@@changePasswordModal.saveError:A error occurred while saving password.`,
         { severity: 'danger' }
       )
     }

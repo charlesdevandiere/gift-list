@@ -75,8 +75,20 @@ app.get('/api/healthcheck', async (req, res) => {
   }
 })
 
-// client
+// static
 app.use(express.static(path.join(process.cwd(), 'www')))
+
+// admin
+app.get('/admin', (req, res) => {
+  const lang = req.acceptsLanguages('fr', 'fr-FR')
+  if (lang) {
+    res.redirect('/admin/fr-FR/');
+  } else {
+    res.redirect('/admin/en-US/');
+  }
+})
+
+// client
 app.get('/', (req, res) => {
   const lang = req.acceptsLanguages('fr', 'fr-FR')
   if (lang) {

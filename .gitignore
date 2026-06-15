@@ -2,6 +2,8 @@
 **/dist
 **/out-tsc
 api/www/*
+!api/www/admin/
+api/www/admin/*
 
 # Node
 **/node_modules

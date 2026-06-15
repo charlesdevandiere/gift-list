@@ -23,6 +23,20 @@ COPY ./api/prisma ./prisma
 CMD ["prisma", "migrate", "deploy"]
 
 
+FROM node:24-alpine AS build-admin
+
+WORKDIR /app
+
+COPY ./admin/package.json ./admin/package-lock.json ./
+RUN npm clean-install && \
+    npm cache clean --force
+
+COPY ./admin ./
+
+RUN npm run build && \
+    npm run lint
+
+
 FROM node:24-alpine AS build-client
 
 WORKDIR /app
@@ -53,6 +67,7 @@ RUN npm clean-install --omit=dev && \
 
 COPY ./api/openapi.yaml ./openapi.yaml
 COPY --from=build-server /app/out-tsc/ ./
+COPY --from=build-admin /app/dist/admin/browser ./www/admin/
 COPY --from=build-client /app/dist/gift-list/browser ./www/
 
 USER gift-list

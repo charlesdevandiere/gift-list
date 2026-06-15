@@ -70,7 +70,7 @@ export class GiftComponent {
       catch (err) {
         console.error(err)
         this.toastsService.show(
-          $localize`:@@gift.deleteError:A error occurred while deleting group.`,
+          $localize`:@@gift.deleteError:A error occurred while deleting gift.`,
           { severity: 'danger' }
         )
       }
