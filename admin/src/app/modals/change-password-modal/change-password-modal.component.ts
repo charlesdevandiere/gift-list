@@ -31,8 +31,8 @@ export class ChangePasswordModalComponent {
     const formBuilder = inject(FormBuilder)
 
     this.form = formBuilder.group<ChangePasswordForm>({
-      newPassword: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
-      confirmPassword: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)])
+      newPassword: formBuilder.control<string>('', [Validators.required, Validators.min(4), Validators.maxLength(18)]),
+      confirmPassword: formBuilder.control<string>('', [Validators.required, Validators.min(4), Validators.maxLength(18)])
     })
     this.form.controls.confirmPassword.addValidators(
       passwordsMatchValidator(this.form.controls.newPassword)

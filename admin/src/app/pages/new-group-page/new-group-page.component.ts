@@ -29,9 +29,9 @@ export class NewGroupPageComponent {
     const formBuilder = inject(FormBuilder)
 
     this.form = formBuilder.group({
-      name: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
-      password: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
-      confirmPassword: formBuilder.control<string>('', [Validators.required, Validators.maxLength(255)]),
+      name: formBuilder.control<string>('', [Validators.required, Validators.min(2), Validators.maxLength(50)]),
+      password: formBuilder.control<string>('', [Validators.required, Validators.min(4), Validators.maxLength(18)]),
+      confirmPassword: formBuilder.control<string>('', [Validators.required, Validators.min(4), Validators.maxLength(18)]),
     })
     this.form.controls.confirmPassword.addValidators(
       passwordsMatchValidator(this.form.controls.password)
