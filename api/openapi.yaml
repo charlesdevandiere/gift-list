@@ -141,13 +141,6 @@ paths:
         - Me
       security:
         - userAuth: []
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-          required: true
-          description: The user id
       responses:
         "200":
           description: The list of the gifts offered by the user
@@ -159,6 +152,23 @@ paths:
                   $ref: "#/components/schemas/CartListItem"
         "404":
           description: Cart not available for anonymous user
+
+  /api/me/join:
+    post:
+      summary: Join group
+      tags:
+        - Me
+      security:
+        - userAuth: []
+      responses:
+        "204":
+          description: The user has joined the group
+        "404":
+          description: User not found
+        "400":
+          description: The maximum number of users for this group has already been reached
+        "500":
+          description: Some server error
 
   # users
 
@@ -216,6 +226,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+        "400":
+          description: The maximum number of users for this group has already been reached
         "500":
           description: Some server error
   /api/users/{id}:
