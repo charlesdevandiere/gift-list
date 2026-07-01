@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Signal, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ChangeUserComponent } from '../../components/change-user/change-user.component'
 import { User } from '../../models/user.model'
 import { AuthService } from '../../services/auth.service'

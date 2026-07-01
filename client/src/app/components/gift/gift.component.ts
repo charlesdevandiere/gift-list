@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal, Signal } from '@angular/core'
 import { Router } from '@angular/router'
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal'
+import { NgbCollapseModule, NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom'
 import { ConfirmModalComponent } from '../../modals/confirm-modal/confirm-modal.component'
 import { ShareModalComponent } from '../../modals/share-modal/share-modal.component'

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { MenuModalComponent } from '../../modals/menu-modal/menu-modal.component'
 import { AuthService } from '../../services/auth.service'
 import { MeService } from '../../services/me.service'

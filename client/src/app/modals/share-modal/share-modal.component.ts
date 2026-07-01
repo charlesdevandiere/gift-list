@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
 import { ToastsService } from '../../services/toasts.service'
 
 @Component({

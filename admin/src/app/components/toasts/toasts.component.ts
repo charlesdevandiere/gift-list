@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap/toast';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { Toast } from '../../models/toast.model';
 import { ToastsService } from '../../services/toasts.service';
 
